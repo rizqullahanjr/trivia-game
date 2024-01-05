@@ -2,11 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+/**
+ * @method static where(string $string, string $string1, string $string2)
+ * @method static create(array $array)
+ * @property int $id
+ */
+class User extends Authenticatable
 {
     protected $connection = 'pgsql';
+
+    use HasApiTokens;
 
     /*
      * @var integer
@@ -21,6 +31,10 @@ class User extends Model
     protected $fillable = [
         'name',
         'email',
+        'password',
+        'provider_id',
+        'provider_name',
+        'google_access_token_json',
     ];
 
 }
