@@ -1,12 +1,37 @@
-import { Image, View, ImageStyle, StyleSheet, Text } from "react-native";
-// import { spalshImg } from "../image/spalsh.jpg";
+import { useEffect } from "react";
+import {
+  Image,
+  View,
+  ImageStyle,
+  StyleSheet,
+  Text,
+  ImageBackground,
+} from "react-native";
+// import * as splashImg from "../../image/splash.png";
 
-const Splash = () => {
+///////////animation
+
+const imgSplash = [
+  require("../image/splash.jpg"),
+  require("../image/bgImage.jpg"),
+];
+
+const Splash = ({ navigation }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.replace("Auth");
+    }, 3000);
+  }, [navigation]);
+
   return (
     <>
-      <View style={styles.container}>
-        <Text> splash</Text>
-      </View>
+      <ImageBackground
+        resizeMode="stretch"
+        style={styles.container}
+        source={imgSplash[1]}
+      >
+        <Image source={imgSplash[0]} style={styles.Image} />
+      </ImageBackground>
     </>
   );
 };
@@ -20,9 +45,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   Image: {
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
+    // margin: "auto",
+    borderRadius: 100,
   },
 });
 
