@@ -71,12 +71,15 @@ class PlayerController extends Controller
     public function updateAvatar(Request $request, string $id): JsonResponse
     {
         $avatar_id = $request->input('avatar_id');
-
         $avatar_image = DB::table('avatars')->where('id', '=', $avatar_id)
             ->value('image');
 
         $result = DB::table('players')->where('id', '=', $avatar_id)
             ->update(['active_avatar' => $avatar_image]);
+
+        DB::table('user_avatar')->insertOrIgnore([
+            'player_id' => $id, 'avatar_id' => $avatar_id
+        ]);
 
         if($result == 1) return response()->json(['message' => 'success'], 200);
         else return response()->json(['message' => 'failed'], 500);
