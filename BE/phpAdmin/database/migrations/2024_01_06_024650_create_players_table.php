@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('players', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
+            $table->integer('id');
             $table->string('name', 10);
             $table->string('active_avatar', 255)->nullable();
             $table->integer('diamond')->default(50);
@@ -21,7 +20,8 @@ return new class extends Migration
             $table->integer('total_score')->default(0);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->primary('id');
+            $table->foreign('id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('active_avatar')->references('image')->on('avatars')
                 ->onUpdate('cascade')->onDelete('set null');
