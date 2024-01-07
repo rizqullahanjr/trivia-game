@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-header('Access-Control-Allow-Origin: *');
-//Access-Control-Allow-Origin: *
-header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
-header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization');
 
 
 
@@ -40,6 +36,10 @@ Route::group([
     Route::post('login', '\App\Http\Controllers\AuthController@login');
     Route::post('adminLogin', '\App\Http\Controllers\AuthController@adminLogin');
     Route::get('check', '\App\Http\Controllers\AuthController@check');
+});
+
+Route::get('test', function () {
+    return "ok";
 });
 
 
