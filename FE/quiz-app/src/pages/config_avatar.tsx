@@ -14,6 +14,7 @@ import {
   Pressable,
 } from "react-native";
 import { Avatar, Icon } from "@rneui/themed";
+import myAvatar from "../components/avatarSingle";
 
 // type AvatarData = {
 //   image: string;
@@ -29,7 +30,23 @@ const imgSplash = [
   ,
 ];
 
+const avatarList = [
+  {
+    id: 1,
+    image: imgSplash[0],
+  },
+  {
+    id: 2,
+    image: imgSplash[1],
+  },
+  {
+    id: 3,
+    image: imgSplash[2],
+  },
+];
+
 const Avatars: React.FunctionComponent = () => {
+  const [selectedAvatar, setSelectedAvatar] = useState<boolean>(false);
   return (
     <>
       <ImageBackground
@@ -58,20 +75,66 @@ const Avatars: React.FunctionComponent = () => {
 
           {/* avatar box */}
           <View style={styles.avatarBox}>
-            <Pressable
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? "red" : "white",
-                },
-                styles.wrapperCustom,
-              ]}
-            >
-              {({ pressed }) => (
-                <Text style={{ color: "green" }}>
-                  {pressed ? "Pressed!" : "Press Me"}
-                </Text>
-              )}
-            </Pressable>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.touchAvatar} onPress={() => {}}>
+              <View style={styles.touchAvatar}>
+                <Image style={styles.avatarProfile} source={imgSplash[3]} />
+              </View>
+            </TouchableOpacity>
           </View>
 
           <Text
@@ -84,15 +147,15 @@ const Avatars: React.FunctionComponent = () => {
           >
             Set Your Name
           </Text>
-          <label htmlFor="yourname">
-            <View style={styles.inpuxBox}>
-              <Image
-                source={imgSplash[2]}
-                style={{ width: 40, height: 40, borderTopLeftRadius: 20 }}
-              />
-              <TextInput id="yourname" style={styles.input} />
-            </View>
-          </label>
+          {/* <label htmlFor="yourname"> */}
+          <View style={styles.inpuxBox}>
+            <Image
+              source={imgSplash[2]}
+              style={{ width: 40, height: 40, borderTopLeftRadius: 20 }}
+            />
+            <TextInput id="yourname" style={styles.input} />
+          </View>
+          {/* </label> */}
 
           <View style={{ width: 300, margin: "auto", marginTop: 20 }}>
             <Button color="green" title="Continue" />
@@ -162,6 +225,13 @@ const styles = StyleSheet.create({
     padding: 6,
     height: 40,
   },
+  touchAvatar: {
+    marginRight: 20,
+    backgroundColor: "black",
+    width: 75,
+    height: 80,
+    borderRadius: 100,
+  },
 });
 
 export default Avatars;
@@ -192,3 +262,20 @@ export default Avatars;
 //   <Image style={styles.avatarProfile} source={imgSplash[4]} />
 // </Pressable>
 // </View>
+
+// style={({ pressed }) => [
+//   {
+//     backgroundColor: pressed ? "red" : "white",
+//   },
+//   styles.wrapperCustom,
+// ]}
+// >
+// {({ pressed }) => (
+//   <Text style={{ color: "green" }}>
+//     {pressed ? "Pressed!" : "Press Me"}
+//   </Text>
+// )}
+
+{
+  /* <myAvatar background="green" onPress={() => {}} /> */
+}
