@@ -37,12 +37,13 @@ Route::middleware(['auth:api'])->group(function () {
 });
 
 Route::middleware([])->group(function () {
-   Route::get('/players', '\App\Http\Controllers\PlayerController@findall');
-   Route::get('/player/{id}', '\App\Http\Controllers\PlayerController@findbyid');
-   Route::put('/player/add-diamond/{id}', '\App\Http\Controllers\PlayerController@addDiamond');
-   Route::put('/player/reduce-diamond/{id}', '\App\Http\Controllers\PlayerController@reduceDiamond');
-   Route::put('/player/update-score/{id}', '\App\Http\Controllers\PlayerController@updateScore');
-   Route::put('/player/update-avatar/{id}', '\App\Http\Controllers\PlayerController@updateAvatar');
+    // Player
+    Route::get('/players', '\App\Http\Controllers\PlayerController@findall');
+    Route::get('/player/{id}', '\App\Http\Controllers\PlayerController@findbyid');
+    Route::put('/player/add-diamond/{id}', '\App\Http\Controllers\PlayerController@addDiamond');
+    Route::put('/player/reduce-diamond/{id}', '\App\Http\Controllers\PlayerController@reduceDiamond');
+    Route::put('/player/update-score/{id}', '\App\Http\Controllers\PlayerController@updateScore');
+    Route::put('/player/update-avatar/{id}', '\App\Http\Controllers\PlayerController@updateAvatar');
 
 });
 
