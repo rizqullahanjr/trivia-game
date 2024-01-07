@@ -10,6 +10,33 @@ use Illuminate\Support\Facades\DB;
 
 class PlayerController extends Controller
 {
+    public function register(Request $request): JsonResponse
+    {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
+
+        $avatar_id = $request->input('avatar_id');
+        $name = $request->input('name');
+
+        $avatar_image = DB::table('avatars')->where('id', '=', $avatar_id)
+            ->value('image');
+
+        DB::table('players')->insert([
+            'id' => $id,
+            'name' => $name,
+            'active_avatar' => $avatar_image
+        ]);
+
+
+        DB::table('user_avatar')->insertOrIgnore([
+            'player_id' => $id, 'avatar_id' => $avatar_id
+        ]);
+
+        return response()->json(['message' => 'success']);
+
+
+    }
+
     public function findAll(Request $request): JsonResponse
     {
         $players = DB::table('players')->get();
@@ -17,8 +44,11 @@ class PlayerController extends Controller
         return response()->json($players, 200);
     }
 
-    public function findById(Request $request, string $id): JsonResponse
+    public function findById(Request $request): JsonResponse
     {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
+
         $player = DB::table('players')->where('id', '=', $id)->first();
 
         return response()->json($player, 200);

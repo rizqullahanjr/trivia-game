@@ -8,19 +8,18 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @method static where(string $string, string $string1, string $string2)
  * @method static create(array $array)
  * @property int $id
  */
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     protected $connection = 'pgsql';
 
-    use HasApiTokens;
     use HasFactory;
-    use Notifiable;
 
     /*
      * @var integer
@@ -36,29 +35,32 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'provider_id',
-        'provider_name',
-        'google_access_token_json',
     ];
+
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
-     * @var array
+     * @return mixed
      */
-    protected $hidden = [
-      'password', 'remember_token',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
     /**
-     * The attributes that should be cast to native types
+     * Return a key value array, containing any custom claims to be added to the JWT
      *
-     * @var array
+     * @return array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
+    /**
+     * @return HasOne
+     */
     public function player(): HasOne
     {
         return $this->hasOne(Player::class, 'id', 'id');
