@@ -23,12 +23,13 @@ header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Autho
 
 Route::middleware(['auth:api'])->group(function () {
     // Player
+    Route::post('/player/register', '\App\Http\Controllers\PlayerController@register');
     Route::get('/players', '\App\Http\Controllers\PlayerController@findall');
     Route::get('/player', '\App\Http\Controllers\PlayerController@findbyid');
-    Route::put('/player/add-diamond/{id}', '\App\Http\Controllers\PlayerController@addDiamond');
-    Route::put('/player/reduce-diamond/{id}', '\App\Http\Controllers\PlayerController@reduceDiamond');
-    Route::put('/player/update-score/{id}', '\App\Http\Controllers\PlayerController@updateScore');
-    Route::put('/player/update-avatar/{id}', '\App\Http\Controllers\PlayerController@updateAvatar');
+    Route::put('/player/add-diamond', '\App\Http\Controllers\PlayerController@addDiamond');
+    Route::put('/player/reduce-diamond', '\App\Http\Controllers\PlayerController@reduceDiamond');
+    Route::put('/player/update-score', '\App\Http\Controllers\PlayerController@updateScore');
+    Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
 
 });
 

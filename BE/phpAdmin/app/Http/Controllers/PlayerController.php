@@ -54,8 +54,10 @@ class PlayerController extends Controller
         return response()->json($player, 200);
     }
 
-    public function addDiamond(Request $request, string $id): JsonResponse
+    public function addDiamond(Request $request): JsonResponse
     {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
         $diamond = $request->input("diamond");
 
         $result = DB::table('players')->where('id', '=', $id)
@@ -65,8 +67,10 @@ class PlayerController extends Controller
         else return response()->json(['message' => 'failed'], 500);
     }
 
-    public function reduceDiamond(Request $request, string $id): JsonResponse
+    public function reduceDiamond(Request $request): JsonResponse
     {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
         $diamond = $request->input("diamond");
 
         $result = DB::table('players')->where('id', '=', $id)
@@ -76,8 +80,10 @@ class PlayerController extends Controller
         else return response()->json(['message' => 'failed'], 500);
     }
 
-    public function updateScore(Request $request, string $id): JsonResponse
+    public function updateScore(Request $request): JsonResponse
     {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
         $newScore = $request->input("score");
 
         $oldScore = DB::table('players')->where('id','=',$id)
@@ -98,8 +104,10 @@ class PlayerController extends Controller
         else return response()->json(['message' => 'failed'], 500);
     }
 
-    public function updateAvatar(Request $request, string $id): JsonResponse
+    public function updateAvatar(Request $request): JsonResponse
     {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
         $avatar_id = $request->input('avatar_id');
         $avatar_image = DB::table('avatars')->where('id', '=', $avatar_id)
             ->value('image');
