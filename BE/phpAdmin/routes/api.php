@@ -14,21 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-header('Access-Control-Allow-Origin: *');
-//Access-Control-Allow-Origin: *
-header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
-header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization');
 
 
 
 Route::middleware(['auth:api'])->group(function () {
     // Player
+    Route::post('/player/register', '\App\Http\Controllers\PlayerController@register');
     Route::get('/players', '\App\Http\Controllers\PlayerController@findall');
     Route::get('/player', '\App\Http\Controllers\PlayerController@findbyid');
-    Route::put('/player/add-diamond/{id}', '\App\Http\Controllers\PlayerController@addDiamond');
-    Route::put('/player/reduce-diamond/{id}', '\App\Http\Controllers\PlayerController@reduceDiamond');
-    Route::put('/player/update-score/{id}', '\App\Http\Controllers\PlayerController@updateScore');
-    Route::put('/player/update-avatar/{id}', '\App\Http\Controllers\PlayerController@updateAvatar');
+    Route::put('/player/add-diamond', '\App\Http\Controllers\PlayerController@addDiamond');
+    Route::put('/player/reduce-diamond', '\App\Http\Controllers\PlayerController@reduceDiamond');
+    Route::put('/player/update-score', '\App\Http\Controllers\PlayerController@updateScore');
+    Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
 
 });
 
@@ -39,6 +36,10 @@ Route::group([
     Route::post('login', '\App\Http\Controllers\AuthController@login');
     Route::post('adminLogin', '\App\Http\Controllers\AuthController@adminLogin');
     Route::get('check', '\App\Http\Controllers\AuthController@check');
+});
+
+Route::get('test', function () {
+    return "ok";
 });
 
 
