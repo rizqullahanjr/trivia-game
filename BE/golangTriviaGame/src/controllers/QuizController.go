@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"golangTriviaGame/src/services"
+
 )
 
 type QuizController struct{}

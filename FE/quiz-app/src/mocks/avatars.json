@@ -1,0 +1,39 @@
+[
+    {
+        "avatarimg": "avatar(1).png",
+        "avatarname": "Andy",
+        "avatarprice": 100,
+        "bought": false
+    },
+    {
+        "avatarimg": "avatar(2).png",
+        "avatarname": "Brady",
+        "avatarprice": 200,
+        "bought": false
+    },
+    {
+        "avatarimg": "avatar (3).png",
+        "avatarname": "Caddy",
+        "avatarprice": 300,
+        "bought": false
+    },
+    {
+        "avatarimg": "avatar(4).png",
+        "avatarname": "Dean",
+        "avatarprice": 400,
+        "bought": false
+    },
+    {
+        "avatarimg": "avatar(5).png",
+        "avatarname": "Edwin",
+        "avatarprice": 500,
+        "bought": false
+    },
+    {
+        "avatarimg": "avatar (6).png",
+        "avatarname": "Fritz",
+        "avatarprice": 600,
+        "bought": false
+    }
+  ]
+  
