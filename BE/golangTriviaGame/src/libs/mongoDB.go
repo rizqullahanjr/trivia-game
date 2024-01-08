@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ConnectMongoDB() *mongo.Client {
+func ConnectMongoDB() (*mongo.Client, context.Context) {
 	client, err := mongo.NewClient(options.Client().ApplyURI(Env("MONGODB_URI")))
 	if err != nil {
 		log.Fatal(err)
@@ -19,5 +19,5 @@ func ConnectMongoDB() *mongo.Client {
 		log.Fatal(err)
 	}
 	// defer client.Disconnect(ctx)
-	return client
+	return client, ctx
 }

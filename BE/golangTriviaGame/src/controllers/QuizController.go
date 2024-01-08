@@ -1,11 +1,16 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"golangTriviaGame/src/services"
+)
 
 type QuizController struct{}
 
-func (QuizController) FindAll(c *gin.Context) {
-	c.JSONP(200, gin.H{
-		"message": "pong",
-	})
+func (QuizController) GetQuestion(c *gin.Context) {
+	service := services.QuizService{}
+
+	quiz := service.GetQuestion()
+
+	c.JSON(200, quiz)
 }

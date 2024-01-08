@@ -8,5 +8,5 @@ import (
 func QuizRoute(r *gin.RouterGroup) {
 	controller := controllers.QuizController{}
 
-	r.GET("/test", controller.FindAll)
+	r.GET("/get-question", controller.GetQuestion)
 }
