@@ -36,10 +36,13 @@ Route::group([
     Route::post('login', '\App\Http\Controllers\AuthController@login');
     Route::post('adminLogin', '\App\Http\Controllers\AuthController@adminLogin');
     Route::get('check', '\App\Http\Controllers\AuthController@check');
+
 });
 
-Route::get('test', function () {
-    return "ok";
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/avatar/get-all-free-avatar', '\App\Http\Controllers\AvatarController@getAllFreeAvatar');
 });
+
 
 
