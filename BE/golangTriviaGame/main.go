@@ -17,5 +17,6 @@ func main() {
 	
 	routes.RouteInit(g.Group("/api/v1"))
 
-	g.Run(":5000")
+
+	r.Run("192.168.18.174:8080")
 }

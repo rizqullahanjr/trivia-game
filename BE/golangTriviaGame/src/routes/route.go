@@ -8,4 +8,5 @@ func RouteInit(r *gin.RouterGroup) {
 
 	QuizRoute(r)
 	AvatarRoute(r)
+
 }
