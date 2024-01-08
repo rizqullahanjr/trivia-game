@@ -1,14 +1,21 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"golangTriviaGame/src/database"
 	"golangTriviaGame/src/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
+
+
 func main() {
-	r := gin.Default()
+	g := gin.Default()
+	database.Database()
 
-	routes.RouteInit(r.Group("/api"))
+	// migration.DatabaseMigration()
+	
+	routes.RouteInit(g.Group("/api/v1"))
 
-	r.Run()
+	g.Run(":5000")
 }
