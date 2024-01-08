@@ -8,10 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import GoogleButton from "react-google-button";
-
-import { useState } from "react";
-
+import ButtonDiamond from "../components/button_diamond";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -45,59 +42,17 @@ const Home = () => {
           <View style={{ padding: 20 }}>
             <Image source={imgSplash[0]} style={[styles.Image]} />
           </View>
-
-          <TouchableOpacity
-            style={{
-              width: 50,
-              height: 50,
-              display: "flex",
-              flexDirection: "row",
-              marginRight: 100,
-              marginTop: 40,
-            }}
-          >
-            <Image source={imgSplash[2]} style={styles.diamond} />
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                height: 30,
-                marginTop: 10,
-              }}
-            >
-              <Text
-                style={{
-                  backgroundColor: "white",
-                  fontWeight: "bold",
-                  fontSize: 20,
-                  marginLeft: -7,
-                  width: 50,
-                  textAlign: "center",
-                  borderRadius: 2,
-                }}
-              >
-                200
-              </Text>
-              <View
-                style={{
-                  backgroundColor: "green",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: 15,
-                    textAlign: "center",
-                    padding: 2,
-                  }}
-                >
-                  ➕
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
         </View>
         {/* top end */}
+        <View style={styles.avatar}>
+          <ButtonDiamond />
+          <TouchableOpacity>
+            <Image
+              style={[styles.avatarHome]}
+              source={require("../image/diamond.jpg")}
+            />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
     </>
   );
@@ -122,7 +77,81 @@ const styles = StyleSheet.create({
     // marginBottom: 80,
   },
   diamond: {
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
+    marginTop: -7,
+    // backgroundColor: "white",
+    // borderRadius: 100,
+  },
+  avatarHome: {
+    height: 100,
+    width: 100,
+  },
+  avatar: {
+    backgroundColor: "white",
+    position: "absolute",
+    right: 140,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    top: 140,
+    borderWidth: 2,
+    borderColor: "black",
   },
 });
+
+{
+  /* <TouchableOpacity
+            style={{
+              width: 50,
+              height: 40,
+              display: "flex",
+              flexDirection: "row",
+              marginRight: 100,
+              marginTop: 35,
+              // backgroundColor: "white",
+            }}
+          >
+            <Image source={imgSplash[2]} style={styles.diamond} />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                height: 30,
+                marginTop: 10,
+              }}
+            >
+              <Text
+                style={{
+                  backgroundColor: "white",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                  marginLeft: -14,
+                  width: 50,
+                  textAlign: "center",
+                  borderRadius: 2,
+                }}
+              >
+                200
+              </Text>
+              <View
+                style={{
+                  backgroundColor: "green",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 15,
+                    textAlign: "center",
+                    padding: 2,
+                  }}
+                >
+                  ➕
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity> */
+}
