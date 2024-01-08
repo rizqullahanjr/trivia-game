@@ -10,5 +10,5 @@ func main() {
 
 	routes.RouteInit(r.Group("/api"))
 
-	r.Run()
+	r.Run("192.168.18.174:8080")
 }
