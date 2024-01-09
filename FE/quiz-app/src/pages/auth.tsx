@@ -63,14 +63,30 @@ const Auth = () => {
           const res = await axios.post(
             "http://192.168.18.174:8000/api/auth/login",
             userInfo
-            // { email: userInfo?.email, name: userInfo?.name }
+            // { email: "kikjak485@gmail.com", name: "Au lu" }
             // AsyncStorage.getItem("@user")
           );
           const token = await res.data;
           console.log(token);
 
+          setAuthToken(token);
           await AsyncStorage.setItem("token", token);
-          navigation.navigate("Avatars" as never);
+          if (token) {
+            const getPlayer = await axios.get(
+              "http://192.168.18.174:8000/api/player",
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            const player = getPlayer.data;
+
+            console.log(player.id);
+            if (player.id) {
+              navigation.navigate("Home" as never);
+            } else {
+              navigation.navigate("Avatars" as never);
+            }
+          }
         }
       }
     } catch (error) {
