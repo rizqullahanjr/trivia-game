@@ -20,3 +20,5 @@
 /BE/phpAdmin/config.json
 /BE/golangTriviaGame/.idea
 /BE/golangTriviaGame/.env
+/BE/express-socket-io/node_modules
+/BE/express-socket-io/.idea
