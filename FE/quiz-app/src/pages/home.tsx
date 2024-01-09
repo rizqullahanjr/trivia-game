@@ -1,6 +1,8 @@
 import {
+  Button,
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -9,6 +11,7 @@ import {
   View,
 } from "react-native";
 import ButtonDiamond from "../components/button_diamond";
+import { useState } from "react";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -19,6 +22,8 @@ import ButtonDiamond from "../components/button_diamond";
 // });
 
 const Home = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalDiamond, setModalDiamond] = useState(false);
   const imgSplash = [
     require("../image/splash.jpg"),
     require("../image/bgImage.jpg"),
@@ -31,6 +36,33 @@ const Home = () => {
         style={styles.container}
         source={imgSplash[1]}
       >
+        {/* modal avatar */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View>
+            <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
+          </View>
+        </Modal>
+
+        {/* modal diamond */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalDiamond}
+          onRequestClose={() => {
+            setModalDiamond(!modalDiamond);
+          }}
+        >
+          <View>
+            <Text style={{ color: "white", fontSize: 50 }}> modal diamod</Text>
+          </View>
+        </Modal>
         {/* top bar */}
         <View
           style={{
@@ -42,16 +74,50 @@ const Home = () => {
           <View style={{ padding: 20 }}>
             <Image source={imgSplash[0]} style={[styles.Image]} />
           </View>
+          <View style={{ marginTop: 15 }}>
+            <ButtonDiamond onPress={() => setModalDiamond(true)} />
+          </View>
         </View>
         {/* top end */}
         <View style={styles.avatar}>
-          <ButtonDiamond />
-          <TouchableOpacity>
+          <TouchableOpacity
+            // style={{ backgroundColor: "white" }}
+            onPress={() => setModalVisible(true)}
+          >
             <Image
-              style={[styles.avatarHome]}
+              style={styles.avatarHome}
               source={require("../image/diamond.jpg")}
             />
           </TouchableOpacity>
+        </View>
+        <View style={styles.exchange}>
+          <TouchableOpacity
+            // style={{ backgroundColor: "white" }}
+            onPress={() => setModalVisible(true)}
+          >
+            <Image
+              style={{ width: 20, height: 20 }}
+              source={require("../image/exchange.jpg")}
+            />
+          </TouchableOpacity>
+        </View>
+        {/* start page */}
+        <View
+          style={{
+            alignItems: "center",
+            // marginTop: 80,
+            // backgroundColor: "black",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            style={styles.startImage}
+            source={require("../image/home-page.jpg")}
+          />
+          <View style={styles.buttonStart}>
+            <Button color={"green"} title="START GAME" />
+          </View>
         </View>
       </ImageBackground>
     </>
@@ -67,10 +133,22 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // justifyContent: "center",
   },
-
+  exchange: {
+    width: 35,
+    height: 35,
+    position: "absolute",
+    top: 170,
+    right: 135,
+    backgroundColor: "#94969c",
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "white",
+  },
   Image: {
-    height: 80,
-    width: 80,
+    height: 60,
+    width: 60,
     // margin: "auto",
     // marginTop: -10,
     borderRadius: 100,
@@ -86,6 +164,7 @@ const styles = StyleSheet.create({
   avatarHome: {
     height: 100,
     width: 100,
+    // backgroundColor: "black",
   },
   avatar: {
     backgroundColor: "white",
@@ -96,9 +175,22 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    top: 140,
+    top: 110,
     borderWidth: 2,
     borderColor: "black",
+  },
+  startImage: {
+    width: 300,
+    height: 200,
+    position: "relative",
+    top: 25,
+    margin: "auto",
+  },
+  buttonStart: {
+    width: 200,
+    height: 100,
+    position: "relative",
+    top: 25,
   },
 });
 

@@ -8,7 +8,7 @@ export default function ButtonDiamond({ onPress }: any) {
       <TouchableOpacity
         style={{
           position: "absolute",
-          top: 20,
+          top: 15,
           right: 15,
           zIndex: 1,
           backgroundColor: "rgba(0,0,0,0.5)",
@@ -19,7 +19,7 @@ export default function ButtonDiamond({ onPress }: any) {
       >
         <Image
           source={require("../image/diamond.jpg")}
-          style={{ width: 20, height: 20, marginRight: 5 }}
+          style={{ width: 25, height: 25, marginRight: 5 }}
         />
         <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>
           55
@@ -40,6 +40,7 @@ export default function ButtonDiamond({ onPress }: any) {
               fontWeight: "bold",
               textShadowColor: "black",
               textShadowRadius: 10,
+              marginTop: -5,
             }}
           >
             +
