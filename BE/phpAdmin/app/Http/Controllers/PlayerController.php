@@ -28,7 +28,7 @@ class PlayerController extends Controller
         ]);
 
 
-        DB::table('user_avatar')->insertOrIgnore([
+        DB::table('user_avatars')->insertOrIgnore([
             'player_id' => $id, 'avatar_id' => $avatar_id
         ]);
 
