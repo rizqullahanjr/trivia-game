@@ -9,4 +9,5 @@ func RouteInit(r *gin.RouterGroup) {
 	QuizRoute(r)
 	AvatarRoute(r)
 	// AvatarUserRoute(r)
+
 }

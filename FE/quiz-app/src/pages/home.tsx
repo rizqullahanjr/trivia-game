@@ -1,6 +1,8 @@
 import {
+  Button,
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -8,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import GoogleButton from "react-google-button";
-
+import ButtonDiamond from "../components/button_diamond";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../stores/types/store";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -22,6 +24,9 @@ import { useState } from "react";
 // });
 
 const Home = () => {
+  const player = useSelector((state: RootState) => state.player);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalDiamond, setModalDiamond] = useState(false);
   const imgSplash = [
     require("../image/splash.jpg"),
     require("../image/bgImage.jpg"),
@@ -34,6 +39,33 @@ const Home = () => {
         style={styles.container}
         source={imgSplash[1]}
       >
+        {/* modal avatar */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View>
+            <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
+          </View>
+        </Modal>
+
+        {/* modal diamond */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalDiamond}
+          onRequestClose={() => {
+            setModalDiamond(!modalDiamond);
+          }}
+        >
+          <View>
+            <Text style={{ color: "white", fontSize: 50 }}> modal diamod</Text>
+          </View>
+        </Modal>
         {/* top bar */}
         <View
           style={{
@@ -45,15 +77,146 @@ const Home = () => {
           <View style={{ padding: 20 }}>
             <Image source={imgSplash[0]} style={[styles.Image]} />
           </View>
-
+          <View style={{ marginTop: 15 }}>
+            <ButtonDiamond
+              diamond={player.diamond}
+              onPress={() => setModalDiamond(true)}
+            />
+          </View>
+        </View>
+        {/* top end */}
+        <View style={styles.avatar}>
           <TouchableOpacity
+            // style={{ backgroundColor: "white" }}
+            onPress={() => setModalVisible(true)}
+          >
+            <Image
+              style={styles.avatarHome}
+              source={{
+                uri: player.active_avatar,
+              }}
+            />
+            {/* <Text>{player.active_avatar}</Text> */}
+            {/* <Text>{player.name}</Text> */}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.exchange}>
+          <TouchableOpacity
+            // style={{ backgroundColor: "white" }}
+            onPress={() => setModalVisible(true)}
+          >
+            <Image
+              style={{ width: 20, height: 20 }}
+              source={require("../image/exchange.jpg")}
+            />
+          </TouchableOpacity>
+        </View>
+        {/* start page */}
+        <View
+          style={{
+            alignItems: "center",
+            // marginTop: 80,
+            // backgroundColor: "black",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            style={styles.startImage}
+            source={require("../image/home-page.jpg")}
+          />
+          <View style={styles.buttonStart}>
+            <Button color={"green"} title="START GAME" />
+          </View>
+        </View>
+      </ImageBackground>
+    </>
+  );
+};
+
+export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "purple",
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+  exchange: {
+    width: 35,
+    height: 35,
+    position: "absolute",
+    top: 170,
+    right: 135,
+    backgroundColor: "#94969c",
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  Image: {
+    height: 60,
+    width: 60,
+    // margin: "auto",
+    // marginTop: -10,
+    borderRadius: 100,
+    // marginBottom: 80,
+  },
+  diamond: {
+    height: 60,
+    width: 60,
+    marginTop: -7,
+    // backgroundColor: "white",
+    // borderRadius: 100,
+  },
+  avatarHome: {
+    height: 80,
+    width: 80,
+    // backgroundColor: "black",
+    objectFit: "cover",
+    borderRadius: 100,
+  },
+  avatar: {
+    backgroundColor: "white",
+    position: "absolute",
+    right: 140,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    top: 110,
+    borderWidth: 2,
+    borderColor: "black",
+    objectFit: "cover",
+  },
+  startImage: {
+    width: 300,
+    height: 200,
+    position: "relative",
+    top: 25,
+    margin: "auto",
+  },
+  buttonStart: {
+    width: 200,
+    height: 100,
+    position: "relative",
+    top: 25,
+  },
+});
+
+{
+  /* <TouchableOpacity
             style={{
               width: 50,
-              height: 50,
+              height: 40,
               display: "flex",
               flexDirection: "row",
               marginRight: 100,
-              marginTop: 40,
+              marginTop: 35,
+              // backgroundColor: "white",
             }}
           >
             <Image source={imgSplash[2]} style={styles.diamond} />
@@ -70,7 +233,7 @@ const Home = () => {
                   backgroundColor: "white",
                   fontWeight: "bold",
                   fontSize: 20,
-                  marginLeft: -7,
+                  marginLeft: -14,
                   width: 50,
                   textAlign: "center",
                   borderRadius: 2,
@@ -95,34 +258,5 @@ const Home = () => {
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
-        </View>
-        {/* top end */}
-      </ImageBackground>
-    </>
-  );
-};
-
-export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "purple",
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-
-  Image: {
-    height: 80,
-    width: 80,
-    // margin: "auto",
-    // marginTop: -10,
-    borderRadius: 100,
-    // marginBottom: 80,
-  },
-  diamond: {
-    height: 50,
-    width: 50,
-  },
-});
+          </TouchableOpacity> */
+}

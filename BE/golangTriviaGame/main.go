@@ -31,6 +31,5 @@ func main() {
 	routes.RouteInit(g.Group("/api/v1"))
 
 
-
 	g.Run(":5000")
-}
+

@@ -1,4 +1,5 @@
 import {
+  Button,
   Image,
   ImageBackground,
   Pressable,
@@ -16,11 +17,14 @@ import { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import { API, setAuthToken } from "../libs/api";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { DATA_PLAYER } from "../stores/slices/authSlices";
 
 interface UserInfo {
   picture?: string;
   email: string;
-  verified_email: boolean;
+  verified_email?: boolean;
   name: string;
 }
 
@@ -36,35 +40,63 @@ WebBrowser.maybeCompleteAuthSession();
 // });
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId:
       "310772316967-ammvoc874ri16n0c7clcg6fjaj23mtrn.apps.googleusercontent.com",
   });
 
-  useEffect(() => {
-    handleSignInGoogle();
-  }, [response]);
+  // useEffect(() => {
+  //   handleSignInGoogle();
+  // }, [response]);
+  const handleSignInGoogle = async () => {
+    try {
+      const result = await promptAsync();
+      if (result?.type === "success") {
+        const accessToken = result.authentication?.accessToken || "";
+        await getUserInfo(accessToken);
+        // Now, you have the user information in the state (userInfo).
 
-  async function handleSignInGoogle() {
-    const user = await AsyncStorage.getItem("@user");
+        const user = await AsyncStorage.getItem("@user");
 
-    if (!user) {
-      if (response?.type === "success")
-        await getUserInfo(response.authentication?.accessToken || "");
-      const res = await API.post("/auth/login", userInfo);
-      console.log(res);
+        if (user) {
+          const userInfo = JSON.parse(user);
+          const res = await axios.post(
+            "http://192.168.18.174:8000/api/auth/login",
+            userInfo
+            // { email: "kikjak485@gmail.com", name: "Au lu" }
+            // AsyncStorage.getItem("@user")
+          );
+          const token = await res.data;
+          console.log(token);
 
-      // Add the following line to send user information to your endpoint
-      // await postUserInfoToDatabase(userInfo);
-      // const user = await JSON.stringify(userInfo)
-      // const response = await API.post("/auth/login",JSON.stringify(userInfo))
-    } else {
-      setUserInfo(JSON.parse(user));
-      // navigation.navigate("Avatars");
+          setAuthToken(token);
+          await AsyncStorage.setItem("token", token);
+          if (token) {
+            const getPlayer = await axios.get(
+              "http://192.168.18.174:8000/api/player",
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            const player = getPlayer.data;
+            dispatch(DATA_PLAYER(player));
+
+            console.log(player.id);
+            if (player.id) {
+              navigation.navigate("Home" as never);
+            } else {
+              navigation.navigate("Avatars" as never);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error during Google Sign-In:", error);
     }
-  }
+  };
 
   const getUserInfo = async (token: string) => {
     if (!token) return;
@@ -81,36 +113,17 @@ const Auth = () => {
       const { email, name } = user;
 
       await AsyncStorage.setItem("@user", JSON.stringify({ email, name }));
-      setUserInfo({ email, name });
+      setUserInfo({ email: email, name: name });
 
       // await API.post
-
-      // navigation.navigate("Avatars");
-    } catch (error) {}
-  };
-
-  const postUserInfoToDatabase = async (userInfo: any) => {
-    try {
-      const response = await API.post("/auth/login", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      });
-      console.log(response.status);
-
-      const data = response.data;
-
-      // console.log(data);
-
-      // setAuthToken(localStorage.token);
-      console.log("User information posted to database:", data);
+      // console.log(AsyncStorage.getItem("@user"));
+      // navigation.navigate("Avatars" as never);
     } catch (error) {
-      console.error("Error posting user information to database:", error);
+      console.error("Error fetching user info:", error);
     }
   };
 
-  // console.log(userInfo);
+  // console.log(user);
 
   const imgSplash = [
     require("../image/splash.jpg"),
@@ -126,17 +139,18 @@ const Auth = () => {
         <Image source={imgSplash[0]} style={styles.Image} />
 
         <View style={{ marginBottom: 20 }}>
-          <TouchableOpacity onPress={promptAsync}>
+          <TouchableOpacity onPress={handleSignInGoogle}>
             <GoogleButton />
           </TouchableOpacity>
-          {/* <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={handleSignIn}
-          /> */}
+          <Button
+            title="Logout"
+            onPress={() => {
+              AsyncStorage.removeItem("@user");
+              AsyncStorage.removeItem("token");
+            }}
+          />
         </View>
-        <Text>{JSON.stringify(userInfo, null, 2)}</Text>
+        {/* <Text>{JSON.stringify(userInfo, null, 2)}</Text> */}
         <View>
           <Text
             style={{
@@ -214,3 +228,26 @@ const styles = StyleSheet.create({
 // onPress={()=>{
 //   AsyncStorage.removeItem("@user")
 // }}
+
+// sampah
+
+// async function handleSignInGoogle() {
+//   const user = await AsyncStorage.getItem("@user");
+//   const result = await promptAsync();
+
+//   if (!user) {
+//     if (result?.type === "success")
+//       await getUserInfo(result.authentication?.accessToken || "");
+//     const res = await API.post("/auth/login", userInfo);
+//     console.log(res);
+
+//     // Add the following line to send user information to your endpoint
+//     // await postUserInfoToDatabase(userInfo);
+//     // const user = await JSON.stringify(userInfo)
+//     // const response = await API.post("/auth/login",JSON.stringify(userInfo))
+//   } else {
+//     // setUserInfo(JSON.parse(user));
+//     // navigation.navigate("Avatars");
+//     console.error("error during sign in",)
+//   }
+// }
