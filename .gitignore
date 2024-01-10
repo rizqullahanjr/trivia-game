@@ -22,3 +22,7 @@
 /BE/golangTriviaGame/.env
 /BE/express-socket-io/node_modules
 /BE/express-socket-io/.idea
+/FE/admin-panel/.idea
+/FE/admin-panel/.next
+/FE/admin-panel/node_modules/
+
