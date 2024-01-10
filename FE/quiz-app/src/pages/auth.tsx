@@ -18,6 +18,8 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { API, setAuthToken } from "../libs/api";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { DATA_PLAYER } from "../stores/slices/authSlices";
 
 interface UserInfo {
   picture?: string;
@@ -38,6 +40,7 @@ WebBrowser.maybeCompleteAuthSession();
 // });
 
 const Auth = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -79,6 +82,7 @@ const Auth = () => {
               }
             );
             const player = getPlayer.data;
+            dispatch(DATA_PLAYER(player));
 
             console.log(player.id);
             if (player.id) {
@@ -119,7 +123,7 @@ const Auth = () => {
     }
   };
 
-  // console.log(userInfo);
+  // console.log(user);
 
   const imgSplash = [
     require("../image/splash.jpg"),

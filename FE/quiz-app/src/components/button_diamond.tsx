@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Image, Text, TouchableOpacity } from "react-native";
 
-export default function ButtonDiamond({ onPress }: any) {
+export default function ButtonDiamond({ onPress, diamond }: any) {
   return (
     <View>
       <TouchableOpacity
@@ -22,7 +22,7 @@ export default function ButtonDiamond({ onPress }: any) {
           style={{ width: 25, height: 25, marginRight: 5 }}
         />
         <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>
-          55
+          {diamond}
         </Text>
         <TouchableOpacity
           onPress={onPress}
