@@ -9,9 +9,12 @@ import (
 )
 
 func AvatarRoute(e *gin.RouterGroup) {
-	r := repository.AvatarRepo(database.DB)
+	var dbCon = database.Database()
+	r := repository.AvatarRepo(dbCon)
 	con := controllers.AvatarController(r)
 
 	e.GET("/avatar", con.FindAllAvatar)
+	e.GET("/avatarpay", con.FindPayAvatar)
+	e.GET("/avatarfree", con.FindFreeAvatar)
 
 }
