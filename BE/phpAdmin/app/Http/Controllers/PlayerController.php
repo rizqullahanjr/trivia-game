@@ -27,12 +27,13 @@ class PlayerController extends Controller
             'active_avatar' => $avatar_image
         ]);
 
-
         DB::table('user_avatars')->insertOrIgnore([
             'player_id' => $id, 'avatar_id' => $avatar_id
         ]);
 
-        return response()->json(['message' => 'success']);
+        $player = DB::table('players')->where('id', '=', $id)->first();
+
+        return response()->json($player);
 
 
     }
