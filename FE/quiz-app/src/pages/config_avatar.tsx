@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { DATA_PLAYER } from "../stores/slices/authSlices";
 import { RootState } from "../stores/types/store";
-
+import avatarData from "../mocks/list-avatar-free.json";
 // type AvatarData = {
 //   image: string;
 //   id: string;
@@ -35,6 +35,15 @@ const imgSplash = [
   ,
 ];
 
+interface avatar {
+  id: number;
+  cost: number;
+  image: string;
+  created_at: null;
+  updated_at: null;
+  avatar_id: null;
+}
+
 const Avatars: React.FunctionComponent = () => {
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -43,37 +52,37 @@ const Avatars: React.FunctionComponent = () => {
 
   const [playerName, setPlayerName] = useState<string>("");
   const [selectedAvatar, setSelectedAvatar] = useState(0);
-  const [avatarList, setAvatarList] = useState();
+  const [avatarList, setAvatarList] = useState<avatar[]>([]);
   const navigate = useNavigation();
   const dispatch = useDispatch();
   const player = useSelector((state: RootState) => state.player);
 
-  async function getAvatar() {
-    const token = await AsyncStorage.getItem("token");
+  // async function getAvatar() {
+  //   const token = await AsyncStorage.getItem("token");
 
-    if (token) {
-      try {
-        const res = await axios.get(
-          "http://192.168.18.174:8000/api/avatar/get-all-free-avatar",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  //   if (token) {
+  //     try {
+  //       const res = await axios.get(
+  //         "http://192.168.18.174:8000/api/avatar/get-all-free-avatar",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
 
-        // Assuming the data is an array of avatars
-        const avatars = res.data;
+  //       // Assuming the data is an array of avatars
+  //       const avatars = res.data;
 
-        // Set the avatar list in the state
-        setAvatarList(avatars);
+  //       // Set the avatar list in the state
+  //       setAvatarList(avatars);
 
-        // console.log(avatars);
-      } catch (error) {
-        console.error("Error fetching avatars:", error);
-      }
-    }
-  }
+  //       // console.log(avatars);
+  //     } catch (error) {
+  //       console.error("Error fetching avatars:", error);
+  //     }
+  //   }
+  // }
 
   const handleContinue = async () => {
     if (playerName && selectedAvatar !== null) {
@@ -124,7 +133,8 @@ const Avatars: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    getAvatar();
+    // getAvatar();
+    setAvatarList(avatarData);
     getUserInfo();
   }, []);
   // console.log(userInfo.email);
@@ -172,14 +182,23 @@ const Avatars: React.FunctionComponent = () => {
             <FlatList
               data={avatarList}
               numColumns={4} // Jumlah kolom yang diinginkan
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={styles.touchAvatar}
+                  style={{
+                    width: 75,
+                    height: 80,
+                    borderRadius: 100,
+                    marginBottom: 15,
+                    marginRight: 10,
+                  }}
                   onPress={() => setSelectedAvatar(item.id)}
                 >
                   <View style={styles.touchAvatar}>
-                    <Image style={styles.avatarProfile} source={item.image} />
+                    <Image
+                      style={styles.avatarProfile}
+                      source={{ uri: item.image }}
+                    />
                   </View>
                 </TouchableOpacity>
               )}
@@ -247,6 +266,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginBottom: 10,
     padding: 20,
+    paddingRight: 40,
     backfaceVisibility: "visible",
     // borderRadius: 20,
   },
@@ -281,12 +301,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
   touchAvatar: {
-    marginRight: 20,
-    backgroundColor: "black",
+    marginRight: 10,
+    backgroundColor: "white",
     width: 75,
     height: 80,
     borderRadius: 100,
     marginBottom: 15,
+    borderWidth: 2,
+    borderColor: "black",
   },
 });
 

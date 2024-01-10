@@ -14,6 +14,7 @@ import ButtonDiamond from "../components/button_diamond";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
+import Shop from "../components/shop";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -48,8 +49,14 @@ const Home = () => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View>
-            <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
+          <View style={styles.centeredView}>
+            <View>
+              <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
+              <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                <Text>Hide Modal</Text>
+                <Shop />
+              </Pressable>
+            </View>
           </View>
         </Modal>
 
@@ -85,6 +92,33 @@ const Home = () => {
           </View>
         </View>
         {/* top end */}
+        <View
+          style={{
+            backgroundColor: "rgba(25, 22, 22, 0.39)",
+            // width: 250,
+            minWidth: 150,
+            maxWidth: 250,
+            // height: 80,
+            // alignItems: "center",
+            justifyContent: "center",
+            marginHorizontal: "auto",
+          }}
+        >
+          <Text
+            style={{
+              // display: "flex",
+              // textAlign: "center",
+              color: "white",
+              textShadowColor: "black",
+              textShadowRadius: 10,
+              fontWeight: "bold",
+              fontSize: 24,
+            }}
+          >
+            Hi,{player.name}
+          </Text>
+        </View>
+
         <View style={styles.avatar}>
           <TouchableOpacity
             // style={{ backgroundColor: "white" }}
@@ -143,11 +177,17 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // justifyContent: "center",
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
   exchange: {
     width: 35,
     height: 35,
     position: "absolute",
-    top: 170,
+    top: 193,
     right: 135,
     backgroundColor: "#94969c",
     borderRadius: 100,
@@ -187,7 +227,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    top: 110,
+    top: 135,
     borderWidth: 2,
     borderColor: "black",
     objectFit: "cover",

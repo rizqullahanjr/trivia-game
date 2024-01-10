@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -32,6 +33,7 @@ export const playerData = createSlice({
         (state.highest_score = player.highest_score),
         (state.total_score = player.total_score);
       state.diamond = player.diamond;
+      //  AsyncStorage.setItem("@player",player)
 
       return state;
     },

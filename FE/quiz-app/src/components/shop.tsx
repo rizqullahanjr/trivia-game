@@ -64,14 +64,22 @@ const Shop: React.FC = () => {
                   ]}
                 />
                 <Text style={styles.avatarInfo}>
-                  {avatar.avatarname} {avatar.bought ? "SOLD OUT" : `${avatar.avatarprice} P`}
+                  {avatar.avatarname}{" "}
+                  {avatar.bought ? "SOLD OUT" : `${avatar.avatarprice} P`}
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
         ))}
       </View>
-      <TouchableOpacity onPress={handleBuy} style={[styles.buyButton, selectedAvatar === null || avatarsList[selectedAvatar].bought && styles.fadedButton]}>
+      <TouchableOpacity
+        onPress={handleBuy}
+        style={[
+          styles.buyButton,
+          selectedAvatar === null ||
+            (avatarsList[selectedAvatar].bought && styles.fadedButton),
+        ]}
+      >
         <Text style={styles.buyButtonText}>Buy</Text>
       </TouchableOpacity>
     </View>

@@ -1,0 +1,96 @@
+[{
+    "id": 3,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683803/trivia-game-avatar/free-smile-man.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 6,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683802/trivia-game-avatar/free-racer.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 10,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683801/trivia-game-avatar/npc.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 11,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683801/trivia-game-avatar/habibi.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 12,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683801/trivia-game-avatar/hijab.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 13,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683801/trivia-game-avatar/masker-girl.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 14,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683801/trivia-game-avatar/hacker.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 15,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683800/trivia-game-avatar/bald.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 16,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683800/trivia-game-avatar/generic-man.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 17,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683800/trivia-game-avatar/beard-man.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 18,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683800/trivia-game-avatar/bussiness-man.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+},
+{
+    "id": 19,
+    "cost": 0,
+    "image": "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704685365/trivia-game-avatar/woman.png",
+    "created_at": null,
+    "updated_at": null,
+    "avatar_id": null
+}]
