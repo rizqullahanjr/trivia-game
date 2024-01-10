@@ -2,12 +2,19 @@ package routes
 
 import (
 	"golangTriviaGame/src/controllers"
+	"golangTriviaGame/src/database"
+	"golangTriviaGame/src/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
-func AvatarRoute(r *gin.RouterGroup) {
-	controller := controllers.AvatarController{}
+func AvatarRoute(e *gin.RouterGroup) {
+	var dbCon = database.Database()
+	r := repository.AvatarRepo(dbCon)
+	con := controllers.AvatarController(r)
 
-	r.GET("/avatar", controller.FindAllAvatar)
+	e.GET("/avatar", con.FindAllAvatar)
+	e.GET("/avatarpay", con.FindPayAvatar)
+	e.GET("/avatarfree", con.FindFreeAvatar)
+
 }
