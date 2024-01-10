@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import ButtonDiamond from "../components/button_diamond";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../stores/types/store";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -22,6 +24,7 @@ import { useState } from "react";
 // });
 
 const Home = () => {
+  const player = useSelector((state: RootState) => state.player);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDiamond, setModalDiamond] = useState(false);
   const imgSplash = [
@@ -75,7 +78,10 @@ const Home = () => {
             <Image source={imgSplash[0]} style={[styles.Image]} />
           </View>
           <View style={{ marginTop: 15 }}>
-            <ButtonDiamond onPress={() => setModalDiamond(true)} />
+            <ButtonDiamond
+              diamond={player.diamond}
+              onPress={() => setModalDiamond(true)}
+            />
           </View>
         </View>
         {/* top end */}
@@ -86,8 +92,12 @@ const Home = () => {
           >
             <Image
               style={styles.avatarHome}
-              source={require("../image/diamond.jpg")}
+              source={{
+                uri: player.active_avatar,
+              }}
             />
+            {/* <Text>{player.active_avatar}</Text> */}
+            {/* <Text>{player.name}</Text> */}
           </TouchableOpacity>
         </View>
         <View style={styles.exchange}>
@@ -162,9 +172,11 @@ const styles = StyleSheet.create({
     // borderRadius: 100,
   },
   avatarHome: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
     // backgroundColor: "black",
+    objectFit: "cover",
+    borderRadius: 100,
   },
   avatar: {
     backgroundColor: "white",
@@ -178,6 +190,7 @@ const styles = StyleSheet.create({
     top: 110,
     borderWidth: 2,
     borderColor: "black",
+    objectFit: "cover",
   },
   startImage: {
     width: 300,

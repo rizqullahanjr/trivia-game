@@ -17,6 +17,9 @@ import {
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { DATA_PLAYER } from "../stores/slices/authSlices";
+import { RootState } from "../stores/types/store";
 
 // type AvatarData = {
 //   image: string;
@@ -32,26 +35,18 @@ const imgSplash = [
   ,
 ];
 
-const avatarList = [
-  {
-    id: 1,
-    image: imgSplash[0],
-  },
-  {
-    id: 2,
-    image: imgSplash[1],
-  },
-  {
-    id: 3,
-    image: imgSplash[2],
-  },
-];
-
 const Avatars: React.FunctionComponent = () => {
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    name: "",
+  });
+
   const [playerName, setPlayerName] = useState<string>("");
   const [selectedAvatar, setSelectedAvatar] = useState(0);
   const [avatarList, setAvatarList] = useState();
   const navigate = useNavigation();
+  const dispatch = useDispatch();
+  const player = useSelector((state: RootState) => state.player);
 
   async function getAvatar() {
     const token = await AsyncStorage.getItem("token");
@@ -73,7 +68,7 @@ const Avatars: React.FunctionComponent = () => {
         // Set the avatar list in the state
         setAvatarList(avatars);
 
-        console.log(avatars);
+        // console.log(avatars);
       } catch (error) {
         console.error("Error fetching avatars:", error);
       }
@@ -100,7 +95,8 @@ const Avatars: React.FunctionComponent = () => {
             }
           );
 
-          console.log("Player created:", res.data);
+          // console.log("Player created:", res.data);
+          dispatch(DATA_PLAYER(res.data));
           navigate.navigate("Home" as never);
         } catch (error) {
           console.error("Error creating player:", error);
@@ -111,9 +107,27 @@ const Avatars: React.FunctionComponent = () => {
     }
   };
 
+  const getUserInfo = async () => {
+    try {
+      const user = await AsyncStorage.getItem("@user");
+
+      if (user !== null) {
+        const userInfo = JSON.parse(user);
+        // console.log(userInfo);
+        setUserInfo(userInfo);
+      } else {
+        console.log("User information not found.");
+      }
+    } catch (error) {
+      console.error("Error retrieving user information:", error);
+    }
+  };
+
   useEffect(() => {
     getAvatar();
+    getUserInfo();
   }, []);
+  // console.log(userInfo.email);
   return (
     <>
       <ImageBackground
@@ -125,7 +139,17 @@ const Avatars: React.FunctionComponent = () => {
           <View style={{ margin: "auto" }}>
             <Image style={styles.Image} source={imgSplash[0]} />
           </View>
-
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 15,
+              color: "white",
+              textAlign: "center",
+              fontStyle: "italic",
+            }}
+          >
+            Welcome "{userInfo.name}", lets create new account
+          </Text>
           <Text
             style={{
               fontWeight: "bold",
@@ -133,11 +157,13 @@ const Avatars: React.FunctionComponent = () => {
               color: "white",
               textAlign: "center",
               fontStyle: "italic",
-              marginTop: 70,
+              marginTop: 30,
               marginBottom: 10,
             }}
           >
             CHOSE YOUR AVATAR
+            {player.name}
+            {player.active_avatar}
           </Text>
 
           {/* avatar box */}
@@ -215,13 +241,14 @@ const styles = StyleSheet.create({
     width: 400,
     margin: "auto",
     height: 300,
-    backgroundColor: "orange",
+    backgroundColor: "rgba(25, 22, 22, 0.39)",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     marginBottom: 10,
-    padding: 10,
-    borderRadius: 20,
+    padding: 20,
+    backfaceVisibility: "visible",
+    // borderRadius: 20,
   },
   input: {
     height: 40,
