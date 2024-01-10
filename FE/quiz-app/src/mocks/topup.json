@@ -1,0 +1,39 @@
+[
+    {
+        "diamondimg": "1.png",
+        "diamondname": "100 Diamonds",
+        "diamondprice": 20000,
+        "bought": false
+    },
+    {
+        "diamondimg": "2.png",
+        "diamondname": "250 Diamonds",
+        "diamondprice": 37000,
+        "bought": false
+    },
+    {
+        "diamondimg": "3.png",
+        "diamondname": "500 Diamonds",
+        "diamondprice": 69000,
+        "bought": false
+    },
+    {
+        "diamondimg": "4.png",
+        "diamondname": "1000 Diamonds",
+        "diamondprice": 135000,
+        "bought": false
+    },
+    {
+        "diamondimg": "5.png",
+        "diamondname": "5000 Diamonds",
+        "diamondprice": 250000,
+        "bought": false
+    },
+    {
+        "diamondimg": "6.png",
+        "diamondname": "10000 Diamonds",
+        "diamondprice": 516000,
+        "bought": false
+    }
+  ]
+  

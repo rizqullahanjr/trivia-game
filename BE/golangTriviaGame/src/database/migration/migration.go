@@ -2,12 +2,13 @@ package migration
 
 import (
 	"fmt"
-	"golangTriviaGame/src/database"
 	"golangTriviaGame/src/models"
+
+	"gorm.io/gorm"
 )
 
-func DatabaseMigration() {
-	database.DB.AutoMigrate(&models.User{}, &models.Players{}, &models.Avatars{}, &models.AvatarUser{})
+func DatabaseMigration(db *gorm.DB) {
+	db.AutoMigrate(&models.User{}, &models.Players{}, &models.Avatars{}, &models.User_Avatar{}, &models.PlayerResponse{}, &models.AvatarResponse{})
 
 	fmt.Println("Database Migrated")
 }

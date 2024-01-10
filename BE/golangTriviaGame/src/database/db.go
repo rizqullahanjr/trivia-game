@@ -2,21 +2,37 @@ package database
 
 import (
 	"fmt"
+	"golangTriviaGame/src/database/migration"
+	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+func Database() *gorm.DB{
 
-func Database() {
-	dsn := "host=tiny.db.elephantsql.com user=ajcmfolt password=vakY4gXqiR6EQb1RQ4Fvs2fGJGE4KOFp dbname=ajcmfolt port=5432 sslmode=disable TimeZone=Asia/Jakarta"
-	DBpostgres, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
-
+	err:= godotenv.Load()
 	if err != nil {
 		panic(err)
 	}
-   DB = DBpostgres
+
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbPort := os.Getenv("DB_PORT")
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
+	dbHost, dbUser, dbPass, dbName, dbPort) 
+	DBPostgres, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	migration.DatabaseMigration(DBPostgres)
+	
 	fmt.Println("Connection Opened to Database")
+
+	return DBPostgres
 }
