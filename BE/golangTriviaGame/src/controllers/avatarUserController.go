@@ -7,15 +7,19 @@ import (
 
 type AvatarControllerUser interface{
 	FindAllAvatarUser() ([]models.User_Avatar, error)
-	FindAvatarId(player_id int) (models.User_Avatar, error)
+	FindAvatarId(player_id int) (map[string]any, error)
+	FindPayAvatar() ([]models.Avatars, error)
+	FindUserUpdateAvatar(Player_id int) ([]models.Avatars)
+
 }
 
 type avatarControllerUser struct {
 	avatarRepository repository.AvatarRepository
+	avatarUserRepository repository.IAvatarRepo
 }
 
-func NewAvatarController(avatarRepository repository.AvatarRepository) AvatarControllerUser {
-	return &avatarControllerUser{avatarRepository : avatarRepository}
+func NewAvatarController(avatarRepository repository.AvatarRepository, avatarUserRepository repository.IAvatarRepo) AvatarControllerUser {
+	return &avatarControllerUser{avatarRepository : avatarRepository, avatarUserRepository : avatarUserRepository}
 }
 
 func (c *avatarControllerUser) FindAllAvatarUser() ([]models.User_Avatar, error){
@@ -27,23 +31,42 @@ func (c *avatarControllerUser) FindAllAvatarUser() ([]models.User_Avatar, error)
 	return userAvatar, nil
 }
 
-func (c *avatarControllerUser) FindAvatarId(player_id int) (models.User_Avatar, error){
+func (c *avatarControllerUser) FindAvatarId(player_id int) (map[string]any, error){
 	userAvatar, err := c.avatarRepository.FindAvatarId(player_id)
-	if err != nil{
-		return models.User_Avatar{}, err
-	}
-	return userAvatar, nil
-}
-// func (con *SAvatarUserController) FindAllAvatarUser (c *gin.Context) {
-// 	data, err:= con.IAvatarUser.FindAllAvatarUser() 
-// 	if err != nil {
-// 		c.JSON(500, gin.H{
-// 			"message" : "failed get avatar user",
-// 		})
-// 	}
+	dataAvatarByID, _ := c.avatarUserRepository.FindOneAvatar(userAvatar.Avatar_id)
 
-// 	c.JSON(200, gin.H{
-// 		"message" : "succesfully get avatar user",
-// 		"data" : data,
-// 	})
-// }
+	newData := map[string]any{
+		"id": userAvatar.Avatar_id,
+		"avatar": dataAvatarByID.Image,
+		"cost": dataAvatarByID.Cost,
+		"player_id": userAvatar.Player_id,
+	}
+	
+	if err != nil{
+		return nil, err
+	}
+
+
+	return newData, nil
+}
+
+
+func (c *avatarControllerUser) FindPayAvatar() ([]models.Avatars, error){
+	paidAvatar, err := c.avatarRepository.FindPayAvatar()
+	
+	if err != nil{
+		return nil, err
+	}
+	return paidAvatar, nil
+}
+
+
+func (c *avatarControllerUser) FindUserUpdateAvatar(Player_id int) ([]models.Avatars){
+	// userAvatar, paidAvatar := c.avatarRepository.FindUserUpdateAvatar(Player_id)
+	 paidAvatar := c.avatarRepository.FindUserUpdateAvatar(Player_id)
+	
+	// if err != nil{
+	// 	return nil, err
+	// }
+	return  paidAvatar
+}

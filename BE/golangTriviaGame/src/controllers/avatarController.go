@@ -4,6 +4,7 @@ import (
 	// "golangTriviaGame/src/database"
 	// "golangTriviaGame/src/models"
 	"golangTriviaGame/src/repository"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,9 +62,20 @@ func (con *SAvatarController) FindFreeAvatar (c *gin.Context) {
 	})
 }
 
+func (con *SAvatarController) FindOneAvatar (c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	avatarID, err := con.IAvatarRepo.FindOneAvatar((id))
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message" : "failed get avatar",
+		})
+	}
+	c.JSON(200, gin.H{
+		"message" : "successfully get avatar",
+		"data" : avatarID,
+	})
 
-
-
+}
 
 // type AvatarController struct {}
 

@@ -10,6 +10,8 @@ type IAvatarRepo interface {
 	FindAllAvatar() ([]models.Avatars, error)
 	FindPayAvatar() ([]models.Avatars, error)
 	FindFreeAvatar() ([]models.Avatars, error)
+	FindOneAvatar(id int) (models.Avatars, error)
+
 }
 
 //find in database
@@ -36,5 +38,11 @@ func (r *SAvatarRepo) FindPayAvatar() ([]models.Avatars, error){
 func (r *SAvatarRepo) FindFreeAvatar() ([]models.Avatars, error){
 	var avatars []models.Avatars
 	err := r.db.Not("cost > ?", 0).Find(&avatars).Error
+	return avatars, err
+}
+
+func (r *SAvatarRepo) FindOneAvatar(id int) (models.Avatars, error){
+	var avatars models.Avatars
+	err := r.db.First(&avatars, "id = ?", id).Error
 	return avatars, err
 }

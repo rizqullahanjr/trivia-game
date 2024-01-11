@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"golangTriviaGame/src/database/migration"
+	// "golangTriviaGame/src/database/migration"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -30,7 +30,7 @@ func Database() *gorm.DB{
 		panic(err)
 	}
 
-	migration.DatabaseMigration(DBPostgres)
+	// migration.DatabaseMigration(DBPostgres)
 	
 	fmt.Println("Connection Opened to Database")
 

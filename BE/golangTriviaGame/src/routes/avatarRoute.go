@@ -16,5 +16,6 @@ func AvatarRoute(e *gin.RouterGroup) {
 	e.GET("/avatar", con.FindAllAvatar)
 	e.GET("/avatarpay", con.FindPayAvatar)
 	e.GET("/avatarfree", con.FindFreeAvatar)
+	e.GET("/avatar/:id", con.FindOneAvatar)
 
 }

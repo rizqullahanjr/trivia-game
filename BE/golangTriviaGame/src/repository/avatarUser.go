@@ -9,8 +9,11 @@ import (
 
 type AvatarRepository interface {
 	FindAllAvatarUser() ([]models.User_Avatar, error)
-	DeleteUserAvatar(id int) error
-	FindAvatarId(Player_id int) (models.User_Avatar, error)
+	
+	FindAvatarId(Player_id int) (models.User_Avatar, error) //find by id
+	FindPayAvatar() ([]models.Avatars, error)// find paid avatar
+	// FindUserUpdateAvatar(Player_id int) (models.Avatars, []models.Avatars) //find user update avatar
+	FindUserUpdateAvatar(Player_id int) ( []models.Avatars) //find user update avatar
 }
 
 type avatarRepository struct {
@@ -40,8 +43,50 @@ func (r *avatarRepository) DeleteUserAvatar(id int) error {
 	return nil
 }
 
-func (r *avatarRepository) FindAvatarId(player_id int) (models.User_Avatar, error) {
+func (r *avatarRepository) FindAvatarId(Player_id int) (models.User_Avatar, error) {
 	var avatarUser models.User_Avatar
-	err := r.db.Where("player_id = ?", player_id).First(&avatarUser).Error
-	return avatarUser, err
+	err := r.db.Where("player_id = ?", Player_id).First(&avatarUser).Error
+	if err != nil {
+		fmt.Println(err)
+		return models.User_Avatar{}, err
+	}
+	return avatarUser, err		
+}
+
+func (r *avatarRepository) FindPayAvatar() ([]models.Avatars, error) {
+	var avatars []models.Avatars
+	err := r.db.Where("cost > ?", 0).Find(&avatars).Error
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return avatars, err
+}
+
+// func (r *avatarRepository) FindUserUpdateAvatar(Player_id int) (models.Avatars, []models.Avatars) {
+func (r *avatarRepository) FindUserUpdateAvatar(Player_id int) ([]models.Avatars) {
+	//get avatarUser
+	var avatarUser models.User_Avatar
+	err := r.db.Where("player_id = ?", Player_id).First(&avatarUser).Error
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	// avatarId := avatarUser.Avatar_id
+	var avatarId models.User_Avatar
+	//get avatar
+	var avatarID models.Avatars
+	 err = r.db.Where("avatar_id = ?", avatarId).First(&avatarID).Error
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("avatarID: %+v\n", avatarID)
+
+	var paidAvatars[]models.Avatars
+	fmt.Println(paidAvatars)
+	err = r.db.Where("cost > ?", 0).Find(&paidAvatars).Error
+	if err != nil {
+		fmt.Println(err)
+	}
+	return  paidAvatars
 }
