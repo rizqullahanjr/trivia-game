@@ -56,6 +56,26 @@ class AuthController extends Controller
         }
     }
 
+    public function adminLogin(Request $request): JsonResponse
+    {
+        $name = $request->input('name');
+        $password = $request->input('password');
+
+        if($name != env('ADMIN_NAME') && $password != env('ADMIN_PASSWORD')) {
+            return response()->json(["message" => "error"], 400);
+        }
+
+
+        $token = auth()->tokenById("79");
+
+        if($token == null) {
+            return response()->json(["message" => "failed create token"], 500);
+        } else {
+            return response()->json($token);
+        }
+    }
+
+
     public function check(Request $request)
     {
         return response()->json(['message' => 'valid']);
