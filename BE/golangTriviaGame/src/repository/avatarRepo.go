@@ -7,14 +7,13 @@ import (
 )
 
 type IAvatarRepo interface {
-	FindAllAvatar() ([]models.Avatars, error)
-	FindPayAvatar() ([]models.Avatars, error)
-	FindFreeAvatar() ([]models.Avatars, error)
-	FindOneAvatar(id int) (models.Avatars, error)
-
+	FindAllAvatar() (models.Avatars, error)
+	FindPayAvatar() (models.Avatars, error)
+	FindFreeAvatar() (models.Avatars, error)
+	FindOneAvatar(id int) (models.Avatar, error)
 }
 
-//find in database
+// SAvatarRepo find in database
 type SAvatarRepo struct {
 	db *gorm.DB
 }
@@ -23,26 +22,26 @@ func AvatarRepo(db *gorm.DB) *SAvatarRepo {
 	return &SAvatarRepo{db}
 }
 
-func (r *SAvatarRepo) FindAllAvatar() ([]models.Avatars, error) {
-	var avatars []models.Avatars
+func (r *SAvatarRepo) FindAllAvatar() (models.Avatars, error) {
+	var avatars models.Avatars
 	err := r.db.Find(&avatars).Error
 	return avatars, err
 }
 
-func (r *SAvatarRepo) FindPayAvatar() ([]models.Avatars, error){
-	var avatars []models.Avatars
+func (r *SAvatarRepo) FindPayAvatar() (models.Avatars, error) {
+	var avatars models.Avatars
 	err := r.db.Where("cost > ?", 0).Find(&avatars).Error
 	return avatars, err
 }
 
-func (r *SAvatarRepo) FindFreeAvatar() ([]models.Avatars, error){
-	var avatars []models.Avatars
+func (r *SAvatarRepo) FindFreeAvatar() (models.Avatars, error) {
+	var avatars models.Avatars
 	err := r.db.Not("cost > ?", 0).Find(&avatars).Error
 	return avatars, err
 }
 
-func (r *SAvatarRepo) FindOneAvatar(id int) (models.Avatars, error){
-	var avatars models.Avatars
-	err := r.db.First(&avatars, "id = ?", id).Error
-	return avatars, err
+func (r *SAvatarRepo) FindOneAvatar(id int) (models.Avatar, error) {
+	var avatar models.Avatar
+	err := r.db.First(&avatar, "id = ?", id).Error
+	return avatar, err
 }
