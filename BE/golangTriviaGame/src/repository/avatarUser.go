@@ -62,7 +62,6 @@ func (r *avatarRepository) FindPayAvatar() (models.Avatars, error) {
 	return avatars, err
 }
 
-// FindUserUpdateAvatar func (r *avatarRepository) FindUserUpdateAvatar(Player_id int) (models.Avatar, models.Avatars) {
 func (r *avatarRepository) FindUserUpdateAvatar(PlayerId int) models.Avatars {
 	//get avatarUser
 	var avatarUser models.User_Avatar

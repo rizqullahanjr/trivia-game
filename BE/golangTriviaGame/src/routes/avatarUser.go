@@ -20,7 +20,7 @@ func NewAvatarUserRoutes(gin *gin.Engine, avatarController controllers.AvatarCon
 	group := gin.Group("/api/v1")
 	group.GET("/avatar-user", handler.FindAll)
 	group.GET("/avatar-user/:player_id", handler.FindOneId)
-	group.GET("/avatar-user-update/:player_id", handler.FindUserUpdateAvatar)
+	// group.GET("/avatar-user-update/:player_id", handler.FindUserUpdateAvatar)
 
 }
 

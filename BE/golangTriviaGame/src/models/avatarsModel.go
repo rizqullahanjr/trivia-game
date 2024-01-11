@@ -17,7 +17,7 @@ type Avatars []Avatar
 
 func (a Avatars) Len() int           { return len(a) }
 func (a Avatars) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a Avatars) Less(i, j int) bool { return a[i].Cost > a[j].Cost }
+func (a Avatars) Less(i, j int) bool { return a[i].Cost < a[j].Cost }
 
 type AvatarResponse struct {
 	Id       int    `json:"id"`

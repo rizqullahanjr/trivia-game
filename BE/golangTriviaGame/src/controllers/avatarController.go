@@ -76,13 +76,8 @@ func (con *SAvatarController) FindOneAvatar(c *gin.Context) {
 
 }
 
-// type AvatarController struct {}
-
-// func (con AvatarController) FindAllAvatar(c *gin.Context) {
-//    var avatars models.Avatars
-// 	database.DB.Find(&avatars)
-// 	c.JSON(200, gin.H{
-// 		"message" : "successfully get avatar",
-// 		"data" : avatars,
-// 	})
-// }
+func (con *SAvatarController) FindUpdateAvatar(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	avatars := con.IAvatarRepo.FindUpdateAvatar(id)
+	c.JSON(200, avatars)
+}
