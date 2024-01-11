@@ -25,5 +25,12 @@ class AvatarController extends Controller
 
         return response()->json($avatars);
     }
+
+    public function getAllAvatar(Request $request): JsonResponse
+    {
+        $avatars = DB::table('avatars')->get();
+
+        return response()->json($avatars);
+    }
 }
 

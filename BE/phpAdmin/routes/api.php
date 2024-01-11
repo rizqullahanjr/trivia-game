@@ -26,6 +26,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('/player/reduce-diamond', '\App\Http\Controllers\PlayerController@reduceDiamond');
     Route::put('/player/update-score', '\App\Http\Controllers\PlayerController@updateScore');
     Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
+    Route::post('/player/buy-avatar', '\App\Http\Controllers\PlayerController@buyAvatar');
 
 });
 
@@ -42,6 +43,7 @@ Route::group([
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/avatar/get-all-free-avatar', '\App\Http\Controllers\AvatarController@getAllFreeAvatar');
+    Route::get('/avatar/get-all-avatar', '\App\Http\Controllers\AvatarController@getAllAvatar');
 });
 
 
