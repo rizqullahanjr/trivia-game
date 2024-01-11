@@ -16,12 +16,13 @@ func main() {
 	dbConection := database.Database()
 
 	//repository
-	avatarUserRepository := repository.NewAvatarRepository(dbConection)
+	avatarRepository := repository.NewAvatarRepository(dbConection)
+	avatarUserRepository := repository.AvatarRepo(dbConection)
 	
 	
 
 	//controller
-	avatarController := controllers.NewAvatarController(avatarUserRepository)
+	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
 	
 	
 	//roter
