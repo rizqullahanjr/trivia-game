@@ -145,8 +145,7 @@ const Auth = () => {
           <Button
             title="Logout"
             onPress={() => {
-              AsyncStorage.removeItem("@user");
-              AsyncStorage.removeItem("token");
+              AsyncStorage.clear();
             }}
           />
         </View>

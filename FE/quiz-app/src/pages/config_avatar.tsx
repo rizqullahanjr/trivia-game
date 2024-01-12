@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DATA_PLAYER } from "../stores/slices/authSlices";
 import { RootState } from "../stores/types/store";
 import avatarData from "../mocks/list-avatar-free.json";
+
 // type AvatarData = {
 //   image: string;
 //   id: string;
@@ -30,8 +31,7 @@ const imgSplash = [
   require("../image/splash.jpg"),
   require("../image/bgImage.jpg"),
   require("../image/input.jpg"),
-  require("../image/boy.png"),
-  require("../image/avatar.png"),
+
   ,
 ];
 
@@ -132,6 +132,10 @@ const Avatars: React.FunctionComponent = () => {
     }
   };
 
+  const handleAvatarPress = (avatarId: number) => {
+    setSelectedAvatar(avatarId);
+  };
+
   useEffect(() => {
     // getAvatar();
     setAvatarList(avatarData);
@@ -158,7 +162,8 @@ const Avatars: React.FunctionComponent = () => {
               fontStyle: "italic",
             }}
           >
-            Welcome "{userInfo.name}", lets create new account
+            Welcome,{userInfo.name}
+            {"\n"}lets create new account
           </Text>
           <Text
             style={{
@@ -185,21 +190,16 @@ const Avatars: React.FunctionComponent = () => {
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={{
-                    width: 75,
-                    height: 80,
-                    borderRadius: 100,
-                    marginBottom: 15,
-                    marginRight: 10,
-                  }}
-                  onPress={() => setSelectedAvatar(item.id)}
+                  style={[
+                    styles.touchAvatar,
+                    selectedAvatar === item.id && styles.selectedAvatar,
+                  ]}
+                  onPress={() => handleAvatarPress(item.id)}
                 >
-                  <View style={styles.touchAvatar}>
-                    <Image
-                      style={styles.avatarProfile}
-                      source={{ uri: item.image }}
-                    />
-                  </View>
+                  <Image
+                    style={styles.avatarProfile}
+                    source={{ uri: item.image }}
+                  />
                 </TouchableOpacity>
               )}
             />
@@ -309,6 +309,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 2,
     borderColor: "black",
+  },
+  selectedAvatar: {
+    backgroundColor: "green", // Warna border saat avatar dipilih
+    borderWidth: 2,
+    borderColor: "#47f029",
   },
 });
 

@@ -3,12 +3,13 @@ import Splash from "../pages/splash";
 import Auth from "../pages/auth";
 import Avatars from "../pages/config_avatar";
 import Home from "../pages/home";
+import match from "../pages/pre-game";
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Auth">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -27,6 +28,11 @@ const Routes = () => {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Match"
+        component={match}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
