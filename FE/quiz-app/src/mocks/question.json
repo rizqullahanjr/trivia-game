@@ -1,0 +1,62 @@
+[
+  {
+    "ID": "659b5bb5265eead22093e004",
+    "Question": "Naskah proklamasi diketik oleh Sayuti Melik",
+    "Answer": "True",
+    "Options": [ "True", "False"]
+  },
+  {
+    "ID": "659b5bb5265eead22093e002",
+    "Question": "PPKI menghendaki bahwa pelaksanakan proklamasi pada tanggal 24 Agustus 1945",
+    "Answer": "True",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093e006",
+    "Question": "Pembacaan teks proklamasi dilakukan di Pengangsaan Timur 56 Jakarta",
+    "Answer": "True",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093e009",
+    "Question": "Rapat PPKI memutuskan pembagian wilayah Indonesia menjadi 10 provinsi",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093dffd",
+    "Question": "Jepang menyerang pangkalan militer AS di Pearl Habour tanggal 9 December 1942",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093dff8",
+    "Question": "Prasasti tertua di Indonesia ditemukan di Kalimantan.",
+    "Answer": "True",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093dffb",
+    "Question": "Jepang menjajah Indonesia selama 4,5 tahun",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093dff9",
+    "Question": "Sastra Jawa Arjunawiwaha diambil dari cerita Ramayana ",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093dfff",
+    "Question": "BPUPKI didirikan pada tanggal 1 April 1945",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  },
+  {
+    "ID": "659b5bb5265eead22093e007",
+    "Question": "Piagam Jakarta dibuat oleh PPKI pada tanggal 22 Juni 1945",
+    "Answer": "False",
+    "Options": [ "True", "False" ]
+  }
+]

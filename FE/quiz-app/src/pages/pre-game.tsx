@@ -1,7 +1,7 @@
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import CountdownTimer from "../components/timer";
 
-const match = () => {
+const Match = () => {
   return (
     <>
       <ImageBackground
@@ -49,7 +49,7 @@ const match = () => {
   );
 };
 
-export default match;
+export default Match;
 
 const styles = StyleSheet.create({
   container: {

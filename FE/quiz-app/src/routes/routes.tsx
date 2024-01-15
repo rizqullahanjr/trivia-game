@@ -3,13 +3,14 @@ import Splash from "../pages/splash";
 import Auth from "../pages/auth";
 import Avatars from "../pages/config_avatar";
 import Home from "../pages/home";
-import match from "../pages/pre-game";
+import Match from "../pages/pre-game";
+import Quiz from "../pages/quiz-time";
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   return (
-    <Stack.Navigator initialRouteName="Auth">
+    <Stack.Navigator initialRouteName="Quiz">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -32,7 +33,12 @@ const Routes = () => {
       />
       <Stack.Screen
         name="Match"
-        component={match}
+        component={Match}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Quiz"
+        component={Quiz}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -142,7 +142,7 @@ const Shop: React.FC = () => {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.title}>Avatar Shop</Text>
-        <Text style={styles.points}>{points} P</Text>
+        <Text style={styles.points}>{points} Diamond</Text>
         <View style={styles.avatarGrid}>
           {avatarsList?.map((avatar) => (
             <TouchableOpacity
@@ -216,16 +216,26 @@ const Shop: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "white",
+    overflow: "scroll",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderRadius: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   avatarGrid: {
     flexDirection: "row",
@@ -264,6 +274,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     alignItems: "center",
+    // marginBottom: 50,
   },
   buyButtonText: {
     color: "white",
@@ -276,7 +287,8 @@ const styles = StyleSheet.create({
   points: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 5,
+    color: "#03fce3",
   },
 });
 

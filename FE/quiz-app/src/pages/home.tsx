@@ -55,10 +55,12 @@ const Home = () => {
           onRequestClose={() => setModalVisible(!modalVisible)}
         >
           <View style={styles.centeredView}>
-            <View>
-              <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
-              <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                <Text>Hide Modal</Text>
+            <View style={styles.modalAvatarView}>
+              <Pressable
+                style={styles.buttonClose}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textModal}>Close</Text>
               </Pressable>
               <ScrollView>
                 <Shop />
@@ -269,8 +271,29 @@ const styles = StyleSheet.create({
     top: 25,
   },
   modalAvatarView: {
-    width: 200,
-    height: 500,
+    width: "85%",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonClose: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#2196F3",
+  },
+  textModal: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
