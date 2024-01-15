@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import {
   Image,
@@ -16,10 +17,11 @@ const imgSplash = [
   require("../image/bgImage.jpg"),
 ];
 
-const Splash = ({ navigation }) => {
+const Splash = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace("Auth");
+      navigation.navigate("Auth" as never);
     }, 3000);
   }, [navigation]);
 

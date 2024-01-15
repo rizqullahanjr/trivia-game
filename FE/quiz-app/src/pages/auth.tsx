@@ -142,13 +142,12 @@ const Auth = () => {
           <TouchableOpacity onPress={handleSignInGoogle}>
             <GoogleButton />
           </TouchableOpacity>
-          <Button
+          {/* <Button
             title="Logout"
             onPress={() => {
-              AsyncStorage.removeItem("@user");
-              AsyncStorage.removeItem("token");
+              AsyncStorage.clear();
             }}
-          />
+          /> */}
         </View>
         {/* <Text>{JSON.stringify(userInfo, null, 2)}</Text> */}
         <View>

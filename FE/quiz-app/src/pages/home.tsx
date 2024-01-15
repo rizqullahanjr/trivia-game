@@ -14,6 +14,11 @@ import ButtonDiamond from "../components/button_diamond";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
+import Shop from "../components/shop";
+import Topup from "../components/topup";
+import MyButton from "../components/button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -24,9 +29,12 @@ import { RootState } from "../stores/types/store";
 // });
 
 const Home = () => {
+  const navigate = useNavigation();
   const player = useSelector((state: RootState) => state.player);
   const [modalVisible, setModalVisible] = useState(false);
+
   const [modalDiamond, setModalDiamond] = useState(false);
+
   const imgSplash = [
     require("../image/splash.jpg"),
     require("../image/bgImage.jpg"),
@@ -44,12 +52,20 @@ const Home = () => {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
+          onRequestClose={() => setModalVisible(!modalVisible)}
         >
-          <View>
-            <Text style={{ color: "white", fontSize: 50 }}>hello world</Text>
+          <View style={styles.centeredView}>
+            <View style={styles.modalAvatarView}>
+              <Pressable
+                style={styles.buttonClose}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textModal}>Close</Text>
+              </Pressable>
+              <ScrollView>
+                <Shop />
+              </ScrollView>
+            </View>
           </View>
         </Modal>
 
@@ -64,6 +80,10 @@ const Home = () => {
         >
           <View>
             <Text style={{ color: "white", fontSize: 50 }}> modal diamod</Text>
+            <Pressable onPress={() => setModalDiamond(!modalDiamond)}>
+              <Text>Hide Modal</Text>
+              <Topup />
+            </Pressable>
           </View>
         </Modal>
         {/* top bar */}
@@ -77,6 +97,7 @@ const Home = () => {
           <View style={{ padding: 20 }}>
             <Image source={imgSplash[0]} style={[styles.Image]} />
           </View>
+
           <View style={{ marginTop: 15 }}>
             <ButtonDiamond
               diamond={player.diamond}
@@ -85,26 +106,43 @@ const Home = () => {
           </View>
         </View>
         {/* top end */}
-        <View style={styles.avatar}>
-          <TouchableOpacity
-            // style={{ backgroundColor: "white" }}
-            onPress={() => setModalVisible(true)}
+        <View
+          style={{
+            backgroundColor: "rgba(25, 22, 22, 0.39)",
+            // width: 250,
+            minWidth: 150,
+            maxWidth: 250,
+            // height: 80,
+            alignItems: "center",
+            justifyContent: "center",
+            marginHorizontal: "auto",
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              textShadowColor: "black",
+              textShadowRadius: 10,
+              fontWeight: "bold",
+              fontSize: 24,
+            }}
           >
+            Hi,{player.name}
+          </Text>
+        </View>
+
+        <View style={styles.avatar}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={styles.avatarHome}
               source={{
                 uri: player.active_avatar,
               }}
             />
-            {/* <Text>{player.active_avatar}</Text> */}
-            {/* <Text>{player.name}</Text> */}
           </TouchableOpacity>
         </View>
         <View style={styles.exchange}>
-          <TouchableOpacity
-            // style={{ backgroundColor: "white" }}
-            onPress={() => setModalVisible(true)}
-          >
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={{ width: 20, height: 20 }}
               source={require("../image/exchange.jpg")}
@@ -115,8 +153,7 @@ const Home = () => {
         <View
           style={{
             alignItems: "center",
-            // marginTop: 80,
-            // backgroundColor: "black",
+
             margin: "auto",
             justifyContent: "center",
           }}
@@ -127,6 +164,28 @@ const Home = () => {
           />
           <View style={styles.buttonStart}>
             <Button color={"green"} title="START GAME" />
+          </View>
+
+          {/* button logout */}
+          <View
+            style={{
+              width: 50,
+              height: 60,
+              alignItems: "center",
+
+              position: "relative",
+              // right: -100,
+              left: 130,
+              // top: 20,
+            }}
+          >
+            <MyButton
+              text={"Logout"}
+              textColor="red"
+              onPress={() => {
+                AsyncStorage.clear(), navigate.navigate("Splash" as never);
+              }}
+            />
           </View>
         </View>
       </ImageBackground>
@@ -143,11 +202,17 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // justifyContent: "center",
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
   exchange: {
     width: 35,
     height: 35,
     position: "absolute",
-    top: 170,
+    top: 193,
     right: 135,
     backgroundColor: "#94969c",
     borderRadius: 100,
@@ -187,7 +252,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    top: 110,
+    top: 135,
     borderWidth: 2,
     borderColor: "black",
     objectFit: "cover",
@@ -204,6 +269,31 @@ const styles = StyleSheet.create({
     height: 100,
     position: "relative",
     top: 25,
+  },
+  modalAvatarView: {
+    width: "85%",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonClose: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#2196F3",
+  },
+  textModal: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
@@ -259,4 +349,29 @@ const styles = StyleSheet.create({
               </View>
             </View>
           </TouchableOpacity> */
+}
+
+{
+  /* <View
+style={{
+  // marginLeft: 100,
+  // backgroundColor: "black",
+  width: 50,
+  height: 60,
+  alignItems: "center",
+  // justifyContent: "center",
+  // position: "relative",
+  // right: -100,
+  // left: 300,
+  // top: 20,
+}}
+>
+<MyButton
+  text={"Logout"}
+  textColor="red"
+  onPress={() => {
+    AsyncStorage.clear(), navigate.navigate("Splash" as never);
+  }}
+/>
+</View> */
 }
