@@ -49,16 +49,16 @@ func (r *SAvatarRepo) FindOneAvatar(id int) (models.Avatar, error) {
 
 func (r *SAvatarRepo) FindUpdateAvatar(id int) models.Avatars {
 	var avatars models.Avatars
-	sqlQuery := `select q.id, q.image,
-                 case when q.player_id = ? then 0
-                      else q.cost
-                      end as cost
-                 from ( select * from avatars 
-                        left join ( select * from user_avatars
-                                    where player_id = ? ) u
-                        on avatars.id = u.avatar_id
-                        where player_id = ? or (cost > 0 and player_id is null) ) q
-                 order by cost asc`
+	sqlQuery := `SELECT q.id, q.image,
+                 CASE WHEN q.player_id = ? THEN 0
+                      ELSE q.cost
+                      END AS cost
+                 FROM ( SELECT * FROM avatars 
+                        LEFT JOIN ( SELECT * FROM user_avatars
+                                    WHERE player_id = ? ) u
+                        ON avatars.id = u.avatar_id
+                        WHERE player_id = ? OR (cost > 0 AND player_id IS NULL) ) q
+                 ORDER BY cost ASC`
 	r.db.Raw(sqlQuery, id, id, id).Scan(&avatars)
 
 	return avatars
