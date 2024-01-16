@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import CountdownTimer from "../components/timer";
 import Score from "../components/score";
-import data from "../mocks/question.json";
+import data from "../mocks/playerGame.json";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -27,6 +27,8 @@ const Quiz = () => {
   const [isOptionsDisabled, setisOptionsDisabled] = useState(false);
   const [getScore, setGetScore] = useState(0);
   const [resultText, setResultText] = useState("");
+  const [timer, setTimer] = useState(0);
+  const playerGame = data;
 
   async function getQuestion() {
     const res = await axios.get(
@@ -34,11 +36,18 @@ const Quiz = () => {
     );
     setAllquestion(res.data);
     console.log(res.data);
+    setTimer(20);
   }
+
+  const handlePress = (selectedOptions: any) => {
+    setCurrentOptionSelected(selectedOptions);
+    // if (timer == 0) {
+    //   validateAnswer(selectedOptions);
+    // }
+  };
 
   const validateAnswer = (selectedOptions: any) => {
     let Answer = allQuestions[currentQuestion]["Answer"];
-    setCurrentOptionSelected(selectedOptions);
     setCorrectOptions(Answer);
     setisOptionsDisabled(true);
     if (selectedOptions == Answer) {
@@ -65,6 +74,7 @@ const Quiz = () => {
     setCorrectOptions("");
     setisOptionsDisabled(false);
     setResultText("");
+    setTimer(20);
 
     // Move to the next question if available
     if (currentQuestion < allQuestions.length - 1) {
@@ -112,6 +122,26 @@ const Quiz = () => {
   };
 
   useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [timer]);
+
+  useEffect(() => {
+    // Automatically validate the answer when the timer reaches 0
+    if (timer === 0 && currentOptionSelected !== null) {
+      validateAnswer(currentOptionSelected);
+    }
+
+    // if (timer === 0 && currentOptionSelected == null) {
+    //   setCurrentOptionSelected('')
+    //   validateAnswer(currentOptionSelected);
+    // }
+  }, [timer, currentOptionSelected]);
+
+  useEffect(() => {
     getQuestion();
   }, []);
 
@@ -131,7 +161,8 @@ const Quiz = () => {
           {/* center */}
           <View style={styles.content}>
             <Text style={styles.timer}>
-              <CountdownTimer durationInSeconds={20} />
+              {/* <CountdownTimer durationInSeconds={20} /> */}
+              {timer}
             </Text>
 
             {/* question */}
@@ -144,7 +175,7 @@ const Quiz = () => {
             <View>
               {allQuestions[currentQuestion]?.Options.map((Options: any) => (
                 <TouchableOpacity
-                  onPress={() => validateAnswer(Options)}
+                  onPress={() => handlePress(Options)}
                   disabled={isOptionsDisabled}
                   key={Options}
                   style={[
@@ -154,19 +185,25 @@ const Quiz = () => {
                         Options == correctOptions
                           ? "green"
                           : Options == currentOptionSelected
-                          ? "red"
+                          ? "blue"
                           : "yellow",
                       backgroundColor:
                         Options == correctOptions
                           ? "rgba(69, 235, 19,0.8)"
                           : Options == currentOptionSelected
-                          ? "rgba(242, 7, 39,0.8)"
+                          ? "rgba(25, 22, 22, 0.8)"
                           : "rgba(25, 22, 22, 0.8)",
                     },
                   ]}
                 >
                   <Text style={styles.answerText}>{Options}</Text>
-
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      style={styles.avatarPlayer}
+                      source={require(`../image/${playerGame[0].image}`)}
+                    />
+                    {/* {playerGame[0].Answer} */}
+                  </View>
                   {/* check answer */}
                 </TouchableOpacity>
               ))}
@@ -211,7 +248,7 @@ const styles = StyleSheet.create({
   score: {},
   content: {
     width: "90%",
-    backgroundColor: "rgba(198, 101, 224, 0.5)",
+    // backgroundColor: "rgba(198, 101, 224, 0.5)",
     textAlign: "center",
     marginHorizontal: "auto",
     borderRadius: 15,
@@ -245,7 +282,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    justifyContent: "space-between",
+    // padding: 15,
     marginVertical: 10,
     borderRadius: 10,
   },
@@ -254,7 +292,17 @@ const styles = StyleSheet.create({
     fontWeight: "200",
     fontFamily: "georgia",
     letterSpacing: 2,
+    marginHorizontal: 10,
+    marginVertical: 15,
     // textShadowColor: "white",
     // textShadowRadius: 1,
+  },
+  avatarPlayer: {
+    width: 35,
+    height: 35,
+    backgroundColor: "white",
+    objectFit: "cover",
+    borderRadius: 100,
+    marginHorizontal: 3,
   },
 });
