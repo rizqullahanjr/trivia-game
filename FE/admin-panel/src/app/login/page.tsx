@@ -2,8 +2,6 @@
 
 import {useLogin} from "@/app/login/useLogin";
 
-
-
 export default function Login() {
     const { form, handleChange, handleLogin } = useLogin()
 

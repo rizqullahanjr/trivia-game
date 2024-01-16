@@ -27,7 +27,7 @@ export function useLogin() {
                 password: ""
             })
 
-            router.push("/")
+            router.push("/dashboard")
         } catch (error) {
             console.log(error)
         }
