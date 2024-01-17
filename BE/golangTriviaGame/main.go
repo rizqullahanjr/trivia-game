@@ -21,14 +21,13 @@ func main() {
 	avatarRepository := repository.NewAvatarRepository(dbConection)
 	avatarUserRepository := repository.AvatarRepo(dbConection)
 	topupRepository := repository.NewTopupRepository(dbConection)
+	
 
 
 	
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
 	topupController := controllers.NewTopupController(topupRepository)
-
-
 
 
 	//roter

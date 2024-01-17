@@ -9,6 +9,7 @@ import (
 
 type ITopupRepository interface {
 	FindDataTopup() ([]models.Topup, error)
+	TopupDiamond(req models.Topup) (models.Topup, error)
 }
 
 
@@ -31,4 +32,18 @@ func (r *topupRepository)FindDataTopup()([]models.Topup, error){
 	}
 	fmt.Println(topup)
 	return topup, err
+}
+
+func (r *topupRepository) TopupDiamond(req models.Topup) (models.Topup, error) {
+	
+	err := r.db.Create(&models.Topup{
+		TotalDiamond: req.TotalDiamond,
+		Email:        req.Email,
+		Name:         req.Name,
+		Price:        req.Price,
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+	return req, nil
 }

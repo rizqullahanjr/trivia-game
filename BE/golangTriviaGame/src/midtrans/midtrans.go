@@ -1,4 +1,4 @@
-package midtransPayment
+package midtranspayment
 
 import (
 	"crypto/rand"
@@ -10,7 +10,14 @@ import (
 	"github.com/midtrans/midtrans-go/snap"
 )
 
-func SnapURL() string {
+type RequiredData struct {
+	TotalDiamond int `json:"total_diamond"`
+	Email string `json:"email"`
+	Name string `json:"name"`
+	Price int64 `json:"price"`
+}
+
+func SnapURL(data RequiredData) string {
 
 	SERVER_KEY := os.Getenv("SERVER_KEY")
 
@@ -26,17 +33,16 @@ func SnapURL() string {
 
 	req := & snap.Request{
 		TransactionDetails: midtrans.TransactionDetails{
-		  OrderID:    randomString,
-		  GrossAmt: 10000,
+		  OrderID:  randomString,
+		  GrossAmt: data.Price,
 		}, 
 		CreditCard: &snap.CreditCardDetails{
 		  Secure: true,
 		},
 		CustomerDetail: &midtrans.CustomerDetails{
-		  FName: "lutfhi",
-		  LName: "jokowi",
-		  Email: "LJ@doe.com",
-		  Phone: "081234567890",
+		  FName: data.Name,
+		  Email: data.Email,
+		  Phone: "",
 		},
 	  }
 	  snapResp, _ := s.CreateTransaction(req)
