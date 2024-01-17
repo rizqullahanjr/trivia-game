@@ -21,6 +21,7 @@ export function useLogin() {
         try {
             const response = await API.post("/auth/adminLogin", form)
 
+            localStorage.setItem('token', response.data)
             setAuthToken(response.data)
             setform({
                 name: "",
