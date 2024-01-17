@@ -7,11 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import CountdownTimer from "../components/timer";
+import dataQuiz from "../mocks/question.json";
 import Score from "../components/score";
 import data from "../mocks/playerGame.json";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import socket from "../libs/socket";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
+import { RootState } from "../stores/types/store";
 
 interface Question {
   Question: string;
@@ -19,7 +23,19 @@ interface Question {
   Answer: string;
 }
 
+interface index {
+  index: number;
+}
+
+interface opponents {
+  id: number;
+  avatar: string;
+  answer: string;
+}
+
 const Quiz = () => {
+  const room = useSelector((state: RootState) => state.room.roomId);
+  const user = useSelector((state: RootState) => state.player);
   const [allQuestions, setAllquestion] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
@@ -27,29 +43,48 @@ const Quiz = () => {
   const [isOptionsDisabled, setisOptionsDisabled] = useState(false);
   const [getScore, setGetScore] = useState(0);
   const [resultText, setResultText] = useState("");
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(20);
+  const [renderAvatarAnswer, setrenderAvatarAnswer] = useState(false);
+  const [GetAnswer, setGetAnswer] = useState<opponents[]>([]);
+  const [getAvatar, setgetAvatar] = useState([]);
   const playerGame = data;
 
+  // async function getQuestion() {
+  //   const res = await axios.get(
+  //     "http://192.168.18.174:5000/api/v1/get-question"
+  //   );
+  //   setAllquestion(res.data);
+  //   console.log(res.data);
+  //   setTimer(7);
+  // }
+
   async function getQuestion() {
-    const res = await axios.get(
-      "http://192.168.18.174:5000/api/v1/get-question"
-    );
-    setAllquestion(res.data);
-    console.log(res.data);
-    setTimer(20);
+    // await socket.on("questions", (msg: any) => {
+    //   setAllquestion(msg);
+    //   console.log(msg);
+    //   setTimer(20);
+    // });
+
+    const quest = await AsyncStorage.getItem("quest");
+    setAllquestion(JSON.parse(quest ?? "[]"));
   }
 
   const handlePress = (selectedOptions: any) => {
+    console.log(currentQuestion);
+
     setCurrentOptionSelected(selectedOptions);
-    // if (timer == 0) {
-    //   validateAnswer(selectedOptions);
-    // }
+    socket.emit(`${room}`, {
+      id: user.id,
+      quizIndex: currentQuestion,
+      answer: selectedOptions,
+    });
   };
 
   const validateAnswer = (selectedOptions: any) => {
     let Answer = allQuestions[currentQuestion]["Answer"];
     setCorrectOptions(Answer);
     setisOptionsDisabled(true);
+    setrenderAvatarAnswer(true);
     if (selectedOptions == Answer) {
       setGetScore(getScore + 20);
       setResultText("Correct!");
@@ -63,7 +98,6 @@ const Quiz = () => {
     // setCorrectOptions("");
     // setisOptionsDisabled(false);
     setTimeout(() => {
-      // Move to the next question after a delay (e.g., 1000 milliseconds)
       moveToNextQuestion();
     }, 3000);
   };
@@ -74,7 +108,8 @@ const Quiz = () => {
     setCorrectOptions("");
     setisOptionsDisabled(false);
     setResultText("");
-    setTimer(20);
+    setTimer(10);
+    setrenderAvatarAnswer(false);
 
     // Move to the next question if available
     if (currentQuestion < allQuestions.length - 1) {
@@ -133,18 +168,37 @@ const Quiz = () => {
     // Automatically validate the answer when the timer reaches 0
     if (timer === 0 && currentOptionSelected !== null) {
       validateAnswer(currentOptionSelected);
+      setrenderAvatarAnswer(true);
+      console.log("memninta jawaban");
+      socket.emit(`${room}`, currentQuestion, (res: any) => {
+        console.log(res);
+        setGetAnswer(res);
+      });
     }
-
-    // if (timer === 0 && currentOptionSelected == null) {
-    //   setCurrentOptionSelected('')
-    //   validateAnswer(currentOptionSelected);
-    // }
   }, [timer, currentOptionSelected]);
 
   useEffect(() => {
     getQuestion();
+    // setAllquestion(dataQuiz);
   }, []);
 
+  const renderPlayerImage = () => {
+    const playerAnswer = playerGame.find(
+      (player) => player.Answer === currentOptionSelected
+    );
+
+    if (playerAnswer) {
+      return (
+        <Image
+          key={playerAnswer.image}
+          style={styles.avatarPlayer}
+          source={require(`../image/${playerAnswer.image}`)}
+        />
+      );
+    }
+
+    return null;
+  };
   return (
     <>
       <ImageBackground
@@ -198,11 +252,17 @@ const Quiz = () => {
                 >
                   <Text style={styles.answerText}>{Options}</Text>
                   <View style={{ flexDirection: "row" }}>
-                    <Image
-                      style={styles.avatarPlayer}
-                      source={require(`../image/${playerGame[0].image}`)}
-                    />
-                    {/* {playerGame[0].Answer} */}
+                    {renderAvatarAnswer &&
+                      GetAnswer.filter(
+                        (player) => player.answer === Options
+                      ).map((filteredPlayer, playerIndex) => (
+                        <Image
+                          key={playerIndex}
+                          style={styles.avatarPlayer}
+                          source={{ uri: filteredPlayer.avatar }}
+                        />
+                      ))}
+                    {/* {renderPlayerImage()} */}
                   </View>
                   {/* check answer */}
                 </TouchableOpacity>
@@ -306,3 +366,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 3,
   },
 });
+
+// start again?
+// if(currentQuestion== allQuestions.length-1)
+// setCurrentQuestion(currentQuestion + 1);
+// setCurrentOptionSelected(null);
+// setCorrectOptions("");
+// setisOptionsDisabled(false);
+
+// async function getQuestion() {
+//   const res = await axios.get(
+//     "http://192.168.18.174:5000/api/v1/get-question"
+//   );
+//   setAllquestion(res.data);
+//   console.log(res.data);
+//   setTimer(20);
+// }

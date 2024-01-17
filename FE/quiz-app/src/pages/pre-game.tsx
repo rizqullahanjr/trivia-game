@@ -2,8 +2,10 @@ import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import socket from "../libs/socket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ROOM_ID } from "../stores/slices/authSlices";
 
 interface AllPlayer {
   id: number;
@@ -12,6 +14,8 @@ interface AllPlayer {
 }
 
 const Match = () => {
+  const dispatch = useDispatch();
+  const [room, setRoom] = useState("");
   const user = useSelector((state: RootState) => state.player);
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [timer, setTimer] = useState(20);
@@ -24,17 +28,39 @@ const Match = () => {
     },
   ]);
 
+  // async function getQuestion() {
+  //   await socket.on("questions", (msg: any) => {
+  //     setAllquestion(msg);
+  //     console.log(msg);
+
+  //   });
+  // }
+
   useEffect(() => {
+    socket.on("questions", (msg: any) => {
+      AsyncStorage.setItem("quest", JSON.stringify(msg));
+      console.log(msg);
+    });
+
     socket.on("rooms", (msg: any) => {
-      if (msg == "room is full") {
+      console.log(msg);
+      if (msg.message == "room is full") {
+        setRoom(msg.roomId);
+        console.log(room);
+
+        dispatch(
+          ROOM_ID({
+            roomId: msg.roomId,
+          })
+        );
+        AsyncStorage.setItem("room", msg.roomId);
         navigation.navigate("Quiz" as never);
       } else {
         setallPlayer(msg);
-        console.log(allPlayer);
-        console.log(msg);
+        // console.log(allPlayer);
       }
     });
-  }, [allPlayer]);
+  }, []);
 
   // useEffect(()=>{
   //   allPlayer.forEach((player, index)=>{

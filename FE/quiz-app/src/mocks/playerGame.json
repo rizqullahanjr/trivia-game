@@ -2,16 +2,21 @@
     {
       "name": "Cuaca",
       "image": "boy.jpg",
-      "Answer": "true"
+      "Answer": "True"
     },
     {
       "name": "Melani",
-      "image": "avatar.jpg",
-      "Answer": "true"
+      "image": "score.jpg",
+      "Answer": "False"
     },
     {
       "name": "Mendung",
       "image": "diamond.jpg",
-      "Answer": "false"
+      "Answer": "False"
+    },
+    {
+      "name": "Mendung",
+      "image": "score.jpg",
+      "Answer": "False"
     }
 ]

@@ -11,6 +11,10 @@ const initialState = {
   diamond: 0,
 };
 
+const roomid = {
+  roomId: "",
+};
+
 export const playerData = createSlice({
   name: "player",
   initialState,
@@ -40,6 +44,24 @@ export const playerData = createSlice({
   },
 });
 
+export const playerRoom = createSlice({
+  name: "room",
+  initialState: roomid,
+  reducers: {
+    ROOM_ID: (state, action) => {
+      const payload = action.payload;
+      const roomId = payload.roomId;
+
+      state.roomId = roomId;
+
+      return state;
+    },
+  },
+});
+
 export const { DATA_PLAYER } = playerData.actions;
 
-export default playerData.reducer;
+export const { ROOM_ID } = playerRoom.actions;
+
+export const playerDataReducer = playerData.reducer;
+export const playerRoomReducer = playerRoom.reducer;

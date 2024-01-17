@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import playerReducer from "../slices/authSlices";
+import { playerDataReducer, playerRoomReducer } from "../slices/authSlices";
 
 export const store = configureStore({
   reducer: {
-    player: playerReducer,
+    player: playerDataReducer,
+    room: playerRoomReducer,
   },
 });
 
