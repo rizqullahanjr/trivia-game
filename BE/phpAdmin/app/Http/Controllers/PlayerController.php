@@ -55,6 +55,15 @@ class PlayerController extends Controller
         return response()->json($player, 200);
     }
 
+    public function findByIdAdmin(Request $request): JsonResponse
+    {
+        $id = $request->route("id");
+
+        $player = DB::table('players')->where('id', '=', $id)->first();
+
+        return response()->json($player, 200);
+    }
+
     public function addDiamond(Request $request): JsonResponse
     {
         $payload = auth()->payload();
@@ -113,12 +122,28 @@ class PlayerController extends Controller
         $avatar_image = DB::table('avatars')->where('id', '=', $avatar_id)
             ->value('image');
 
-        $result = DB::table('players')->where('id', '=', $avatar_id)
+        $result = DB::table('players')->where('id', '=', $id)
             ->update(['active_avatar' => $avatar_image]);
 
-        DB::table('user_avatar')->insertOrIgnore([
+
+        if($result == 1) return response()->json(['message' => 'success'], 200);
+        else return response()->json(['message' => 'failed'], 500);
+    }
+
+    public function buyAvatar(Request $request)
+    {
+        $payload = auth()->payload();
+        $id = $payload->get('sub');
+
+        $avatar_id = $request->input('avatar_id');
+        $cost = $request->input('cost');
+
+        DB::table('user_avatars')->insert([
             'player_id' => $id, 'avatar_id' => $avatar_id
         ]);
+
+        $result = DB::table('players')->where('id', '=', $id)
+            ->decrement('diamond', $cost);
 
         if($result == 1) return response()->json(['message' => 'success'], 200);
         else return response()->json(['message' => 'failed'], 500);
