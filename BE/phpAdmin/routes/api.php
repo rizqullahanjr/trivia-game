@@ -27,7 +27,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('/player/update-score', '\App\Http\Controllers\PlayerController@updateScore');
     Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
     Route::post('/player/buy-avatar', '\App\Http\Controllers\PlayerController@buyAvatar');
-
+    Route::get('/player/{id}', '\App\Http\Controllers\PlayerController@findByIdAdmin');
+    // Quiz
+    Route::get('/quiz/get-all', 'App\Http\Controllers\QuizController@findAll');
 });
 
 Route::group([
