@@ -12,7 +12,9 @@ import {
   Button,
 } from "react-native";
 import { RootState } from "../stores/types/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RESET_SCORE, SCORE_PLAY } from "../stores/slices/sliceScore";
+import socket from "../libs/socket";
 
 interface score {
   rank: number;
@@ -27,10 +29,27 @@ const Board = () => {
   const [allScore, setallScore] = useState<score[]>([]);
   const score1 = useSelector((state: RootState) => state.score1);
   const navigate = useNavigation();
+  const dispath = useDispatch();
+  const player = useSelector((state: RootState) => state.player);
 
   async function getScore() {
     const score = await AsyncStorage.getItem("score");
     setallScore(JSON.parse(score ?? "[]"));
+  }
+
+  function backHome() {
+    // dispath(SCORE_PLAY([]));
+    navigate.navigate("Home" as never);
+  }
+
+  async function playAgain() {
+    // dispath(SCORE_PLAY([]));
+    await socket.emit("room", {
+      id: player.id,
+      name: player.name,
+      avatar: player.active_avatar,
+    });
+    navigate.navigate("Match" as never);
   }
 
   useEffect(() => {
@@ -49,7 +68,7 @@ const Board = () => {
         <View style={styles.titlePostBox}>
           <Text style={styles.tittleText}>
             Congrats,{"\n"}you got
-            <Text style={{ color: "lightblue" }}> 1 Diamond</Text>
+            <Text style={{ color: "lightblue" }}> 5 Diamond</Text>
           </Text>
         </View>
         <View style={styles.boxBoard}>
@@ -97,15 +116,10 @@ const Board = () => {
         </View>
         <Image style={styles.podium} source={require("../image/podium.jpg")} />
         <View style={styles.boxButton}>
-          <TouchableOpacity
-            onPress={() => {
-              navigate.navigate("Home" as never);
-            }}
-            style={styles.buttonHome}
-          >
+          <TouchableOpacity onPress={backHome} style={styles.buttonHome}>
             <Text style={styles.textHome}>Return to Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonAgain}>
+          <TouchableOpacity onPress={playAgain} style={styles.buttonAgain}>
             <Text style={styles.textAgain}>Play again</Text>
           </TouchableOpacity>
         </View>

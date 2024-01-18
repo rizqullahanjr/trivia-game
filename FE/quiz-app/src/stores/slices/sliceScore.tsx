@@ -17,7 +17,7 @@ export const scorePlay = createSlice({
     SCORE_PLAY: (state, action) => {
       const payload = action.payload;
 
-      state.push(payload);
+      state.unshift(payload);
     },
     RESET_SCORE: (state, _) => {
       state = ScoreState;
@@ -25,6 +25,6 @@ export const scorePlay = createSlice({
   },
 });
 
-export const { SCORE_PLAY } = scorePlay.actions;
+export const { SCORE_PLAY, RESET_SCORE } = scorePlay.actions;
 
 export const ScorePlayReducer = scorePlay.reducer;

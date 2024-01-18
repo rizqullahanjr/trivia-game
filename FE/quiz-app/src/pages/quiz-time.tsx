@@ -129,15 +129,15 @@ const Quiz = () => {
       socket.emit(`${room}`, "get score", async (res: any) => {
         console.log(res);
         AsyncStorage.setItem("score", JSON.stringify(res));
-        dispatch(SCORE_PLAY(res[0]));
-        dispatch(SCORE_PLAY(res[1]));
         dispatch(SCORE_PLAY(res[2]));
+        dispatch(SCORE_PLAY(res[1]));
+        dispatch(SCORE_PLAY(res[0]));
 
         if (user.id == res[0].id) {
           const token = await AsyncStorage.getItem("token");
           axios.put(
             "http://192.168.18.174:8000/api/player/add-diamond",
-            { diamond: 10 },
+            { diamond: 5 },
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -147,7 +147,7 @@ const Quiz = () => {
           );
           dispatch(
             DATA_PLAYER({
-              diamond: user.diamond + 10,
+              diamond: user.diamond + 5,
               name: user.name,
               active_avatar: user.active_avatar,
               id: user.id,

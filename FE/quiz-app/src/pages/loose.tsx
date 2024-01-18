@@ -11,8 +11,10 @@ import {
   ImageBackground,
   Button,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
+import { RESET_SCORE, SCORE_PLAY } from "../stores/slices/sliceScore";
+import socket from "../libs/socket";
 
 interface score {
   rank: number;
@@ -27,6 +29,23 @@ const Loose = () => {
   const [allScore, setallScore] = useState<score[]>([]);
   const score1 = useSelector((state: RootState) => state.score1);
   const navigate = useNavigation();
+  const dispath = useDispatch();
+  const player = useSelector((state: RootState) => state.player);
+
+  function backHome() {
+    // dispath(SCORE_PLAY([]));
+    navigate.navigate("Home" as never);
+  }
+
+  async function playAgain() {
+    // dispath(SCORE_PLAY([]));
+    await socket.emit("room", {
+      id: player.id,
+      name: player.name,
+      avatar: player.active_avatar,
+    });
+    navigate.navigate("Match" as never);
+  }
 
   // const score =  AsyncStorage.getItem("score");
   // const allScoreP = JSON.parse(score ?? "[]");
@@ -98,15 +117,10 @@ const Loose = () => {
         </View>
         <Image style={styles.podium} source={require("../image/podium.jpg")} />
         <View style={styles.boxButton}>
-          <TouchableOpacity
-            onPress={() => {
-              navigate.navigate("Home" as never);
-            }}
-            style={styles.buttonHome}
-          >
+          <TouchableOpacity onPress={backHome} style={styles.buttonHome}>
             <Text style={styles.textHome}>Return to Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonAgain}>
+          <TouchableOpacity onPress={playAgain} style={styles.buttonAgain}>
             <Text style={styles.textAgain}>Play again</Text>
           </TouchableOpacity>
         </View>
