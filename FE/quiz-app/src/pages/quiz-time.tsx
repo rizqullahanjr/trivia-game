@@ -14,8 +14,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import socket from "../libs/socket";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
+import { useNavigation } from "@react-navigation/native";
+import { DATA_PLAYER, addScore } from "../stores/slices/authSlices";
+import { SCORE_PLAY } from "../stores/slices/sliceScore";
 
 interface Question {
   Question: string;
@@ -36,6 +39,8 @@ interface opponents {
 const Quiz = () => {
   const room = useSelector((state: RootState) => state.room.roomId);
   const user = useSelector((state: RootState) => state.player);
+  const navigate = useNavigation();
+  const dispatch = useDispatch();
   const [allQuestions, setAllquestion] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
@@ -43,7 +48,7 @@ const Quiz = () => {
   const [isOptionsDisabled, setisOptionsDisabled] = useState(false);
   const [getScore, setGetScore] = useState(0);
   const [resultText, setResultText] = useState("");
-  const [timer, setTimer] = useState(20);
+  const [timer, setTimer] = useState(2);
   const [renderAvatarAnswer, setrenderAvatarAnswer] = useState(false);
   const [GetAnswer, setGetAnswer] = useState<opponents[]>([]);
   const [getAvatar, setgetAvatar] = useState([]);
@@ -59,19 +64,11 @@ const Quiz = () => {
   // }
 
   async function getQuestion() {
-    // await socket.on("questions", (msg: any) => {
-    //   setAllquestion(msg);
-    //   console.log(msg);
-    //   setTimer(20);
-    // });
-
     const quest = await AsyncStorage.getItem("quest");
     setAllquestion(JSON.parse(quest ?? "[]"));
   }
 
   const handlePress = (selectedOptions: any) => {
-    console.log(currentQuestion);
-
     setCurrentOptionSelected(selectedOptions);
     socket.emit(`${room}`, {
       id: user.id,
@@ -87,9 +84,13 @@ const Quiz = () => {
     setrenderAvatarAnswer(true);
     if (selectedOptions == Answer) {
       setGetScore(getScore + 20);
-      setResultText("Correct!");
+      setResultText(
+        `Jawaban anda benar, adalah ${Answer} jika ${allQuestions[currentQuestion].Question}`
+      );
     } else {
-      setResultText("Wrong!");
+      setResultText(
+        `Jawaban anda salah, adalah ${Answer} jika ${allQuestions[currentQuestion].Question}`
+      );
     }
 
     // if(currentQuestion== allQuestions.length-1)
@@ -99,7 +100,7 @@ const Quiz = () => {
     // setisOptionsDisabled(false);
     setTimeout(() => {
       moveToNextQuestion();
-    }, 3000);
+    }, 1000);
   };
 
   const moveToNextQuestion = () => {
@@ -108,14 +109,57 @@ const Quiz = () => {
     setCorrectOptions("");
     setisOptionsDisabled(false);
     setResultText("");
-    setTimer(10);
+    setTimer(2);
     setrenderAvatarAnswer(false);
 
     // Move to the next question if available
+    if (currentQuestion == allQuestions.length) {
+      setCurrentOptionSelected(null);
+      setCorrectOptions("");
+      setisOptionsDisabled(false);
+      setResultText("");
+      setTimer(0);
+      setrenderAvatarAnswer(false);
+    }
     if (currentQuestion < allQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // Handle end of questions (e.g., navigate to result screen)
+      // Handle end of questions
+
+      socket.emit(`${room}`, "get score", async (res: any) => {
+        console.log(res);
+        AsyncStorage.setItem("score", JSON.stringify(res));
+        dispatch(SCORE_PLAY(res[0]));
+        dispatch(SCORE_PLAY(res[1]));
+        dispatch(SCORE_PLAY(res[2]));
+
+        if (user.id == res[0].id) {
+          const token = await AsyncStorage.getItem("token");
+          axios.put(
+            "http://192.168.18.174:8000/api/player/add-diamond",
+            { diamond: 10 },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          dispatch(
+            DATA_PLAYER({
+              diamond: user.diamond + 10,
+              name: user.name,
+              active_avatar: user.active_avatar,
+              id: user.id,
+              total_score: user.total_score,
+              highest_score: user.highest_score,
+            })
+          );
+          navigate.navigate("Board" as never);
+        } else {
+          navigate.navigate("Loose" as never);
+        }
+      });
     }
     Animated.timing(progress, {
       toValue: currentQuestion + 1,
@@ -182,23 +226,6 @@ const Quiz = () => {
     // setAllquestion(dataQuiz);
   }, []);
 
-  const renderPlayerImage = () => {
-    const playerAnswer = playerGame.find(
-      (player) => player.Answer === currentOptionSelected
-    );
-
-    if (playerAnswer) {
-      return (
-        <Image
-          key={playerAnswer.image}
-          style={styles.avatarPlayer}
-          source={require(`../image/${playerAnswer.image}`)}
-        />
-      );
-    }
-
-    return null;
-  };
   return (
     <>
       <ImageBackground
@@ -208,6 +235,9 @@ const Quiz = () => {
       >
         <View style={styles.centered}>
           {/* top */}
+          <View>
+            <Text>Yoour live score{getScore}</Text>
+          </View>
           <View style={styles.score}>
             <Score />
           </View>
@@ -269,7 +299,9 @@ const Quiz = () => {
               ))}
             </View>
             {/* bar */}
-            <Text>{resultText}</Text>
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "500" }}>
+              {resultText}
+            </Text>
           </View>
           <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
             {/* quest length */}

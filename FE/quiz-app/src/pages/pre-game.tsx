@@ -54,7 +54,9 @@ const Match = () => {
           })
         );
         AsyncStorage.setItem("room", msg.roomId);
-        navigation.navigate("Quiz" as never);
+        setTimeout(() => {
+          navigation.navigate("Quiz" as never);
+        }, 3000);
       } else {
         setallPlayer(msg);
         // console.log(allPlayer);
