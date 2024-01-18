@@ -8,7 +8,7 @@ import (
 )
 
 func DatabaseMigration(db *gorm.DB) {
-	db.AutoMigrate(&models.User{}, &models.Players{}, &models.Avatar{}, &models.User_Avatar{}, &models.PlayerResponse{}, &models.AvatarResponse{})
+	db.AutoMigrate(&models.User{}, &models.Players{}, &models.Avatar{}, &models.User_Avatar{},&models.Topup{}, &models.PlayerResponse{}, &models.AvatarResponse{})
 
 	fmt.Println("Database Migrated")
 }
