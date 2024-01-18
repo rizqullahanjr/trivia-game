@@ -1,0 +1,92 @@
+[
+    {
+        "ID": "65a3cf3a2e555254afbe6722",
+        "Question": "Belanda menyerah tanpa syarat kepada Jepang tanggal 8 Maret 1942",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe6730",
+        "Question": "TNI (Tentara Nasional Indonesia) didirikan pada tanggal 3 Juni 1947",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe6720",
+        "Question": "Raja Jayabhaya memerintah keranjaan Kediri antara 1135 sampai 1157",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe672a",
+        "Question": "Naskah proklamasi diketik oleh Sayuti Melik",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe6728",
+        "Question": "PPKI menghendaki bahwa pelaksanakan proklamasi pada tanggal 24 Agustus 1945",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe672c",
+        "Question": "Pembacaan teks proklamasi dilakukan di Pengangsaan Timur 56 Jakarta",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe671f",
+        "Question": "Sastra Jawa Arjunawiwaha diambil dari cerita Ramayana ",
+        "Answer": "false",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe672e",
+        "Question": "Pemilihan presiden dan wakil presiden pertama Indonesia dilakukan secara mufakat",
+        "Answer": "true",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe672f",
+        "Question": "Rapat PPKI memutuskan pembagian wilayah Indonesia menjadi 10 provinsi",
+        "Answer": "false",
+        "Options": [
+            "true",
+            "false"
+        ]
+    },
+    {
+        "ID": "65a3cf3a2e555254afbe6721",
+        "Question": "Jepang menjajah Indonesia selama 4,5 tahun",
+        "Answer": "false",
+        "Options": [
+            "true",
+            "false"
+        ]
+    }
+]
