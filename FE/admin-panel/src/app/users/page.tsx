@@ -33,11 +33,7 @@ const Users: React.FC = () => {
   };
 
   const handleSaveUser = (updatedUser: any) => {
-    // Save the updated user details
-    // Implement the logic to save the updated user details
-    // For example: userCRUD().updateUser(updatedUser.id, updatedUser.name, updatedUser.active_avatar, updatedUser.diamond, updatedUser.highest_score);
-    // After saving, update the users state with the updated user details
-    const updatedUsers = users.map((user: any) => (user.id === updatedUser.id ? updatedUser : user));
+   const updatedUsers = users.map((user: any) => (user.id === updatedUser.id ? updatedUser : user));
     setUsers(updatedUsers);
     setEditingUser(null); // Reset the editing user state
   };

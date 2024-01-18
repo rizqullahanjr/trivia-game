@@ -1,90 +1,46 @@
-import React from "react";
+'use client'
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
-import Image from "next/image";
+import { questionsCRUD } from "./questionsCRUD";
 
 const Questions: React.FC = () => {
+  const [questions, setQuestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    questionsCRUD().readQuestions().then((res) => {
+      setQuestions(res);
+    });
+  }, []);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredQuestions = questions.filter((question: any) =>
+    question.Question.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="flex">
       <Sidebar />
-      <main className="p-4">
-        <h1 className="text-2xl font-bold mb-4">
-          Hello, World! This is the Questions Page
-        </h1>
-        <div className="grid grid-cols-3 gap-4 ">
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Registered Players</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
+      <div className="w-full p-4">
+        <input
+          type="text"
+          placeholder="Search by question"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="mb-4"
+        />
+        <div className="grid grid-cols-1 gap-4 p-4">
+          {filteredQuestions.map((question: any, index: number) => (
+            <div key={index} className="card bg-white shadow-lg rounded-lg overflow-hidden">
+              <h4 className="font-bold text-black">{question.Question}</h4>
+              <p className="text-black">Answer: {question.Answer}</p>
             </div>
-          </div>
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Online Players</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
-            </div>
-          </div>
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Numbers of Questions</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
-            </div>
-          </div>
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Avatars bought</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
-            </div>
-          </div>
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Diamonds Topped up</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
-            </div>
-          </div>
-          <div className="border-2 border-rose-500">
-            <h1 className="text-2x1 font-bold mb-4">Registered Users</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image 
-                  src="https://cdn.discordapp.com/attachments/1192442047404191776/1196277068380504114/boy-avatar_2.png"
-                  alt="test"
-                  width={50}
-                  height={50}
-                />
-                <span style={{ marginLeft: '5px' }}>100</span>
-            </div>
-          </div>
+          ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 };
