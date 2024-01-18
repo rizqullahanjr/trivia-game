@@ -19,6 +19,7 @@ import Topup from "../components/topup";
 import MyButton from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import socket from "../libs/socket";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -32,7 +33,6 @@ const Home = () => {
   const navigate = useNavigation();
   const player = useSelector((state: RootState) => state.player);
   const [modalVisible, setModalVisible] = useState(false);
-
   const [modalDiamond, setModalDiamond] = useState(false);
 
   const imgSplash = [
@@ -40,6 +40,15 @@ const Home = () => {
     require("../image/bgImage.jpg"),
     require("../image/diamond.png"),
   ];
+
+  async function handleStart() {
+    await socket.emit("room", {
+      id: player.id,
+      name: player.name,
+      avatar: player.active_avatar,
+    });
+    navigate.navigate("Match" as never);
+  }
   return (
     <>
       <ImageBackground
@@ -163,7 +172,7 @@ const Home = () => {
             source={require("../image/home-page.jpg")}
           />
           <View style={styles.buttonStart}>
-            <Button color={"green"} title="START GAME" />
+            <Button onPress={handleStart} color={"green"} title="START GAME" />
           </View>
 
           {/* button logout */}

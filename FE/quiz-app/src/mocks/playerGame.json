@@ -1,0 +1,22 @@
+[
+    {
+      "name": "Cuaca",
+      "image": "boy.jpg",
+      "Answer": "True"
+    },
+    {
+      "name": "Melani",
+      "image": "score.jpg",
+      "Answer": "False"
+    },
+    {
+      "name": "Mendung",
+      "image": "diamond.jpg",
+      "Answer": "False"
+    },
+    {
+      "name": "Mendung",
+      "image": "score.jpg",
+      "Answer": "False"
+    }
+]

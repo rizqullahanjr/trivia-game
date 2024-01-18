@@ -1,7 +1,76 @@
 import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
-import CountdownTimer from "../components/timer";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import socket from "../libs/socket";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../stores/types/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ROOM_ID } from "../stores/slices/authSlices";
+
+interface AllPlayer {
+  id: number;
+  name: string;
+  avatar: string;
+}
 
 const Match = () => {
+  const dispatch = useDispatch();
+  const [room, setRoom] = useState("");
+  const user = useSelector((state: RootState) => state.player);
+  const [currentPlayer, setCurrentPlayer] = useState(0);
+  const [timer, setTimer] = useState(20);
+  const navigation = useNavigation();
+  const [allPlayer, setallPlayer] = useState<AllPlayer[]>([
+    {
+      id: user.id,
+      name: user.name,
+      avatar: user.active_avatar,
+    },
+  ]);
+
+  // async function getQuestion() {
+  //   await socket.on("questions", (msg: any) => {
+  //     setAllquestion(msg);
+  //     console.log(msg);
+
+  //   });
+  // }
+
+  useEffect(() => {
+    socket.on("questions", (msg: any) => {
+      AsyncStorage.setItem("quest", JSON.stringify(msg));
+      console.log(msg);
+    });
+
+    socket.on("rooms", (msg: any) => {
+      console.log(msg);
+      if (msg.message == "room is full") {
+        setRoom(msg.roomId);
+        console.log(room);
+
+        dispatch(
+          ROOM_ID({
+            roomId: msg.roomId,
+          })
+        );
+        AsyncStorage.setItem("room", msg.roomId);
+        setTimeout(() => {
+          navigation.navigate("Quiz" as never);
+        }, 3000);
+      } else {
+        setallPlayer(msg);
+        // console.log(allPlayer);
+      }
+    });
+  }, []);
+
+  // useEffect(()=>{
+  //   allPlayer.forEach((player, index)=>{
+  //     setallPlayer(index)
+  //     allPlayer.push(allPlayer)
+  //   })
+  // })
+
   return (
     <>
       <ImageBackground
@@ -28,22 +97,26 @@ const Match = () => {
         {/* count */}
         <View style={styles.center}>
           <Text style={styles.timer}>
-            <CountdownTimer durationInSeconds={20} />
+            {timer}
+            {/* <CountdownTimer durationInSeconds={20} /> */}
           </Text>
           <Text style={[styles.finding]}>Finding Opponent</Text>
           <Text style={[styles.finding, { color: "#29c910", marginTop: 7 }]}>
-            1<Text style={{ color: "white" }}>/3</Text>
+            {allPlayer.length}
+            <Text style={{ color: "white" }}>/3</Text>
           </Text>
         </View>
 
-        <View style={styles.playerGame}>
-          <Image
-            style={styles.avatarPlayer}
-            source={require("../image/boy.jpg")}
-          />
+        {allPlayer.map((player, index) => (
+          <View key={index} style={[styles.playerGame]}>
+            <Image
+              style={styles.avatarPlayer}
+              source={{ uri: player.avatar }}
+            />
 
-          <Text style={styles.name}>Melina_Mendung</Text>
-        </View>
+            <Text style={styles.name}>{player.name}</Text>
+          </View>
+        ))}
       </ImageBackground>
     </>
   );
