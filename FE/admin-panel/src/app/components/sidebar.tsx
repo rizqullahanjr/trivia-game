@@ -1,4 +1,3 @@
-// components/Sidebar.tsx
 import React from "react";
 
 const Sidebar: React.FC = () => {
@@ -12,10 +11,10 @@ const Sidebar: React.FC = () => {
           <a href="/users" className="text-blue-600 hover:underline">Users</a>
         </li>
         <li className="mb-2">
-          <a href="/shop" className="text-blue-600 hover:underline">Avatars</a>
+          <a href="/avatars" className="text-blue-600 hover:underline">Avatars</a>
         </li>
         <li className="mb-2">
-          <a href="/topup" className="text-blue-600 hover:underline">Topup</a>
+          <a href="/questions" className="text-blue-600 hover:underline">Questions</a>
         </li>
         <li className="mb-2">
           <a href="/logout" className="text-red-600 hover:underline">Logout</a>

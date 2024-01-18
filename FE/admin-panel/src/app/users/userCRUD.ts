@@ -1,6 +1,6 @@
 import React from "react";
 import Admin from "@/models/admin";
-import {API, setAuthToken} from "@/libs/axios";
+import {API} from "@/libs/axios";
 import User from "@/models/user";
 
 export function userCRUD(){
@@ -20,8 +20,20 @@ export function userCRUD(){
       return response.data;
     };
 
+    const readUserSingle = async (id: number, name: string, active_avatar: string, diamond: number, highest_score: number) => {
+      const response = await API.get(`/player/${id}`, {
+        params: {
+          name,
+          active_avatar,
+          diamond,
+          highest_score
+        }
+      });
+      return response.data;
+    };
+
     const updateUser = async (id: number, name: string, active_avatar: string, diamond: number, highest_score: number) => {
-      const response = await API.put(`/players/${id}`, {
+      const response = await API.post(`/player/${id}`, {
         name,
         active_avatar,
         diamond,
@@ -30,15 +42,24 @@ export function userCRUD(){
       return response.data;
     };
 
+    const resetScore = async (id: number, name: string, active_avatar: string, diamond: number, highest_score: number) => {
+      const response = await API.put(`/player/${id}/reset-score`, {
+        highest_score
+      });
+      return response.data;
+    };
+
     const deleteUser = async (id: number) => {
-      const response = await API.delete(`/players/${id}`);
+      const response = await API.delete(`/player/${id}`);
       return response.data;
     };
 
     return {
       createUser,
       readUser,
+      readUserSingle,
       updateUser,
-      deleteUser
+      deleteUser,
+      resetScore
     };
 }
