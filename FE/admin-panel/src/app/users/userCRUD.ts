@@ -1,7 +1,4 @@
-import React from "react";
-import Admin from "@/models/admin";
 import {API} from "@/libs/axios";
-import User from "@/models/user";
 
 export function userCRUD(){
 
