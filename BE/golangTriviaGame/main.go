@@ -12,16 +12,16 @@ import (
 
 func main() {
 
-	dbConection := database.Database()
+	dbConnection := database.Database()
 
 	//repository
-	avatarRepository := repository.NewAvatarRepository(dbConection)
-	avatarUserRepository := repository.AvatarRepo(dbConection)
+	avatarRepository := repository.NewAvatarRepository(dbConnection)
+	avatarUserRepository := repository.AvatarRepo(dbConnection)
 
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
 
-	//roter
+	//router
 	g := gin.Default()
 	g.Use(cors.Default())
 	routes.NewAvatarUserRoutes(g, avatarController)
