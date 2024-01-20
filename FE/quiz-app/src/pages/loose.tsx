@@ -11,8 +11,8 @@ import {
   ImageBackground,
   Button,
 } from "react-native";
-import { RootState } from "../stores/types/store";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../stores/types/store";
 import { RESET_SCORE, SCORE_PLAY } from "../stores/slices/sliceScore";
 import socket from "../libs/socket";
 
@@ -24,18 +24,13 @@ interface score {
   avatar: string;
 }
 
-const Board = () => {
+const Loose = () => {
   const navigation = useNavigation();
   const [allScore, setallScore] = useState<score[]>([]);
   const score1 = useSelector((state: RootState) => state.score1);
   const navigate = useNavigation();
   const dispath = useDispatch();
   const player = useSelector((state: RootState) => state.player);
-
-  async function getScore() {
-    const score = await AsyncStorage.getItem("score");
-    setallScore(JSON.parse(score ?? "[]"));
-  }
 
   function backHome() {
     // dispath(SCORE_PLAY([]));
@@ -52,9 +47,18 @@ const Board = () => {
     navigate.navigate("Match" as never);
   }
 
+  // const score =  AsyncStorage.getItem("score");
+  // const allScoreP = JSON.parse(score ?? "[]");
+
+  async function getScore() {
+    const score = await AsyncStorage.getItem("score");
+    setallScore(JSON.parse(score ?? "[]"));
+  }
+
   useEffect(() => {
     getScore();
   }, []);
+  // console.log(allScoreP);
 
   console.log("hasil dux", score1);
 
@@ -66,10 +70,7 @@ const Board = () => {
         source={require("../image/bgImage.jpg")}
       >
         <View style={styles.titlePostBox}>
-          <Text style={styles.tittleText}>
-            Congrats,{"\n"}you got
-            <Text style={{ color: "lightblue" }}> 5 Diamond</Text>
-          </Text>
+          <Text style={styles.tittleText}>Better luck next time</Text>
         </View>
         <View style={styles.boxBoard}>
           <View style={styles.boxAvatarAllPlayer}>
@@ -128,7 +129,7 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default Loose;
 
 const styles = StyleSheet.create({
   container: {
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     // marginBottom: 40,
     marginTop: 30,
+    marginBottom: 35,
   },
   tittleText: {
     fontSize: 30,
