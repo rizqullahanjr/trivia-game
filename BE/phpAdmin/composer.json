@@ -11,6 +11,7 @@
         "laravel/breeze": "^1.27",
         "laravel/framework": "^10.10",
         "laravel/tinker": "^2.8",
+        "mongodb/laravel-mongodb": "^4.1",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {

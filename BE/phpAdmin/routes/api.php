@@ -1,21 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuizController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-
-
+// Quiz Routes
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'quiz'
+], function () {
+    Route::get('/', [QuizController::class, 'findAll']);
+    Route::get('/{id}', [QuizController::class, 'findById']);
+    Route::post('/add', [QuizController::class, 'add']);
+    Route::put('/{id}', [QuizController::class, 'update']);
+    Route::delete('/{id}', [QuizController::class, 'delete']);
+});
 
 Route::middleware(['auth:api'])->group(function () {
     // Player
@@ -28,8 +26,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
     Route::post('/player/buy-avatar', '\App\Http\Controllers\PlayerController@buyAvatar');
     Route::get('/player/{id}', '\App\Http\Controllers\PlayerController@findByIdAdmin');
+    Route::put('player/{id}/reset-score', '\App\Http\Controllers\PlayerController@resetScore');
     // Quiz
-    Route::get('/quiz/get-all', 'App\Http\Controllers\QuizController@findAll');
+
 });
 
 Route::group([
