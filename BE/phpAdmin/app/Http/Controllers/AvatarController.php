@@ -69,10 +69,10 @@ class AvatarController extends Controller
         ]);
 
         // delete old image
-        $avatar = DB::table('avatars')->where('id', '=', $id)
-            ->first('image');
+        $image = DB::table('avatars')->where('id', '=', $id)
+            ->value('image');
 
-        $array = explode('/', $avatar->image);
+        $array = explode('/', $image);
         $oldFile = explode('.', $array[sizeof($array)-1]);
         Cloudinary::destroy('trivia-game-avatar/'.$oldFile[0]);
 
@@ -97,10 +97,9 @@ class AvatarController extends Controller
         $id = $request->route('id');
 
         // delete image on cloudinary
-        $avatar = DB::table('avatars')->where('id', '=', $id)
-            ->first('image');
-
-        $array = explode('/', $avatar->image);
+        $image = DB::table('avatars')->where('id', '=', $id)
+            ->value('image');
+        $array = explode('/', $image);
         $oldFile = explode('.', $array[sizeof($array)-1]);
         Cloudinary::destroy('trivia-game-avatar/'.$oldFile[0]);
 

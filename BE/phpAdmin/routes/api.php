@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\AuthController;
 
-// Quiz Routes
+// Quiz routes
 Route::group([
     'middleware' => 'api',
     'prefix' => 'quiz'
@@ -16,7 +18,7 @@ Route::group([
     Route::delete('/{id}', [QuizController::class, 'delete']);
 });
 
-// Avatar Routes
+// Avatar routes
 Route::group([
     'middleware' => 'api',
     'prefix' => 'avatar'
@@ -29,37 +31,41 @@ Route::group([
     Route::delete('/{id}', [AvatarController::class, 'delete']);
 });
 
-Route::middleware(['auth:api'])->group(function () {
-    // Player
-    Route::post('/player/register', '\App\Http\Controllers\PlayerController@register');
-    Route::get('/players', '\App\Http\Controllers\PlayerController@findall');
-    Route::get('/player', '\App\Http\Controllers\PlayerController@findbyid');
-    Route::put('/player/add-diamond', '\App\Http\Controllers\PlayerController@addDiamond');
-    Route::put('/player/reduce-diamond', '\App\Http\Controllers\PlayerController@reduceDiamond');
-    Route::put('/player/update-score', '\App\Http\Controllers\PlayerController@updateScore');
-    Route::put('/player/update-avatar', '\App\Http\Controllers\PlayerController@updateAvatar');
-    Route::post('/player/buy-avatar', '\App\Http\Controllers\PlayerController@buyAvatar');
-    Route::get('/player/{id}', '\App\Http\Controllers\PlayerController@findByIdAdmin');
-    Route::put('player/{id}/reset-score', '\App\Http\Controllers\PlayerController@resetScore');
-    // Quiz
-
+// Player routes for admin panel
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'player'
+], function () {
+    Route::get('/all', [PlayerController::class, 'findAll']);
+    Route::get('{id}', [PlayerController::class, 'findByIdAdmin']);
+    Route::put('{id}/reset-score', [PlayerController::class, 'resetScore']);
 });
 
+// Player routes for gameplay
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'player'
+], function () {
+    Route::get('/', [PlayerController::class, 'findById']);
+    Route::post('/register', [PlayerController::class, 'register']);
+    Route::put('/add-diamond', [PlayerController::class, 'addDiamond']);
+    Route::put('/reduce-diamond', [PlayerController::class, 'reduceDiamond']);
+    Route::put('/update-score', [PlayerController::class, 'updateScore']);
+    Route::put('/update-avatar', [PlayerController::class, 'updateAvatar']);
+    Route::post('/buy-avatar', [PlayerController::class, 'buyAvatar']);
+});
+
+// Auth routes
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
-], function ($router) {
-    Route::post('login', '\App\Http\Controllers\AuthController@login');
-    Route::post('adminLogin', '\App\Http\Controllers\AuthController@adminLogin');
+], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('adminLogin', [AuthController::class, 'adminLogin']);
     Route::get('check', '\App\Http\Controllers\AuthController@check');
 
 });
 
-
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/avatar/get-all-free-avatar', '\App\Http\Controllers\AvatarController@getAllFreeAvatar');
-    Route::get('/avatar/get-all-avatar', '\App\Http\Controllers\AvatarController@getAllAvatar');
-});
 
 
 
