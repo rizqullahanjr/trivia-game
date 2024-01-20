@@ -1,36 +1,116 @@
-<?php
+<?php /** @noinspection PhpUndefinedMethodInspection */
+
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AvatarController extends Controller
 {
-    public function _construct(): void
+    public function findAllFree(): JsonResponse
     {
-        $this->middleware("auth:api", ['except' => ['get-all-free-avatar',
-            'getAllFreeAvatar']]);
-    }
-
-    public function getAllFreeAvatar(Request $request): JsonResponse
-    {
-        $payload = auth()->payload();
-        $id = $payload->get('sub');
-
         $avatars = DB::table('avatars')->where('cost', '=', 0)
             ->get();
-
 
         return response()->json($avatars);
     }
 
-    public function getAllAvatar(Request $request): JsonResponse
+    public function findAll(): JsonResponse
     {
         $avatars = DB::table('avatars')->get();
 
         return response()->json($avatars);
+    }
+
+    public function findById(Request $request): JsonResponse
+    {
+        $id = $request->route('id');
+
+        $avatars = DB::table('avatars')->where('id', '=', $id)->first();
+
+        return response()->json($avatars);
+    }
+
+    public function add(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'image' => 'required|file',
+            'cost' => 'required|integer'
+        ]);
+
+        $imageUrl = Cloudinary::upload($validated['image']->getRealPath(), [
+            'folder' => 'trivia-game-avatar'
+        ]);
+
+        $isCreated = DB::table('avatars')->insert([
+            'cost' => $validated['cost'],
+            'image' => $imageUrl->getSecurePath()
+        ]);
+
+        if($isCreated) {
+            return response()->json(['message' => 'success']);
+        } else {
+            return response()->json(['message' => 'failed'], 500);
+        }
+
+    }
+
+    public function update(Request $request): JsonResponse
+    {
+        $id = $request->route('id');
+        $validated = $request->validate([
+            'image' => 'required|file',
+            'cost' => 'required|integer'
+        ]);
+
+        // delete old image
+        $avatar = DB::table('avatars')->where('id', '=', $id)
+            ->first('image');
+
+        $array = explode('/', $avatar->image);
+        $oldFile = explode('.', $array[sizeof($array)-1]);
+        Cloudinary::destroy('trivia-game-avatar/'.$oldFile[0]);
+
+
+        $imageUrl = Cloudinary::upload($validated['image']->getRealPath(), [
+            'folder' => 'trivia-game-avatar'
+        ]);
+        $rowAffected = DB::table('avatars')->where('id', '=', $id)->update([
+            'cost' => $validated['cost'],
+            'image' => $imageUrl->getSecurePath()
+        ]);
+
+        if($rowAffected == 1) {
+            return response()->json(['message' => 'success']);
+        } else {
+            return response()->json(['message' => 'failed'], 500);
+        }
+    }
+
+    public function delete(Request $request): JsonResponse
+    {
+        $id = $request->route('id');
+
+        // delete image on cloudinary
+        $avatar = DB::table('avatars')->where('id', '=', $id)
+            ->first('image');
+
+        $array = explode('/', $avatar->image);
+        $oldFile = explode('.', $array[sizeof($array)-1]);
+        Cloudinary::destroy('trivia-game-avatar/'.$oldFile[0]);
+
+        $rowAffected = DB::table('avatars')->where('id', '=', $id)->delete();
+
+        if($rowAffected == 1) {
+            return response()->json(['message' => 'success']);
+        } else {
+            return response()->json(['message' => 'failed'], 500);
+        }
     }
 }
 

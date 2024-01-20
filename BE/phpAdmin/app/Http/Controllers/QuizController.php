@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use function Laravel\Prompts\table;
 
 class QuizController extends Controller
 {
-    public function findAll(Request $request): JsonResponse
+    public function findAll(): JsonResponse
     {
         $quiz = DB::connection('mongodb')->table('quiz')
             ->get();
@@ -42,7 +41,7 @@ class QuizController extends Controller
             ]);
 
         if($rowAffected == 1) {
-            return response()->json(['message' => 'success'], 200);
+            return response()->json(['message' => 'success']);
         } else {
             return response()->json(['message' => 'failed'], 500);
         }
@@ -63,7 +62,7 @@ class QuizController extends Controller
         ]);
 
         if($isCreated) {
-            return response()->json(['message' => 'success'], 200);
+            return response()->json(['message' => 'success']);
         } else {
             return response()->json(['message' => 'failed'], 500);
         }
@@ -77,7 +76,7 @@ class QuizController extends Controller
             ->where('_id', '=', $id)->delete();
 
         if($rowAffected == 1) {
-            return response()->json(['message' => 'success'], 200);
+            return response()->json(['message' => 'success']);
         } else {
             return response()->json(['message' => 'failed'], 500);
         }

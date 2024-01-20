@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\AvatarController;
 
 // Quiz Routes
 Route::group([
@@ -13,6 +14,19 @@ Route::group([
     Route::post('/add', [QuizController::class, 'add']);
     Route::put('/{id}', [QuizController::class, 'update']);
     Route::delete('/{id}', [QuizController::class, 'delete']);
+});
+
+// Avatar Routes
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'avatar'
+], function () {
+    Route::get('/', [AvatarController::class, 'findAll']);
+    Route::get('/free', [AvatarController::class, 'findAllFree']);
+    Route::get('/{id}', [AvatarController::class, 'findById']);
+    Route::post('/add', [AvatarController::class, 'add']);
+    Route::post('/{id}', [AvatarController::class, 'update']); // somehow cannot use put/patch
+    Route::delete('/{id}', [AvatarController::class, 'delete']);
 });
 
 Route::middleware(['auth:api'])->group(function () {

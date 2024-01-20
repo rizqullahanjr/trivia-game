@@ -90,21 +90,33 @@ class PlayerController extends Controller
         else return response()->json(['message' => 'failed'], 500);
     }
 
+    public function resetScore(Request $request)
+    {
+        $id = $request->route("id");
+
+        $result = DB::table('players')->where('id', '=', $id)
+            ->update(['highest_score' => 0, 'total_score' => 0]);
+
+        if($result == 1) return response()->json(['message' => 'success'], 200);
+        else return response()->json(['message' => 'failed'], 500);
+    }
+
     public function updateScore(Request $request): JsonResponse
     {
         $payload = auth()->payload();
         $id = $payload->get('sub');
         $newScore = $request->input("score");
+        echo $newScore;
 
         $oldScore = DB::table('players')->where('id','=',$id)
+            ->value('highest_score');
+        $totalScore = DB::table('players')->where('id','=',$id)
             ->value('highest_score');
 
 
         if($newScore > $oldScore) {
             $result = DB::table('players')->where('id', '=', $id)
                 ->update(['highest_score' => $newScore]);
-            if($result == 1) return response()->json(['message' => 'success'], 200);
-            else return response()->json(['message' => 'failed'], 500);
         }
 
         $result = DB::table('players')->where('id', '=', $id)
