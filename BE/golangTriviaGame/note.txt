@@ -1,0 +1,22 @@
+take a look at document how to run go.
+
+make some folders such as : repository, controllers or useCase, models, and routes, dto for data transfer object like request and response
+
+clean architecture:
+-models for creating table in database
+-repository to communicate with database
+-controllers to communicate with repository
+-routes to communicate with controllers
+
+models -> repository -> controllers -> routes.
+all those packages should be imported in main.go
+
+-create interface and struct in the beginning for repository and controllers.
+- in Routes file, use only struct to get controllers' interface and use gin *gin.engine since it's its framework.
+
+
+
+
+MIDTRANS.
+- get snapURL (use hardcode as a first try)
+- handle afterpayment in order to get status like expired,settlement and soon.

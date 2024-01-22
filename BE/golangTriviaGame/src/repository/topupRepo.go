@@ -9,6 +9,8 @@ import (
 
 type ITopupRepository interface {
 	FindDataTopup() ([]models.Topup, error)
+	TopupDiamond(req models.Topup) (models.Topup, error)
+	FindOneByOrderID(orderID string) (models.Topup, error)
 }
 
 
@@ -32,3 +34,56 @@ func (r *topupRepository)FindDataTopup()([]models.Topup, error){
 	fmt.Println(topup)
 	return topup, err
 }
+
+// func (r *topupRepository) TopupDiamond(req models.Topup) (models.Topup, error) {
+
+// 	randomSTring, _ := midtranspayment.GenerateRandomString(10)
+	
+// 	dataTopup := &models.Topup{
+// 		TotalDiamond: req.TotalDiamond,
+// 		Email:        req.Email,
+// 		Name:         req.Name,
+// 		Price:        req.Price,
+// 		OrderId:      randomSTring,
+// 		// DiamondPlayerID: req.DiamondPlayerID,
+// 	}
+	
+// 	if err := r.db.Create(dataTopup).Error; err != nil {
+        
+//         fmt.Println(err)
+//         return models.Topup{}, err
+//     }
+
+//     return *dataTopup, nil
+// }
+func (r *topupRepository) TopupDiamond(req models.Topup) (models.Topup, error) {
+
+	dataTopup := &models.Topup{
+		TotalDiamond: req.TotalDiamond,
+		IdUser:       req.IdUser,
+		Email:        req.Email,
+		Name:         req.Name,
+		Price:        req.Price,
+		OrderId:      req.OrderId,
+		// DiamondPlayerID: req.DiamondPlayerID,
+	}
+
+	if err := r.db.Create(dataTopup).Error; err != nil {
+
+		fmt.Println(err)
+		return models.Topup{}, err
+	}
+	return *dataTopup, nil
+}
+
+func (r *topupRepository) FindOneByOrderID(orderID string) (models.Topup, error) {
+	var topup models.Topup
+	err := r.db.Where("order_id = ?", orderID).First(&topup).Error
+	if err != nil {
+		fmt.Println(err)
+		return models.Topup{}, err
+	}
+	
+	return topup, err
+}
+

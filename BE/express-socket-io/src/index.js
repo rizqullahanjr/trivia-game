@@ -3,10 +3,11 @@ import http from 'http';
 import { Server } from 'socket.io';
 import room from "./room.js"
 import getRandomId from "./uuid.js";
-import quizRoom from "./quiz-room.js";
 import quizRoomFunc from "./quizroomfunc.js";
+import axios from "axios";
 
 const app = express();
+const PORT =  7000;
 const server = http.createServer(app);
 const io =
     new Server(server, {
@@ -15,11 +16,11 @@ const io =
             methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         }
     });
-const PORT =  7000;
 
-// Your Express.js routes and middleware can be added here
+
 let rooms = new room();
 let roomId = getRandomId()
+let quiz = await axios.get("http://192.168.18.174:5000/api/v1/get-question")
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
@@ -27,7 +28,7 @@ io.on('connection', (socket) => {
 
 
     // Handle events from the client
-    socket.on('room', (msg) => {
+    socket.on('room', async (msg) => {
         console.log('Message from client:', msg);
 
 
@@ -36,6 +37,7 @@ io.on('connection', (socket) => {
             socket.join(roomId)
             socket.emit('rooms', rooms.getPlayers())
             socket.broadcast.emit('rooms', rooms.getPlayers())
+            quizRoomFunc(io, socket, roomId, rooms, quiz.data)
         }
 
         if(rooms.isFull()) {
@@ -49,10 +51,10 @@ io.on('connection', (socket) => {
                 roomId: roomId
             })
             console.log(rooms.getPlayers())
-            quizRoomFunc(socket, roomId, rooms)
+
             rooms = new room()
             roomId = getRandomId()
-
+            quiz = await axios.get("http://192.168.18.174:5000/api/v1/get-question")
 
         }
 
@@ -64,6 +66,10 @@ io.on('connection', (socket) => {
         io.emit('chat message', msg);
     });
 
+    socket.on('testing', (msg) => {
+        console.log("testing")
+    })
+
     // Handle disconnection
     socket.on('disconnect', () => {
         console.log('User disconnected');
@@ -71,5 +77,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT,'192.168.18.174', () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://192.168.18.174:${PORT}`);
 });

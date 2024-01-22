@@ -1,8 +1,10 @@
-<?php
+<?php /** @noinspection PhpUnused */
+
+/** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,27 +29,20 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $name = $request->input('name');
-        $email = $request->input('email');
-
-
-
-        DB::table('users')->insertOrIgnore([
-            'name' => $name,
-            'email' => $email
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email'
         ]);
 
-        $user = DB::table('users')->whereRaw('email = ?', $email)->get();
+        DB::table('users')->insertOrIgnore([
+            'name' => $validated['name'],
+            'email' => $validated['email']
+        ]);
 
+        $id = DB::table('users')->where('email', '=', $validated['email'])
+            ->value('id');
 
-        $credentials = [
-            'id' => $user[0]->id,
-            'name' => $name,
-            'email' => $name,
-        ];
-
-
-        $token = auth()->tokenById($user[0]->id);
+        $token = auth()->tokenById($id);
 
         if($token == null) {
             return response()->json(["message" => "failed create token"], 500);
@@ -58,15 +53,17 @@ class AuthController extends Controller
 
     public function adminLogin(Request $request): JsonResponse
     {
-        $name = $request->input('name');
-        $password = $request->input('password');
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string'
+        ]);
 
-        if($name != env('ADMIN_NAME') && $password != env('ADMIN_PASSWORD')) {
+        if($validated['name'] != env('ADMIN_NAME')
+            && $validated['password'] != env('ADMIN_PASSWORD')) {
             return response()->json(["message" => "error"], 400);
         }
 
-
-        $token = auth()->tokenById("79");
+        $token = auth()->tokenById("1");
 
         if($token == null) {
             return response()->json(["message" => "failed create token"], 500);
@@ -76,8 +73,21 @@ class AuthController extends Controller
     }
 
 
-    public function check(Request $request)
+    public function check(): JsonResponse
     {
-        return response()->json(['message' => 'valid']);
+        try {
+            $payload = auth()->payload();
+            $id = $payload->get('sub');
+
+            if($id) {
+                return response()->json(['message' => 'valid']);
+            } else {
+                return response()->json(['message' => 'not valid']);
+            }
+        } catch (Exception) {
+            return response()->json(['message' => 'not valid']);
+    }
+
+
     }
 }

@@ -5,12 +5,14 @@ import Avatars from "../pages/config_avatar";
 import Home from "../pages/home";
 import Match from "../pages/pre-game";
 import Quiz from "../pages/quiz-time";
+import Board from "../pages/ladderboard";
+import Loose from "../pages/loose";
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
   return (
-    <Stack.Navigator initialRouteName="Quiz">
+    <Stack.Navigator initialRouteName="Auth">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -39,6 +41,16 @@ const Routes = () => {
       <Stack.Screen
         name="Quiz"
         component={Quiz}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Board"
+        component={Board}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Loose"
+        component={Loose}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

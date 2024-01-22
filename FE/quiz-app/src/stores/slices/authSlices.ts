@@ -11,6 +11,20 @@ const initialState = {
   diamond: 0,
 };
 
+const roomid = {
+  roomId: "",
+};
+
+const stateScore = [
+  {
+    id: 0,
+    name: "",
+    avatar: "",
+    score: 0,
+    rank: 0,
+  },
+];
+
 export const playerData = createSlice({
   name: "player",
   initialState,
@@ -40,6 +54,35 @@ export const playerData = createSlice({
   },
 });
 
+export const playerRoom = createSlice({
+  name: "room",
+  initialState: roomid,
+  reducers: {
+    ROOM_ID: (state, action) => {
+      const payload = action.payload;
+      const roomId = payload.roomId;
+
+      state.roomId = roomId;
+
+      return state;
+    },
+  },
+});
+
+export const playerScore = createSlice({
+  name: "score",
+  initialState: stateScore,
+  reducers: {
+    addScore: (state, action) => {
+      state.push(action.payload);
+    },
+  },
+});
 export const { DATA_PLAYER } = playerData.actions;
 
-export default playerData.reducer;
+export const { ROOM_ID } = playerRoom.actions;
+export const { addScore } = playerScore.actions;
+
+export const playerDataReducer = playerData.reducer;
+export const playerRoomReducer = playerRoom.reducer;
+export const playerScoreReducer = playerScore.reducer;

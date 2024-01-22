@@ -56,10 +56,9 @@ func (r *SAvatarRepo) FindUpdateAvatar(id int) models.Avatars {
                  FROM ( SELECT * FROM avatars 
                         LEFT JOIN ( SELECT * FROM user_avatars
                                     WHERE player_id = ? ) u
-                        ON avatars.id = u.avatar_id
-                        WHERE player_id = ? OR (cost > 0 AND player_id IS NULL) ) q
+                        ON avatars.id = u.avatar_id ) q
                  ORDER BY cost ASC`
-	r.db.Raw(sqlQuery, id, id, id).Scan(&avatars)
+	r.db.Raw(sqlQuery, id, id).Scan(&avatars)
 
 	return avatars
 }
