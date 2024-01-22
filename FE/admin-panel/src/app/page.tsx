@@ -1,8 +1,11 @@
+
 import React from "react"
 import Router from "next/router"
 
+
 export default function Home() {
+
   return (
-    <h1>Hello World!</h1>
+    <a href="/login" className="text-red-600 hover:underline">Login here</a>
   )
 }

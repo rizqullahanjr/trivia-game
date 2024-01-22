@@ -13,10 +13,7 @@ import (
 
 func main() {
 
-	dbConection := database.Database()
-
-	// snapurl := midtransPayment.SnapURL()
-	// fmt.Printf("Snap URLlllllllllllllllllll: %+v", snapurl)
+	dbConnection := database.Database()
 
 	// responseStatus := midtranspayment.VerifyTransaction("ueIlsl7yjn")
 	// if responseStatus == "settlement" {
@@ -28,6 +25,7 @@ func main() {
 	// }
 
 	//repository
+
 	avatarRepository := repository.NewAvatarRepository(dbConection)
 	avatarUserRepository := repository.AvatarRepo(dbConection)
 	topupRepository := repository.NewTopupRepository(dbConection)
@@ -36,9 +34,10 @@ func main() {
 	
 
 
-	
+
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
+
 	topupController := controllers.NewTopupController(topupRepository)
 	diamondController := controllers.NewDiamondController(diamondRepository)
 	diamondPlayerController := controllers.NewDiamondPlayerController(diamondPlayerRepository, topupRepository)
@@ -48,13 +47,14 @@ func main() {
 	g := gin.Default()
 	g.Use(cors.Default())
 	routes.NewAvatarUserRoutes(g, avatarController)
+
 	routes.NewTopupRoutes(g, topupController)
 	routes.NewDiamondRoutes(g, diamondController)
 	routes.NewDiamondPlayerRoutes(g, diamondPlayerController)
 
+
 	routes.RouteInit(g.Group("/api/v1"))
 
-	// g.Run("192.168.18.174:5000")
-	g.Run(":5000")
+	g.Run("192.168.18.174:5000")
 
 }

@@ -5,17 +5,21 @@ export const API = axios.create({
 })
 
 export function setAuthToken(token: string) {
-    if (token) {
-        localStorage.setItem('authToken', token); // Save token to localStorage
-        API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } else {
-        localStorage.removeItem('authToken'); // Remove token from localStorage
-        delete API.defaults.headers.common["Authorization"];
+    if (typeof window !== "undefined") { // Check if running in a browser
+        if (token) {
+            localStorage.setItem('authToken', token); // Save token to localStorage
+            API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        } else {
+            localStorage.removeItem('authToken'); // Remove token from localStorage
+            delete API.defaults.headers.common["Authorization"];
+        }
     }
 }
 
 // Initialize Axios with token from localStorage if it exists
-const savedToken = localStorage.getItem('authToken');
-if (savedToken) {
-    API.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+if (typeof window !== "undefined") { // Check if running in a browser
+    const savedToken = localStorage.getItem('authToken');
+    if (savedToken) {
+        API.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+    }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('players', function (Blueprint $table) {
             $table->integer('id');
             $table->string('name', 10);
-            $table->string('active_avatar', 255)->nullable();
+            $table->string('active_avatar', 255);
             $table->integer('diamond')->default(50);
             $table->integer('highest_score')->default(0);
             $table->integer('total_score')->default(0);
