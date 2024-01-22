@@ -60,9 +60,9 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('adminLogin', [AuthController::class, 'adminLogin']);
-    Route::get('check', '\App\Http\Controllers\AuthController@check');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/adminLogin', [AuthController::class, 'adminLogin']);
+    Route::get('/check', '\App\Http\Controllers\AuthController@check');
 
 });
 
