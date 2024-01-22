@@ -12,7 +12,7 @@ export function questionsCRUD(){
     };
 
     const readQuestions = async () => {
-      const response = await API.get(`/quiz/get-all`);
+      const response = await API.get(`/quiz`);
       return response.data;
     };
 

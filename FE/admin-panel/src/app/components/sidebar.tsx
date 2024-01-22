@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
           <a href="/questions" className="text-blue-600 hover:underline">Questions</a>
         </li>
         <li className="mb-2">
-          <a href="/logout" className="text-red-600 hover:underline">Logout</a>
+          <a href="/login" className="text-red-600 hover:underline">Logout</a>
         </li>
       </ul>
     </nav>

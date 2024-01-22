@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import { questionsCRUD } from "./questionsCRUD";
+import AuthCheck from "@/libs/AuthCheck";
 
 const Questions: React.FC = () => {
   const [questions, setQuestions] = useState([]);
@@ -11,6 +12,10 @@ const Questions: React.FC = () => {
     questionsCRUD().readQuestions().then((res) => {
       setQuestions(res);
     });
+  }, []);
+
+  useEffect(() => {
+    AuthCheck();
   }, []);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,10 +1,17 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import { userCRUD } from "../users/userCRUD";
 import UserEditPopout from "../components/userEditPopout";
+import AuthCheck from "@/libs/AuthCheck";
 
 const Users: React.FC = () => {
+
+  useEffect(() => {
+    AuthCheck();
+  }, []);
+  
+
   const [users, setUsers] = React.useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
