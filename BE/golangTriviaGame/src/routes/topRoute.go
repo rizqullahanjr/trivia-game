@@ -17,6 +17,7 @@ func NewTopupRoutes(gin *gin.Engine, topup_controller controllers.ITopupControll
 	group := gin.Group("/api/v1")
 	group.GET("/topup", handler.FindDataTopup)
 	group.POST("/topup", handler.TopupDiamond)
+	// group.POST("/verify-transaction", handler.VerifyTransaction)
 }
 
 
@@ -43,9 +44,8 @@ func (r topupRoutes) TopupDiamond(c *gin.Context) {
 			"message" : fmt.Sprintf("Error : %v", err),
 		})
 	}
-
-	data, err := r.topup_controller.TopupDiamond(reqBody)
 	
+	data, err := r.topup_controller.TopupDiamond(reqBody)
 	c.JSON(200, gin.H{
 		"message" : data,
 	})

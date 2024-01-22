@@ -3,6 +3,7 @@ package main
 import (
 	"golangTriviaGame/src/controllers"
 	"golangTriviaGame/src/database"
+
 	"golangTriviaGame/src/repository"
 	"golangTriviaGame/src/routes"
 
@@ -17,10 +18,21 @@ func main() {
 	// snapurl := midtransPayment.SnapURL()
 	// fmt.Printf("Snap URLlllllllllllllllllll: %+v", snapurl)
 
+	// responseStatus := midtranspayment.VerifyTransaction("ueIlsl7yjn")
+	// if responseStatus == "settlement" {
+	// 	fmt.Println("Berhasil TOP UP")
+	// }else if responseStatus == "pending"{
+	// 	fmt.Println("PENDING TOP UP")
+	// }else{
+	// 	fmt.Println("GAGAL TOP UP")
+	// }
+
 	//repository
 	avatarRepository := repository.NewAvatarRepository(dbConection)
 	avatarUserRepository := repository.AvatarRepo(dbConection)
 	topupRepository := repository.NewTopupRepository(dbConection)
+	diamondRepository := repository.NewDiamondRepository(dbConection)
+	diamondPlayerRepository := repository.DiamondPlayerRepository(dbConection)
 	
 
 
@@ -28,13 +40,17 @@ func main() {
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
 	topupController := controllers.NewTopupController(topupRepository)
+	diamondController := controllers.NewDiamondController(diamondRepository)
+	diamondPlayerController := controllers.NewDiamondPlayerController(diamondPlayerRepository, topupRepository)
 
 
-	//roter
+	//router
 	g := gin.Default()
 	g.Use(cors.Default())
 	routes.NewAvatarUserRoutes(g, avatarController)
 	routes.NewTopupRoutes(g, topupController)
+	routes.NewDiamondRoutes(g, diamondController)
+	routes.NewDiamondPlayerRoutes(g, diamondPlayerController)
 
 	routes.RouteInit(g.Group("/api/v1"))
 
