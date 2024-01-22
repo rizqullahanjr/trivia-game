@@ -4,12 +4,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import Routes from "./src/routes/routes";
 import { store } from "./src/stores/types/store";
 import { Provider } from "react-redux";
+import { NativeBaseProvider, Box } from "native-base";
 export default function App() {
   return (
     <NavigationContainer>
-      <Provider store={store}>
-        <Routes />
-      </Provider>
+      <NativeBaseProvider>
+        <Provider store={store}>
+          <Routes />
+        </Provider>
+      </NativeBaseProvider>
     </NavigationContainer>
   );
 }

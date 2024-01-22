@@ -7,13 +7,14 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-
+import Loading from "./loading";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DATA_PLAYER } from "../stores/slices/authSlices";
+import { Modal } from "react-native";
 
 interface avatars {
   id: number;
@@ -34,6 +35,7 @@ const Shop: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigation();
   const player = useSelector((state: RootState) => state.player);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAvatarPress = (avatarId: number) => {
     setCannotBuy(false);
@@ -42,9 +44,15 @@ const Shop: React.FC = () => {
   };
 
   async function getAvatarShop() {
+    setIsLoading(true);
     const res = await axios.get(
       `http://192.168.18.174:5000/api/v1/avatar-user-update/${player.id}`
+      // "http://192.168.18.174:8000/api/avatar"
     );
+
+    if (res.data) {
+      setIsLoading(false);
+    }
     console.log(res.data);
     setAvatarsList(res.data);
   }
@@ -139,84 +147,92 @@ const Shop: React.FC = () => {
   }, []);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Avatar Shop</Text>
-        <Text style={styles.points}>{points} Diamond</Text>
-        <View style={styles.avatarGrid}>
-          {avatarsList?.map((avatar) => (
-            <TouchableOpacity
-              key={avatar.id}
-              onPress={() => handleAvatarPress(avatar.id)}
-              activeOpacity={2}
-            >
-              <View style={styles.avatarContainer}>
-                <View style={styles.boxAvatar}>
-                  <Image
-                    source={{ uri: avatar.image }}
-                    style={[
-                      styles.avatarImage,
-                      selectedAvatar !== avatar.id && styles.fadedAvatar,
-                    ]}
-                  />
-                  <Text style={styles.avatarInfo}>
-                    {avatar.cost === 0
-                      ? "OWNED"
-                      : avatar.bought
-                      ? "OWNED"
-                      : `${avatar.cost}`}
-                  </Text>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <View style={styles.container}>
+          <Text style={styles.title}>Avatar Shop</Text>
+          <Text style={styles.points}>{points} Diamond</Text>
+          <View style={styles.avatarGrid}>
+            {avatarsList?.map((avatar) => (
+              <TouchableOpacity
+                key={avatar.id}
+                onPress={() => handleAvatarPress(avatar.id)}
+                activeOpacity={2}
+              >
+                <View style={styles.avatarContainer}>
+                  <View style={styles.boxAvatar}>
+                    <Image
+                      source={{ uri: avatar.image }}
+                      style={[
+                        styles.avatarImage,
+                        selectedAvatar !== avatar.id && styles.fadedAvatar,
+                      ]}
+                    />
+                    <Text style={styles.avatarInfo}>
+                      {avatar.cost === 0
+                        ? "OWNED"
+                        : avatar.bought
+                        ? "OWNED"
+                        : `${avatar.cost}`}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <Text>{cannotBuy ? "Not enough diamond,Top up more diamond" : ""}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            if (selectedAvatar !== null) {
-              const selected = avatarsList?.find(
-                (avatar) => avatar.id === selectedAvatar
-              );
+              </TouchableOpacity>
+            ))}
+          </View>
+          <Text>
+            {cannotBuy ? "Not enough diamond,Top up more diamond" : ""}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              if (selectedAvatar !== null) {
+                const selected = avatarsList?.find(
+                  (avatar) => avatar.id === selectedAvatar
+                );
 
-              if (selected) {
-                if (selected.bought) {
-                  handleSelect();
-                } else if (selected.cost === 0) {
-                  handleSelect();
-                } else {
-                  handleBuy();
+                if (selected) {
+                  if (selected.bought) {
+                    handleSelect();
+                  } else if (selected.cost === 0) {
+                    handleSelect();
+                  } else {
+                    handleBuy();
+                  }
                 }
               }
-            }
-          }}
-          style={[
-            styles.buyButton,
-            (selectedAvatar === null ||
-              avatarsList?.find((avatar) => avatar.id === selectedAvatar)
-                ?.bought) &&
-              styles.fadedButton,
-          ]}
-        >
-          <Text style={styles.buyButtonText}>
-            {selectedAvatar !== null &&
-              ((avatarsList?.find((avatar) => avatar.id === selectedAvatar)
-                ?.bought &&
-                "Select") ||
-              avatarsList?.find((avatar) => avatar.id === selectedAvatar)
-                ?.cost === 0
-                ? "Select"
-                : "Buy")}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+            }}
+            style={[
+              styles.buyButton,
+              (selectedAvatar === null ||
+                avatarsList?.find((avatar) => avatar.id === selectedAvatar)
+                  ?.bought) &&
+                styles.fadedButton,
+            ]}
+          >
+            <Text style={styles.buyButtonText}>
+              {selectedAvatar !== null &&
+                ((avatarsList?.find((avatar) => avatar.id === selectedAvatar)
+                  ?.bought &&
+                  "Select") ||
+                avatarsList?.find((avatar) => avatar.id === selectedAvatar)
+                  ?.cost === 0
+                  ? "Select"
+                  : "Buy")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
+    // height: 500,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
@@ -229,7 +245,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    borderRadius: 20,
+    // borderRadius: 20,
   },
   title: {
     fontSize: 20,

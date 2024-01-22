@@ -8,7 +8,7 @@ export default function ButtonDiamond({ onPress, diamond }: any) {
       <TouchableOpacity
         style={{
           position: "absolute",
-          top: 15,
+          // top: 15,
           right: 15,
           zIndex: 1,
           backgroundColor: "rgba(0,0,0,0.5)",

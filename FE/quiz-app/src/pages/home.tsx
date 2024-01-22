@@ -20,6 +20,7 @@ import MyButton from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import socket from "../libs/socket";
+import Score from "../components/score";
 // AuthSession.AuthSessionManager.setOptions({
 //   authenticationCallback: {
 //     url: AuthSession.makeRedirectUri({ useProxy: true }),
@@ -87,24 +88,50 @@ const Home = () => {
             setModalDiamond(!modalDiamond);
           }}
         >
-          <View>
-            <Text style={{ color: "white", fontSize: 50 }}> modal diamod</Text>
-            <Pressable onPress={() => setModalDiamond(!modalDiamond)}>
-              <Text>Hide Modal</Text>
-              <Topup />
-            </Pressable>
+          <View style={styles.centeredView}>
+            <View style={styles.modalAvatarView}>
+              <Pressable
+                style={styles.buttonClose}
+                onPress={() => setModalDiamond(!modalDiamond)}
+              >
+                <Text style={styles.textModal}>Close</Text>
+              </Pressable>
+              <ScrollView>
+                <Topup />
+              </ScrollView>
+            </View>
           </View>
         </Modal>
         {/* top bar */}
         <View
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
             flexDirection: "row",
+            gap: 90,
           }}
         >
-          <View style={{ padding: 20 }}>
+          <View style={{ paddingVertical: 10, marginLeft: 10 }}>
             <Image source={imgSplash[0]} style={[styles.Image]} />
+          </View>
+          <View style={styles.score}>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 15,
+                fontWeight: "300",
+                color: "white",
+                fontFamily: "georgia",
+                left: 20,
+                backgroundColor: "rgba(227, 22, 7, 0.9)",
+                padding: 5,
+                borderRadius: 10,
+                top: 5,
+              }}
+            >
+              Your Total Score :
+            </Text>
+            <Score score={player.total_score} />
           </View>
 
           <View style={{ marginTop: 15 }}>
@@ -125,6 +152,7 @@ const Home = () => {
             alignItems: "center",
             justifyContent: "center",
             marginHorizontal: "auto",
+            marginTop: 45,
           }}
         >
           <Text
@@ -162,9 +190,9 @@ const Home = () => {
         <View
           style={{
             alignItems: "center",
-
             margin: "auto",
             justifyContent: "center",
+            top: 20,
           }}
         >
           <Image
@@ -181,11 +209,10 @@ const Home = () => {
               width: 50,
               height: 60,
               alignItems: "center",
-
               position: "relative",
               // right: -100,
               left: 130,
-              // top: 20,
+              top: 20,
             }}
           >
             <MyButton
@@ -216,12 +243,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+    borderRadius: 20,
   },
   exchange: {
     width: 35,
     height: 35,
     position: "absolute",
-    top: 193,
+    top: 233,
     right: 135,
     backgroundColor: "#94969c",
     borderRadius: 100,
@@ -252,6 +280,13 @@ const styles = StyleSheet.create({
     objectFit: "cover",
     borderRadius: 100,
   },
+  score: {
+    // width: 130,
+    // backgroundColor: "rgba(227, 22, 7, 0.8)",
+    borderRadius: 5,
+    right: 55,
+    top: 35,
+  },
   avatar: {
     backgroundColor: "white",
     position: "absolute",
@@ -261,7 +296,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
-    top: 135,
+    top: 165,
     borderWidth: 2,
     borderColor: "black",
     objectFit: "cover",
@@ -270,14 +305,12 @@ const styles = StyleSheet.create({
     width: 300,
     height: 200,
     position: "relative",
-    top: 25,
     margin: "auto",
   },
   buttonStart: {
     width: 200,
-    height: 100,
-    position: "relative",
-    top: 25,
+    // position: "relative",
+    // top: 25,
   },
   modalAvatarView: {
     width: "85%",
@@ -287,6 +320,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+    height: 500,
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,

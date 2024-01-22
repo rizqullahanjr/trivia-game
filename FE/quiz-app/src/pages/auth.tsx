@@ -2,6 +2,7 @@ import {
   Button,
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,7 +15,7 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-
+import Loading from "../components/loading";
 import { useNavigation } from "@react-navigation/native";
 import { API, setAuthToken } from "../libs/api";
 import axios from "axios";
@@ -40,6 +41,8 @@ WebBrowser.maybeCompleteAuthSession();
 // });
 
 const Auth = () => {
+  const [modalLoading, setModalLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -93,6 +96,7 @@ const Auth = () => {
           }
         }
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("Error during Google Sign-In:", error);
     }
@@ -114,7 +118,7 @@ const Auth = () => {
 
       await AsyncStorage.setItem("@user", JSON.stringify({ email, name }));
       setUserInfo({ email: email, name: name });
-
+      setIsLoading(true);
       // await API.post
       // console.log(AsyncStorage.getItem("@user"));
       // navigation.navigate("Avatars" as never);
@@ -136,6 +140,20 @@ const Auth = () => {
         style={styles.container}
         source={imgSplash[1]}
       >
+        {/* modal loading */}
+        {isLoading && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={true}
+            onRequestClose={() => {
+              setModalLoading(!modalLoading);
+            }}
+          >
+            <Loading />
+          </Modal>
+        )}
+
         <Image source={imgSplash[0]} style={styles.Image} />
 
         <View style={{ marginBottom: 20 }}>

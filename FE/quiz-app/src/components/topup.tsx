@@ -1,6 +1,18 @@
 import React, { useState } from "react";
-import { View, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from "react-native";
 import diamondsData from "../mocks/topup.json";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RootState } from "../stores/types/store";
+import { useSelector } from "react-redux";
+import * as WebBrowser from "expo-web-browser";
 
 const diamonds = diamondsData.map((diamond) => {
   const formattedImg = diamond.diamondimg.replace(/\s/g, ""); // Remove spaces
@@ -13,6 +25,7 @@ const diamonds = diamondsData.map((diamond) => {
 
 const Topup: React.FC = () => {
   const [diamondsList, setDiamondsList] = useState(diamonds);
+  const player = useSelector((state: RootState) => state.player);
 
   const handleDiamondPress = (index: number) => {
     const updatedDiamonds = diamondsList.map((diamond, i) => ({
@@ -22,7 +35,8 @@ const Topup: React.FC = () => {
     setDiamondsList(updatedDiamonds);
   };
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
+    const token = await AsyncStorage.getItem("token");
     const selectedDiamond = diamondsList.find((diamond) => diamond.selected);
 
     if (selectedDiamond) {
@@ -32,54 +46,78 @@ const Topup: React.FC = () => {
       }));
       setDiamondsList(updatedDiamonds);
       console.log(`Bought diamond: ${selectedDiamond.diamondname}`);
+
+      const res = await axios.post(
+        "https://kz4nkvqd-5000.asse.devtunnels.ms/api/v1/topup",
+        {
+          total_diamond: selectedDiamond.diamondname,
+          id_user: player.id,
+          price: selectedDiamond.diamondprice,
+        }
+      );
+      WebBrowser.openBrowserAsync(res.data.message.snap_url);
+      console.log("res.data", res.data);
+      console.log("res.data.snap", res.data.message.snap_url);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Diamond topup</Text>
-      <View style={styles.diamondGrid}>
-        {diamondsList.map((diamond, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => handleDiamondPress(index)}
-            activeOpacity={0.8}
-          >
-            <View style={styles.diamondContainer}>
-              <View style={styles.boxdiamond}>
-                <Image
-                  source={diamond.diamondimg}
-                  style={[
-                    styles.diamondImage,
-                    diamond.selected && styles.selectedDiamond,
-                  ]}
-                />
-                <Text style={styles.diamondInfo}>
-                  {diamond.diamondname} {`${diamond.diamondprice} IDR`}
-                </Text>
-                {diamond.selected && <View style={styles.radioSelected} />}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Diamond topup</Text>
+        <View style={styles.diamondGrid}>
+          {diamondsList.map((diamond, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleDiamondPress(index)}
+              activeOpacity={0.8}
+            >
+              <View style={styles.diamondContainer}>
+                <View style={styles.boxdiamond}>
+                  <Image
+                    source={diamond.diamondimg}
+                    style={[
+                      styles.diamondImage,
+                      diamond.selected && styles.selectedDiamond,
+                    ]}
+                  />
+                  <Text style={styles.diamondInfo}>
+                    {diamond.diamondname} Diamonds{"\n"}
+                    {`${diamond.diamondprice} IDR`}
+                  </Text>
+                  {diamond.selected && <View style={styles.radioSelected} />}
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          ))}
+        </View>
+        <TouchableOpacity
+          onPress={handleBuy}
+          style={styles.buyButton}
+          disabled={!diamondsList.some((diamond) => diamond.selected)}
+        >
+          <Text style={styles.buyButtonText}>Buy</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={handleBuy}
-        style={styles.buyButton}
-        disabled={!diamondsList.some((diamond) => diamond.selected)}
-      >
-        <Text style={styles.buyButtonText}>Buy</Text>
-      </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "white",
+    overflow: "scroll",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderRadius: 20,
   },
   title: {
     fontSize: 20,
