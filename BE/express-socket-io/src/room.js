@@ -207,14 +207,14 @@ class room {
                         {
                             rank: 2,
                             id: this.players[2].id,
-                            score: score1,
+                            score: score3,
                             avatar: this.players[2].avatar,
                             name: this.players[2].name
                         },
                         {
                             rank: 3,
                             id: this.players[0].id,
-                            score: score3,
+                            score: score1,
                             avatar: this.players[0].avatar,
                             name: this.players[0].name
                         },

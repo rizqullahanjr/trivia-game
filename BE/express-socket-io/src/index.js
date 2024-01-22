@@ -56,7 +56,6 @@ io.on('connection', (socket) => {
             roomId = getRandomId()
             quiz = await axios.get("http://192.168.18.174:5000/api/v1/get-question")
 
-
         }
 
 
@@ -78,5 +77,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT,'192.168.18.174', () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://192.168.18.174:${PORT}`);
 });

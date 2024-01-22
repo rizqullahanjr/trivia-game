@@ -12,34 +12,22 @@ import (
 
 func main() {
 
-	dbConection := database.Database()
-
-	// snapurl := midtransPayment.SnapURL()
-	// fmt.Printf("Snap URLlllllllllllllllllll: %+v", snapurl)
+	dbConnection := database.Database()
 
 	//repository
-	avatarRepository := repository.NewAvatarRepository(dbConection)
-	avatarUserRepository := repository.AvatarRepo(dbConection)
-	topupRepository := repository.NewTopupRepository(dbConection)
+	avatarRepository := repository.NewAvatarRepository(dbConnection)
+	avatarUserRepository := repository.AvatarRepo(dbConnection)
 
-
-	
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
-	topupController := controllers.NewTopupController(topupRepository)
 
-
-
-
-	//roter
+	//router
 	g := gin.Default()
 	g.Use(cors.Default())
 	routes.NewAvatarUserRoutes(g, avatarController)
-	routes.NewTopupRoutes(g, topupController)
 
 	routes.RouteInit(g.Group("/api/v1"))
 
-	// g.Run("192.168.18.174:5000")
-	g.Run(":5000")
+	g.Run("192.168.18.174:5000")
 
 }
