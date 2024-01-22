@@ -4,6 +4,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,19 @@ class AuthController extends Controller
 
     public function check(): JsonResponse
     {
-        return response()->json(['message' => 'valid']);
+        try {
+            $payload = auth()->payload();
+            $id = $payload->get('sub');
+
+            if($id) {
+                return response()->json(['message' => 'valid']);
+            } else {
+                return response()->json(['message' => 'not valid']);
+            }
+        } catch (Exception) {
+            return response()->json(['message' => 'not valid']);
+    }
+
+
     }
 }
