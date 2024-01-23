@@ -1,4 +1,11 @@
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import socket from "../libs/socket";
@@ -6,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../stores/types/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ROOM_ID } from "../stores/slices/authSlices";
+import TimerApp from "../components/timerApp";
 
 interface AllPlayer {
   id: number;
@@ -27,6 +35,7 @@ const Match = () => {
       avatar: user.active_avatar,
     },
   ]);
+  // const [isReady, setIsReady] = useState(false);
 
   // async function getQuestion() {
   //   await socket.on("questions", (msg: any) => {
@@ -64,6 +73,13 @@ const Match = () => {
     });
   }, []);
 
+  function isCancel() {
+    socket.emit("leave", user.id);
+    socket.disconnect();
+    socket.connect();
+    // setIsReady(false);
+    navigation.navigate("Home" as never);
+  }
   // useEffect(()=>{
   //   allPlayer.forEach((player, index)=>{
   //     setallPlayer(index)
@@ -91,14 +107,14 @@ const Match = () => {
               source={require("../image/splash.jpg")}
             />
           </View>
-          <View style={{ marginTop: 15 }}></View>
         </View>
 
         {/* count */}
         <View style={styles.center}>
           <Text style={styles.timer}>
-            {timer}
+            {/* {timer} */}
             {/* <CountdownTimer durationInSeconds={20} /> */}
+            <TimerApp />
           </Text>
           <Text style={[styles.finding]}>Finding Opponent</Text>
           <Text style={[styles.finding, { color: "#29c910", marginTop: 7 }]}>
@@ -107,16 +123,57 @@ const Match = () => {
           </Text>
         </View>
 
-        {allPlayer.map((player, index) => (
-          <View key={index} style={[styles.playerGame]}>
-            <Image
-              style={styles.avatarPlayer}
-              source={{ uri: player.avatar }}
-            />
-
-            <Text style={styles.name}>{player.name}</Text>
+        <View style={{ height: 430 }}>
+          {allPlayer.map((player, index) => (
+            <>
+              <View key={index} style={[styles.playerGame]}>
+                <Image
+                  style={styles.avatarPlayer}
+                  source={{ uri: player.avatar }}
+                />
+                <Text style={styles.name}>{player.name}</Text>
+                {/* {isReady && (
+                  <Image
+                    style={{
+                      width: 45,
+                      height: 45,
+                      borderRadius: 100,
+                      bottom: 25,
+                    }}
+                    source={require("../image/tick-mark.jpg")}
+                  />
+                )} */}
+              </View>
+            </>
+          ))}
+          <View style={styles.btnGroup}>
+            <TouchableOpacity onPress={isCancel} style={styles.btnCancel}>
+              <Image
+                style={{ width: 30, height: 30 }}
+                source={require("../image/cancel.jpg")}
+              />
+              <Text style={styles.textCancel}>Cancel</Text>
+            </TouchableOpacity>
+            {/* btn ready */}
+            {/* <TouchableOpacity
+              onPress={() => setIsReady(true)}
+              style={[styles.btnReady]}
+            >
+              <Image
+                style={{
+                  width: 45,
+                  height: 45,
+                  borderRadius: 100,
+                  marginTop: -8,
+                  marginLeft: -10,
+                  marginRight: -7,
+                }}
+                source={require("../image/tick-mark.jpg")}
+              />
+              <Text style={[styles.textCancel]}>Ready</Text>
+            </TouchableOpacity> */}
           </View>
-        ))}
+        </View>
       </ImageBackground>
     </>
   );
@@ -150,6 +207,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: "auto",
     borderRadius: 15,
+    marginTop: -20,
   },
   finding: {
     fontSize: 20,
@@ -163,7 +221,7 @@ const styles = StyleSheet.create({
     // height: 60,
     backgroundColor: "rgba(25, 22, 22, 0.8)",
     marginHorizontal: "auto",
-    marginTop: 40,
+    marginTop: 30,
     borderWidth: 4,
     borderColor: "white",
     borderRadius: 10,
@@ -198,5 +256,44 @@ const styles = StyleSheet.create({
     fontFamily: "courier",
     marginVertical: "auto",
     marginLeft: 15,
+  },
+  btnGroup: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 25,
+    position: "absolute",
+    bottom: 0,
+    right: 110,
+  },
+  btnCancel: {
+    backgroundColor: "red",
+    borderRadius: 15,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: 130,
+    height: 40,
+    paddingTop: 5,
+    marginRight: 5,
+  },
+  btnReady: {
+    backgroundColor: "green",
+    borderRadius: 15,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: 140,
+    height: 40,
+    paddingTop: 5,
+    marginLeft: 5,
+  },
+  textCancel: {
+    textAlign: "center",
+    justifyContent: "center",
+    fontWeight: "500",
+    fontSize: 25,
+    fontFamily: "georgia",
+    color: "white",
+    marginLeft: 7,
   },
 });
