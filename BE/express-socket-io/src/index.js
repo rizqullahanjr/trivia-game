@@ -58,13 +58,15 @@ io.on('connection', (socket) => {
 
         }
 
-
+    
 
 
 
         // Broadcast the message to all connected clients
         io.emit('chat message', msg);
     });
+
+
 
     socket.on('testing', (msg) => {
         console.log("testing")

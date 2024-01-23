@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	dbConnection := database.Database()
+	dbConection := database.Database()
 
 	// responseStatus := midtranspayment.VerifyTransaction("ueIlsl7yjn")
 	// if responseStatus == "settlement" {
@@ -31,9 +31,6 @@ func main() {
 	topupRepository := repository.NewTopupRepository(dbConection)
 	diamondRepository := repository.NewDiamondRepository(dbConection)
 	diamondPlayerRepository := repository.DiamondPlayerRepository(dbConection)
-	
-
-
 
 	//controller
 	avatarController := controllers.NewAvatarController(avatarRepository, avatarUserRepository)
@@ -41,7 +38,6 @@ func main() {
 	topupController := controllers.NewTopupController(topupRepository)
 	diamondController := controllers.NewDiamondController(diamondRepository)
 	diamondPlayerController := controllers.NewDiamondPlayerController(diamondPlayerRepository, topupRepository)
-
 
 	//router
 	g := gin.Default()
@@ -51,7 +47,6 @@ func main() {
 	routes.NewTopupRoutes(g, topupController)
 	routes.NewDiamondRoutes(g, diamondController)
 	routes.NewDiamondPlayerRoutes(g, diamondPlayerController)
-
 
 	routes.RouteInit(g.Group("/api/v1"))
 

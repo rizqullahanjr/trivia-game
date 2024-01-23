@@ -1,5 +1,6 @@
+// noinspection JSUnresolvedReference,DuplicatedCode
+
 import socket from "@/libs/socket";
-import { log } from "console";
 import { useState } from "react";
 
 interface answer {
@@ -10,11 +11,12 @@ interface answer {
 
 export default function useClient1() {
     const [roomsId, setRoomsId] = useState('')
+    const id = 136
 
     async function join() {
-        await console.log("trying to connect socket io")
-         socket.emit("room", {
-            id: 123456,
+        console.log("trying to connect socket io")
+        socket.emit("room", {
+            id: id,
             name:  "asgrofl",
             avatar:  "https://res.cloudinary.com/dfrimbo6q/image/upload/v1704683800/trivia-game-avatar/beard-man.png"}, (response: { status: any; }) => {
             console.log(response.status)
@@ -22,9 +24,16 @@ export default function useClient1() {
         
     }
 
-    async function seeRoom() {
+    function leave() {
+        socket.emit("leave", id)
+        socket.disconnect()
+        console.log("leave room")
+        socket.connect()
+    }
+
+    function seeRoom() {
         console.log("seeing the room")
-        await socket.on("rooms", (msg) => {
+        socket.on("rooms", (msg) => {
             if(msg.message == "room is full") {
                 setRoomsId(msg.roomId)
             }
@@ -33,7 +42,7 @@ export default function useClient1() {
         
     }
 
-    async function getQuiz() {
+    function getQuiz() {
         console.log("get quiz")
         socket.on('questions', (msg) => {
             console.log(msg)
@@ -42,7 +51,7 @@ export default function useClient1() {
 
     function getAnswer(index: number, answer: string) {
         const playerAnswer: answer = {
-            id: 123456,
+            id: id,
             quizIndex: index,
             answer: answer
         }
@@ -82,6 +91,7 @@ export default function useClient1() {
         getAnswer,
         getAnswers,
         sendAnswers,
-        getResult
+        getResult,
+        leave
     }
 }
