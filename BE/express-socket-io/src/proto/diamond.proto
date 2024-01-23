@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service Diamond {
+  rpc Add (UserDiamond) returns (Result) {}
+}
+
+message UserDiamond {
+  uint32 id = 1;
+  uint32 diamond = 2;
+}
+
+message Result {
+  string message = 3;
+}

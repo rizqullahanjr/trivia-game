@@ -1,3 +1,5 @@
+import diamondStub from "./proto/grpc.js"
+
 class room {
 
     constructor() {
@@ -83,6 +85,19 @@ class room {
     }
 
     getResult() {
+        const rank = this.getRank();
+        console.log("send diamond")
+        console.log(rank[0].id)
+        diamondStub.add({
+            id: rank[0].id,
+            diamond: 5
+        }, (result) => {
+            console.log(result)
+        })
+        return rank
+    }
+
+    getRank() {
         const score1 = this.getPoint(this.player0Answer)
         const score2 = this.getPoint(this.player1Answer)
         const score3 = this.getPoint(this.player2Answer)
@@ -258,6 +273,14 @@ class room {
             }
         }
         return score;
+    }
+
+    leave(id) {
+        for(let i=0; i<this.players.length; i++) {
+            if(this.players[i].id === id) {
+                this.players.splice(i, 1)
+            }
+        }
     }
 
 

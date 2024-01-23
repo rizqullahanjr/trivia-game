@@ -21,4 +21,11 @@ export default async function quizRoomFunc(io, socket, roomId, rooms, quiz) {
             rooms.getAnswer(msg)
         }
     })
+
+    socket.on("leave", (msg) => {
+        socket.leave(roomId)
+        rooms.leave(msg)
+        socket.emit('rooms', rooms.getPlayers())
+        socket.broadcast.emit('rooms', rooms.getPlayers())
+    })
 }
