@@ -48,7 +48,7 @@ const Quiz = () => {
   const [isOptionsDisabled, setisOptionsDisabled] = useState(false);
   const [getScore, setGetScore] = useState(0);
   const [resultText, setResultText] = useState("");
-  const [timer, setTimer] = useState(2);
+  const [timer, setTimer] = useState(10);
   const [renderAvatarAnswer, setrenderAvatarAnswer] = useState(false);
   const [GetAnswer, setGetAnswer] = useState<opponents[]>([]);
   const [getAvatar, setgetAvatar] = useState([]);
@@ -100,7 +100,7 @@ const Quiz = () => {
     // setisOptionsDisabled(false);
     setTimeout(() => {
       moveToNextQuestion();
-    }, 1000);
+    }, 4000);
   };
 
   const moveToNextQuestion = () => {
@@ -109,7 +109,7 @@ const Quiz = () => {
     setCorrectOptions("");
     setisOptionsDisabled(false);
     setResultText("");
-    setTimer(2);
+    setTimer(10);
     setrenderAvatarAnswer(false);
 
     // Move to the next question if available
@@ -135,9 +135,21 @@ const Quiz = () => {
 
         if (user.id == res[0].id) {
           const token = await AsyncStorage.getItem("token");
+          console.log("hasil", getScore);
+          // axios.put(
+          //   "http://192.168.18.174:8000/api/player/add-diamond",
+          //   { diamond: 5 },
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${token}`,
+          //       "Content-Type": "application/json",
+          //     },
+          //   }
+          // );
+
           axios.put(
-            "http://192.168.18.174:8000/api/player/add-diamond",
-            { diamond: 5 },
+            "http://192.168.18.174:8000/api/player/update-score",
+            { score: getScore },
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -151,12 +163,35 @@ const Quiz = () => {
               name: user.name,
               active_avatar: user.active_avatar,
               id: user.id,
-              total_score: user.total_score,
-              highest_score: user.highest_score,
+              total_score: user.total_score + getScore,
+              highest_score: user.highest_score + getScore,
             })
           );
           navigate.navigate("Board" as never);
         } else {
+          const token = await AsyncStorage.getItem("token");
+          console.log("hasil", getScore);
+
+          axios.put(
+            "http://192.168.18.174:8000/api/player/update-score",
+            { score: getScore },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          dispatch(
+            DATA_PLAYER({
+              diamond: user.diamond,
+              name: user.name,
+              active_avatar: user.active_avatar,
+              id: user.id,
+              total_score: user.total_score + getScore,
+              highest_score: user.highest_score + getScore,
+            })
+          );
           navigate.navigate("Loose" as never);
         }
       });
@@ -235,11 +270,41 @@ const Quiz = () => {
       >
         <View style={styles.centered}>
           {/* top */}
-          <View>
-            <Text>Yoour live score{getScore}</Text>
-          </View>
-          <View style={styles.score}>
-            <Score />
+          <View
+            style={{
+              justifyContent: "space-between",
+              display: "flex",
+              flexDirection: "row",
+              top: 15,
+            }}
+          >
+            <View style={styles.liveScore}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 15,
+                  fontWeight: "300",
+                  color: "white",
+                  fontFamily: "georgia",
+                }}
+              >
+                Your live score +{getScore}
+              </Text>
+            </View>
+            <View style={styles.score}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 15,
+                  fontWeight: "300",
+                  color: "white",
+                  fontFamily: "georgia",
+                }}
+              >
+                Your Total Score :
+              </Text>
+              <Score score={user.total_score} />
+            </View>
           </View>
 
           {/* center */}
@@ -337,7 +402,19 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     marginTop: 30,
   },
-  score: {},
+  score: {
+    width: 130,
+    backgroundColor: "rgba(227, 22, 7, 0.8)",
+    borderRadius: 5,
+    paddingVertical: 3,
+    height: 25,
+  },
+  liveScore: {
+    width: 130,
+    backgroundColor: "rgba(7, 227, 43, 0.8)",
+    borderRadius: 5,
+    paddingVertical: 3,
+  },
   content: {
     width: "90%",
     // backgroundColor: "rgba(198, 101, 224, 0.5)",
