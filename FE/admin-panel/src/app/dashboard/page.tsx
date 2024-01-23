@@ -1,8 +1,16 @@
-import React from "react";
+'use client'
+
+import React, { useEffect }  from "react";
 import Sidebar from "../components/sidebar";
 import Image from "next/image";
+import AuthCheck from "@/libs/AuthCheck";
 
 const Dashboard: React.FC = () => {
+  
+  useEffect(() => {
+    AuthCheck();
+  }, []);
+  
   return (
     <div className="flex">
       <Sidebar />

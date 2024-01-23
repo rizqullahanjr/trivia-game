@@ -13,7 +13,7 @@ export function userCRUD(){
     };
 
     const readUser = async () => {
-      const response = await API.get(`/players`);
+      const response = await API.get(`/player/all`);
       return response.data;
     };
 
