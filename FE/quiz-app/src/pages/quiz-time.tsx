@@ -136,16 +136,17 @@ const Quiz = () => {
         if (user.id == res[0].id) {
           const token = await AsyncStorage.getItem("token");
           console.log("hasil", getScore);
-          axios.put(
-            "http://192.168.18.174:8000/api/player/add-diamond",
-            { diamond: 5 },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          // axios.put(
+          //   "http://192.168.18.174:8000/api/player/add-diamond",
+          //   { diamond: 5 },
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${token}`,
+          //       "Content-Type": "application/json",
+          //     },
+          //   }
+          // );
+
           axios.put(
             "http://192.168.18.174:8000/api/player/update-score",
             { score: getScore },
