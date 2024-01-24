@@ -1,4 +1,4 @@
-import diamondStub from "./proto/grpc.js"
+import diamondStub from "../proto/grpc.js"
 
 class room {
 
@@ -282,11 +282,6 @@ class room {
             }
         }
     }
-
-
-
-
-
 }
 
 export default room;
