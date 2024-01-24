@@ -48,7 +48,7 @@ const Quiz = () => {
   const [isOptionsDisabled, setisOptionsDisabled] = useState(false);
   const [getScore, setGetScore] = useState(0);
   const [resultText, setResultText] = useState("");
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(5);
   const [renderAvatarAnswer, setrenderAvatarAnswer] = useState(false);
   const [GetAnswer, setGetAnswer] = useState<opponents[]>([]);
   const [getAvatar, setgetAvatar] = useState([]);
@@ -81,7 +81,7 @@ const Quiz = () => {
     let Answer = allQuestions[currentQuestion]["Answer"];
     setCorrectOptions(Answer);
     setisOptionsDisabled(true);
-    setrenderAvatarAnswer(true);
+
     if (selectedOptions == Answer) {
       setGetScore(getScore + 20);
       setResultText(
@@ -110,7 +110,7 @@ const Quiz = () => {
     setisOptionsDisabled(false);
     setResultText("");
     setTimer(10);
-    setrenderAvatarAnswer(false);
+    setGetAnswer([]);
 
     // Move to the next question if available
     if (currentQuestion == allQuestions.length) {
@@ -119,6 +119,7 @@ const Quiz = () => {
       setisOptionsDisabled(false);
       setResultText("");
       setTimer(0);
+
       setrenderAvatarAnswer(false);
     }
     if (currentQuestion < allQuestions.length - 1) {
@@ -126,75 +127,82 @@ const Quiz = () => {
     } else {
       // Handle end of questions
 
-      socket.emit(`${room}`, "get score", async (res: any) => {
-        console.log(res);
-        AsyncStorage.setItem("score", JSON.stringify(res));
-        dispatch(SCORE_PLAY(res[2]));
-        dispatch(SCORE_PLAY(res[1]));
-        dispatch(SCORE_PLAY(res[0]));
+      socket.emit(
+        `${room}`,
+        {
+          message: "get score",
+          id: user.id,
+        },
+        async (res: any) => {
+          console.log(res);
+          AsyncStorage.setItem("score", JSON.stringify(res));
+          dispatch(SCORE_PLAY(res[2]));
+          dispatch(SCORE_PLAY(res[1]));
+          dispatch(SCORE_PLAY(res[0]));
 
-        if (user.id == res[0].id) {
-          const token = await AsyncStorage.getItem("token");
-          console.log("hasil", getScore);
-          // axios.put(
-          //   "http://192.168.18.174:8000/api/player/add-diamond",
-          //   { diamond: 5 },
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${token}`,
-          //       "Content-Type": "application/json",
-          //     },
-          //   }
-          // );
+          if (user.id == res[0].id) {
+            const token = await AsyncStorage.getItem("token");
+            console.log("hasil", getScore);
+            // axios.put(
+            //   "http://192.168.18.174:8000/api/player/add-diamond",
+            //   { diamond: 5 },
+            //   {
+            //     headers: {
+            //       Authorization: `Bearer ${token}`,
+            //       "Content-Type": "application/json",
+            //     },
+            //   }
+            // );
 
-          axios.put(
-            "http://192.168.18.174:8000/api/player/update-score",
-            { score: getScore },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          dispatch(
-            DATA_PLAYER({
-              diamond: user.diamond + 5,
-              name: user.name,
-              active_avatar: user.active_avatar,
-              id: user.id,
-              total_score: user.total_score + getScore,
-              highest_score: user.highest_score + getScore,
-            })
-          );
-          navigate.navigate("Board" as never);
-        } else {
-          const token = await AsyncStorage.getItem("token");
-          console.log("hasil", getScore);
+            axios.put(
+              "http://192.168.18.174:8000/api/player/update-score",
+              { score: getScore },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            dispatch(
+              DATA_PLAYER({
+                diamond: user.diamond + 5,
+                name: user.name,
+                active_avatar: user.active_avatar,
+                id: user.id,
+                total_score: user.total_score + getScore,
+                highest_score: user.highest_score + getScore,
+              })
+            );
+            navigate.navigate("Board" as never);
+          } else {
+            const token = await AsyncStorage.getItem("token");
+            console.log("hasil", getScore);
 
-          axios.put(
-            "http://192.168.18.174:8000/api/player/update-score",
-            { score: getScore },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          dispatch(
-            DATA_PLAYER({
-              diamond: user.diamond,
-              name: user.name,
-              active_avatar: user.active_avatar,
-              id: user.id,
-              total_score: user.total_score + getScore,
-              highest_score: user.highest_score + getScore,
-            })
-          );
-          navigate.navigate("Loose" as never);
+            axios.put(
+              "http://192.168.18.174:8000/api/player/update-score",
+              { score: getScore },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            dispatch(
+              DATA_PLAYER({
+                diamond: user.diamond,
+                name: user.name,
+                active_avatar: user.active_avatar,
+                id: user.id,
+                total_score: user.total_score + getScore,
+                highest_score: user.highest_score + getScore,
+              })
+            );
+            navigate.navigate("Loose" as never);
+          }
         }
-      });
+      );
     }
     Animated.timing(progress, {
       toValue: currentQuestion + 1,
@@ -245,27 +253,27 @@ const Quiz = () => {
 
   useEffect(() => {
     // Automatically validate the answer when the timer reaches 0
-    if (timer === 0 && currentOptionSelected !== null) {
+    if (timer === 0) {
       validateAnswer(currentOptionSelected);
-      setrenderAvatarAnswer(true);
-      console.log("memninta jawaban");
-      socket.emit(`${room}`, currentQuestion, (res: any) => {
-        console.log(res);
-        setGetAnswer(res);
-      });
+      // setrenderAvatarAnswer(true);
     }
   }, [timer, currentOptionSelected]);
 
   useEffect(() => {
     getQuestion();
-    // setAllquestion(dataQuiz);
+    socket.on(`${room} answer`, (msg: any) => {
+      console.log(msg, "ini soket on");
+      setGetAnswer(msg);
+    });
   }, []);
 
   return (
     <>
       <ImageBackground
         resizeMode="stretch"
-        source={require("../image/bgImage.jpg")}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
         style={styles.container}
       >
         <View style={styles.centered}>
@@ -347,16 +355,15 @@ const Quiz = () => {
                 >
                   <Text style={styles.answerText}>{Options}</Text>
                   <View style={{ flexDirection: "row" }}>
-                    {renderAvatarAnswer &&
-                      GetAnswer.filter(
-                        (player) => player.answer === Options
-                      ).map((filteredPlayer, playerIndex) => (
-                        <Image
-                          key={playerIndex}
-                          style={styles.avatarPlayer}
-                          source={{ uri: filteredPlayer.avatar }}
-                        />
-                      ))}
+                    {GetAnswer.filter(
+                      (player) => player.answer === Options
+                    ).map((filteredPlayer, playerIndex) => (
+                      <Image
+                        key={playerIndex}
+                        style={styles.avatarPlayer}
+                        source={{ uri: filteredPlayer.avatar }}
+                      />
+                    ))}
                     {/* {renderPlayerImage()} */}
                   </View>
                   {/* check answer */}

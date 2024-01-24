@@ -1,36 +1,36 @@
 [
     {
-        "diamondimg": "1.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/1.png",
         "diamondname": 10,
         "diamondprice": 20000,
         "bought": false
     },
     {
-        "diamondimg": "2.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/2.png",
         "diamondname": 25,
         "diamondprice": 37000,
         "bought": false
     },
     {
-        "diamondimg": "3.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/3.png",
         "diamondname": 50,
         "diamondprice": 69000,
         "bought": false
     },
     {
-        "diamondimg": "4.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/4.png",
         "diamondname": 100,
         "diamondprice": 135000,
         "bought": false
     },
     {
-        "diamondimg": "5.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/5.png",
         "diamondname": 250,
         "diamondprice": 250000,
         "bought": false
     },
     {
-        "diamondimg": "6.png",
+        "diamondimg": "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004346/image%20trivia-game/diamond-list/6.png",
         "diamondname": 550,
         "diamondprice": 516000,
         "bought": false

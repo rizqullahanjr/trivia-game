@@ -18,7 +18,9 @@ export default function ButtonDiamond({ onPress, diamond }: any) {
         }}
       >
         <Image
-          source={require("../image/diamond.jpg")}
+          source={{
+            uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004455/image%20trivia-game/diamond.png",
+          }}
           style={{ width: 25, height: 25, marginRight: 5 }}
         />
         <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>

@@ -19,7 +19,9 @@ export default function Score({ onPress, score }: any) {
         }}
       >
         <Image
-          source={require("../image/score.jpg")}
+          source={{
+            uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004084/image%20trivia-game/score.png",
+          }}
           style={{ width: 25, height: 25, marginRight: 5 }}
         />
         <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>
