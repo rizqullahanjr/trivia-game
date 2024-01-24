@@ -91,7 +91,9 @@ const Match = () => {
     <>
       <ImageBackground
         resizeMode="stretch"
-        source={require("../image/bgImage.jpg")}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
         style={styles.container}
       >
         <View
@@ -104,7 +106,9 @@ const Match = () => {
           <View style={{ padding: 20 }}>
             <Image
               style={styles.logo}
-              source={require("../image/splash.jpg")}
+              source={{
+                uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logo.jpg",
+              }}
             />
           </View>
         </View>
@@ -114,6 +118,8 @@ const Match = () => {
           <Text style={styles.timer}>
             {/* {timer} */}
             {/* <CountdownTimer durationInSeconds={20} /> */}
+
+            {}
             <TimerApp />
           </Text>
           <Text style={[styles.finding]}>Finding Opponent</Text>
@@ -150,7 +156,9 @@ const Match = () => {
             <TouchableOpacity onPress={isCancel} style={styles.btnCancel}>
               <Image
                 style={{ width: 30, height: 30 }}
-                source={require("../image/cancel.jpg")}
+                source={{
+                  uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/cancel-btn.png",
+                }}
               />
               <Text style={styles.textCancel}>Cancel</Text>
             </TouchableOpacity>

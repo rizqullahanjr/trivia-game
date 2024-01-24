@@ -63,7 +63,9 @@ const Board = () => {
       <ImageBackground
         resizeMode="cover"
         style={styles.container}
-        source={require("../image/bgImage.jpg")}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
       >
         <View style={styles.titlePostBox}>
           <Text style={styles.tittleText}>
@@ -114,7 +116,12 @@ const Board = () => {
             </View>
           </View>
         </View>
-        <Image style={styles.podium} source={require("../image/podium.jpg")} />
+        <Image
+          style={styles.podium}
+          source={{
+            uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004084/image%20trivia-game/podium.png",
+          }}
+        />
         <View style={styles.boxButton}>
           <TouchableOpacity onPress={backHome} style={styles.buttonHome}>
             <Text style={styles.textHome}>Return to Home</Text>

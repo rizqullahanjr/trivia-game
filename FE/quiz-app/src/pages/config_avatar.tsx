@@ -147,11 +147,18 @@ const Avatars: React.FunctionComponent = () => {
       <ImageBackground
         resizeMode="stretch"
         style={styles.container}
-        source={imgSplash[1]}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
       >
         <ScrollView>
           <View style={{ margin: "auto" }}>
-            <Image style={styles.Image} source={imgSplash[0]} />
+            <Image
+              style={styles.Image}
+              source={{
+                uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logo.jpg",
+              }}
+            />
           </View>
           <Text
             style={{
@@ -218,7 +225,9 @@ const Avatars: React.FunctionComponent = () => {
           {/* <label htmlFor="yourname"> */}
           <View style={styles.inpuxBox}>
             <Image
-              source={imgSplash[2]}
+              source={{
+                uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004084/image%20trivia-game/input-name.jpg",
+              }}
               style={{ width: 40, height: 40, borderTopLeftRadius: 20 }}
             />
             <TextInput

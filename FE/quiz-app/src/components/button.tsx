@@ -42,7 +42,9 @@ export default function MyButton({
     >
       <Image
         style={{ width: 35, height: 35, borderRadius: 100, objectFit: "cover" }}
-        source={require("../image/switch.jpg")}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logout-btn.png",
+        }}
       />
       <Text style={{ color: textColor, fontWeight: "bold", fontSize: 15 }}>
         {text}

@@ -36,11 +36,11 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDiamond, setModalDiamond] = useState(false);
 
-  const imgSplash = [
-    require("../image/splash.jpg"),
-    require("../image/bgImage.jpg"),
-    require("../image/diamond.png"),
-  ];
+  // const imgSplash = [
+  //   require("../image/splash.jpg"),
+  //   require("../image/bgImage.jpg"),
+  //   require("../image/diamond.png"),
+  // ];
 
   async function handleStart() {
     await socket.emit("room", {
@@ -55,7 +55,9 @@ const Home = () => {
       <ImageBackground
         resizeMode="stretch"
         style={styles.container}
-        source={imgSplash[1]}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
       >
         {/* modal avatar */}
         <Modal
@@ -112,7 +114,12 @@ const Home = () => {
           }}
         >
           <View style={{ paddingVertical: 10, marginLeft: 10 }}>
-            <Image source={imgSplash[0]} style={[styles.Image]} />
+            <Image
+              source={{
+                uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logo.jpg",
+              }}
+              style={[styles.Image]}
+            />
           </View>
           <View style={styles.score}>
             <Text
@@ -182,7 +189,9 @@ const Home = () => {
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={{ width: 20, height: 20 }}
-              source={require("../image/exchange.jpg")}
+              source={{
+                uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004084/image%20trivia-game/change-btn.png",
+              }}
             />
           </TouchableOpacity>
         </View>
@@ -197,7 +206,9 @@ const Home = () => {
         >
           <Image
             style={styles.startImage}
-            source={require("../image/home-page.jpg")}
+            source={{
+              uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004084/image%20trivia-game/start-game.png",
+            }}
           />
           <View style={styles.buttonStart}>
             <Button onPress={handleStart} color={"green"} title="START GAME" />

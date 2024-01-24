@@ -15,10 +15,9 @@ import { useSelector } from "react-redux";
 import * as WebBrowser from "expo-web-browser";
 
 const diamonds = diamondsData.map((diamond) => {
-  const formattedImg = diamond.diamondimg.replace(/\s/g, ""); // Remove spaces
   return {
     ...diamond,
-    diamondimg: require(`../../src/image/diamonds/${formattedImg}`),
+    diamondimg: diamond.diamondimg,
     selected: false, // Initialize selected property for each diamond
   };
 });
@@ -26,6 +25,7 @@ const diamonds = diamondsData.map((diamond) => {
 const Topup: React.FC = () => {
   const [diamondsList, setDiamondsList] = useState(diamonds);
   const player = useSelector((state: RootState) => state.player);
+  console.log(diamondsList);
 
   const handleDiamondPress = (index: number) => {
     const updatedDiamonds = diamondsList.map((diamond, i) => ({
@@ -75,7 +75,7 @@ const Topup: React.FC = () => {
               <View style={styles.diamondContainer}>
                 <View style={styles.boxdiamond}>
                   <Image
-                    source={diamond.diamondimg}
+                    source={{ uri: diamond.diamondimg }}
                     style={[
                       styles.diamondImage,
                       diamond.selected && styles.selectedDiamond,

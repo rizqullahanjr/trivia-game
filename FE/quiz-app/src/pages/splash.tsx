@@ -30,9 +30,16 @@ const Splash = () => {
       <ImageBackground
         resizeMode="stretch"
         style={styles.container}
-        source={imgSplash[1]}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
       >
-        <Image source={imgSplash[0]} style={styles.Image} />
+        <Image
+          source={{
+            uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logo.jpg",
+          }}
+          style={styles.Image}
+        />
       </ImageBackground>
     </>
   );

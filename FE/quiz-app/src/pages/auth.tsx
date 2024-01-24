@@ -1,3 +1,5 @@
+// andriclienid: "310772316967-o9a0ifgcgs269i46ejfle61pqjks3itc.apps.googleusercontent.com"
+
 import {
   Button,
   Image,
@@ -49,6 +51,8 @@ const Auth = () => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId:
       "310772316967-ammvoc874ri16n0c7clcg6fjaj23mtrn.apps.googleusercontent.com",
+    androidClientId:
+      "310772316967-o9a0ifgcgs269i46ejfle61pqjks3itc.apps.googleusercontent.com",
   });
 
   // useEffect(() => {
@@ -138,7 +142,9 @@ const Auth = () => {
       <ImageBackground
         resizeMode="stretch"
         style={styles.container}
-        source={imgSplash[1]}
+        source={{
+          uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004082/image%20trivia-game/bg-game.avif",
+        }}
       >
         {/* modal loading */}
         {isLoading && (
@@ -154,7 +160,12 @@ const Auth = () => {
           </Modal>
         )}
 
-        <Image source={imgSplash[0]} style={styles.Image} />
+        <Image
+          source={{
+            uri: "https://res.cloudinary.com/diwvvx24j/image/upload/v1706004083/image%20trivia-game/logo.jpg",
+          }}
+          style={styles.Image}
+        />
 
         <View style={{ marginBottom: 20 }}>
           <TouchableOpacity onPress={handleSignInGoogle}>
