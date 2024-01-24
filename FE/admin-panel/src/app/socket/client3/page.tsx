@@ -34,12 +34,12 @@ export default function Client3() {
                             <p>{num + 1}</p>
                             <button
                                 type="button"
-                                onClick={() => getAnswer(num, "true")}
+                                onClick={() => getAnswer(num, "Benar")}
                                 className={"rounded-3xl bg-red-500 text-gray-900 font-bold px-3 py-1"}
                             >True</button>
                             <button
                                 type="button"
-                                onClick={() => getAnswer(num, "false")}
+                                onClick={() => getAnswer(num, "Salah")}
                                 className={"rounded-3xl bg-red-500 text-gray-900 font-bold px-3 py-1"}
                             >False</button>
                             <button
