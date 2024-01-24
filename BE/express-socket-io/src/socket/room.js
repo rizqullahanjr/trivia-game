@@ -1,4 +1,4 @@
-import diamondStub from "./proto/grpc.js"
+import diamondStub from "../proto/grpc.js"
 
 class room {
 
@@ -84,16 +84,16 @@ class room {
         ]
     }
 
-    getResult() {
+    getResult(id) {
         const rank = this.getRank();
-        console.log("send diamond")
-        console.log(rank[0].id)
-        diamondStub.add({
-            id: rank[0].id,
-            diamond: 5
-        }, (result) => {
-            console.log(result)
-        })
+        if(id === rank[0].id) {
+            diamondStub.add({
+                id: rank[0].id,
+                diamond: 5
+            }, (result) => {
+                console.log(result)
+            })
+        }
         return rank
     }
 
@@ -282,11 +282,6 @@ class room {
             }
         }
     }
-
-
-
-
-
 }
 
 export default room;

@@ -24,6 +24,13 @@ export default function useClient1() {
         
     }
 
+    function getAnswerIndex() {
+        socket.on(`${roomsId} answer`, (msg) => {
+            console.log("get answer index")
+            console.log(msg);
+        })
+    }
+
     function leave() {
         socket.emit("leave", id)
         socket.disconnect()
@@ -76,7 +83,10 @@ export default function useClient1() {
 
     function getResult() {
         console.log("get result")
-        socket.emit(roomsId, "get score", (response: any) => {
+        socket.emit(roomsId, {
+            message: "get score",
+            id: id
+        }, (response: any) => {
             console.log(response)
         })
     }
@@ -92,6 +102,7 @@ export default function useClient1() {
         getAnswers,
         sendAnswers,
         getResult,
-        leave
+        leave,
+        getAnswerIndex
     }
 }
