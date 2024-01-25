@@ -2,10 +2,9 @@ import { API } from "@/libs/axios";
 
 export function questionsCRUD(){
 
-    const createQuestion = async (ID: string, Question: string, answer: string) => {
-      const response = await API.post('/Questions', {
-        ID,
-        Question,
+    const createQuestion = async (question: string, answer: string) => {
+      const response = await API.post('/quiz/add', {
+        question,
         answer
       });
       return response.data;
@@ -16,26 +15,21 @@ export function questionsCRUD(){
       return response.data;
     };
 
-    const readQuestionSingle = async (ID: string, Question: string, answer: string) => {
-      const response = await API.get(`/Question/${ID}`, {
-        params: {
-          Question,
-          answer
-        }
-      });
+    const readQuestionSingle = async (_id: { $oid: string }) => {
+      const response = await API.get(`/quiz/${_id.$oid}`);
       return response.data;
     };
 
-    const updateQuestion = async (ID: string, Question: string, answer: string) => {
-      const response = await API.post(`/Question/${ID}`, {
-        Question,
+    const updateQuestion = async (_id: { $oid: string }, question: string, answer: string) => {
+      const response = await API.put(`/quiz/${_id.$oid}`, {
+        question,
         answer
       });
       return response.data;
     };
 
-    const deleteQuestion = async (ID: string) => {
-      const response = await API.delete(`/Question/${ID}`);
+    const deleteQuestion = async (_id: { $oid: string }) => {
+      const response = await API.delete(`/quiz/${_id.$oid}`);
       return response.data;
     };
 
